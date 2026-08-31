@@ -1,0 +1,6 @@
+{
+  "name": "CoalGuard AI",
+  "description": "Enterprise Governance, Predictive Risk Intelligence, and Automated Compliance Command Center for Coal Mines.",
+  "requestFramePermissions": ["camera", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
