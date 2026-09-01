@@ -1,6 +1,6 @@
 # 🛡️ CoalGuard AI
 
-AI-powered coal mine safety and monitoring platform developed for Smart India Hackathon (SIH).
+AI-powered coal mine safety and monitoring platform developed for Smart India Hackathon(SIH).
 
 ## 🚀 Overview
 
