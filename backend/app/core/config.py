@@ -11,8 +11,8 @@ class Settings(BaseSettings):
     # CORS
     CORS_ORIGINS: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
 
-    # Database (placeholder for future use)
-    DATABASE_URL: str = "sqlite:///./snapui.db"
+    # Database
+    DATABASE_URL: str = "postgresql://snapui:snapui@localhost:5432/snapui"
 
     # Security (placeholder for future auth)
     SECRET_KEY: str = "change-me-in-production"
