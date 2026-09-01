@@ -1,20 +1,57 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# 🛡️ CoalGuard AI
 
-# Run and deploy your AI Studio app
+AI-powered coal mine safety and monitoring platform developed for Smart India Hackathon (SIH).
 
-This contains everything you need to run your app locally.
+## 🚀 Overview
 
-View your app in AI Studio: https://ai.studio/apps/0d67f8ab-c50f-4371-bae2-b56ef4f49179
+CoalGuard AI is designed to monitor coal-mining operations, identify safety risks, manage alerts, inspections and compliance, and provide intelligent assistance through an AI interface.
 
-## Run Locally
+## ✨ Key Features
 
-**Prerequisites:**  Node.js
+- 🗺️ Mine monitoring dashboard
+- ⚠️ Safety alerts
+- ⛏️ Mine and field operations monitoring
+- 📋 Inspection management
+- 📊 Compliance tracking
+- 👷 Contractor management
+- 🤖 AI-powered assistance
+- 📈 Reports and analytics
 
+## 🏗️ Technology Stack
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Frontend
+- React
+- TypeScript
+- Vite
+
+### Backend
+- Python
+- FastAPI
+- SQLAlchemy
+- PostgreSQL
+
+## 📁 Project Structure
+
+```text
+SIH-Coal-Solution-
+├── backend/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── core/
+│   │   ├── db/
+│   │   ├── models/
+│   │   ├── schemas/
+│   │   └── services/
+│   └── requirements.txt
+│
+├── src/
+│   ├── components/
+│   ├── data/
+│   ├── App.tsx
+│   └── main.tsx
+│
+├── .env.example
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+└── vite.config.ts
