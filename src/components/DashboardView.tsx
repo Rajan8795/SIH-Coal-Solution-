@@ -17,6 +17,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const [mapZoom, setMapZoom] = useState(1);
   const [selectedPin, setSelectedPin] = useState<string | null>(null);
   const [showChartModal, setShowChartModal] = useState<string | null>(null);
+  const getGreeting = () => {
+  const hour = new Date().getHours();
+
+  if (hour >= 5 && hour < 12) {
+    return "Good Morning";
+  } else if (hour >= 12 && hour < 17) {
+    return "Good Afternoon";
+  } else if (hour >= 17 && hour < 21) {
+    return "Good Evening";
+  } else {
+    return "Good Night";
+  }
+};
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
@@ -24,7 +37,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#191c1e] tracking-tight">
-            Good Morning, Officer.
+            {getGreeting()}, Officer.
           </h2>
           <p className="text-base text-[#45464d] mt-1 font-medium">
             Here’s what needs your attention today.
