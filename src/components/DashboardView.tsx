@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ASSETS } from '../data/mockData';
 import { NavigationTab } from '../types';
+import IndiaMap from './IndiaMap';
+import { ComplianceTrendChart, SafetyIncidentsChart } from './DashboardCharts';
 
 interface DashboardViewProps {
   onNavigate: (tab: NavigationTab) => void;
@@ -8,15 +9,89 @@ interface DashboardViewProps {
   onSelectMine: (mineId: string) => void;
 }
 
+const PREDICTIVE_RISK_DATA = [
+  {
+    mine: 'Korba Deep Mine',
+    state: 'Chhattisgarh',
+    predictedRisk: 'HIGH' as const,
+    riskScore: 84,
+    riskTrend: 'increasing' as const,
+    contributingFactors: ['Repeated safety violations', 'Overdue compliance actions', 'Recurring inspection findings'],
+    recommendation: 'Schedule a targeted safety inspection and resolve overdue compliance actions.'
+  },
+  {
+    mine: 'Jharia Main Colliery',
+    state: 'Jharkhand',
+    predictedRisk: 'HIGH' as const,
+    riskScore: 78,
+    riskTrend: 'increasing' as const,
+    contributingFactors: ['4 active safety violations', 'Contractor compliance issues', 'Overdue environmental renewals'],
+    recommendation: 'Deploy inspection team to Sector 4 and review contractor certifications.'
+  },
+  {
+    mine: 'Singrauli North Extension',
+    state: 'Madhya Pradesh',
+    predictedRisk: 'MEDIUM' as const,
+    riskScore: 56,
+    riskTrend: 'stable' as const,
+    contributingFactors: ['Pending environmental audit', 'Overdue equipment certification'],
+    recommendation: 'Schedule emissions audit and assign certified inspector.'
+  }
+];
+
+const PRIORITY_ACTIONS = [
+  {
+    title: 'Recurring Safety Compliance Risk',
+    severity: 'Critical',
+    severityColor: '#ba1a1a',
+    description: '4 similar safety observations were reported in recent inspections at Korba Deep Mine.',
+    action: 'Schedule Targeted Inspection',
+    actionType: 'dispatch',
+    location: 'Korba Deep Mine - Sector 4'
+  },
+  {
+    title: 'Contractor DGMS Certifications Expiring',
+    severity: 'High',
+    severityColor: '#f59e0b',
+    description: '12 contractors at Raniganj Eastern have DGMS certifications expiring within 48 hours.',
+    action: 'Create Action',
+    actionType: 'navigate',
+    navigateTo: 'contractors'
+  },
+  {
+    title: 'Ventilation Compliance Finding',
+    severity: 'Critical',
+    severityColor: '#ba1a1a',
+    description: 'Repeated ventilation-related findings documented in inspection reports at Jharia Main Colliery.',
+    action: 'Create Action',
+    actionType: 'navigate',
+    navigateTo: 'alerts'
+  }
+];
+
 export const DashboardView: React.FC<DashboardViewProps> = ({
   onNavigate,
   onDispatchInspection,
   onSelectMine,
 }) => {
   const [viewMode, setViewMode] = useState<'standard' | 'national'>('standard');
-  const [mapZoom, setMapZoom] = useState(1);
-  const [selectedPin, setSelectedPin] = useState<string | null>(null);
   const [showChartModal, setShowChartModal] = useState<string | null>(null);
+
+  const getTrendIcon = (trend: string) => {
+    switch (trend) {
+      case 'increasing': return 'trending_up';
+      case 'decreasing': return 'trending_down';
+      default: return 'trending_flat';
+    }
+  };
+
+  const getTrendColor = (trend: string) => {
+    switch (trend) {
+      case 'increasing': return '#ba1a1a';
+      case 'decreasing': return '#10B981';
+      default: return '#515f74';
+    }
+  };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
@@ -27,7 +102,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             Good Morning, Officer.
           </h2>
           <p className="text-base text-[#45464d] mt-1 font-medium">
-            Here’s what needs your attention today.
+            Here's what needs your attention today.
           </p>
         </div>
 
@@ -58,7 +133,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </div>
 
-      {/* NATIONAL COMMAND VIEW (Screen 3) */}
+      {/* NATIONAL COMMAND VIEW */}
       {viewMode === 'national' ? (
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
@@ -73,7 +148,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   CoalGuard AI
                 </h3>
                 <p className="text-base text-[#45464d] mb-6 max-w-lg leading-relaxed">
-                  Intelligent Governance & Compliance for Coal Mines. Centralized oversight, predictive risk analysis, and real-time operational telemetry.
+                  Intelligent Governance & Compliance for Indian Coal Mines. Centralized oversight, predictive risk analysis, and compliance intelligence.
                 </p>
                 <button
                   onClick={() => onNavigate('ai-command')}
@@ -87,11 +162,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="absolute right-0 bottom-0 w-64 h-64 bg-[#d5e3fd] rounded-full blur-3xl opacity-30 -mr-16 -mb-16 pointer-events-none"></div>
             </div>
 
-            {/* National Map Card */}
+            {/* National Map Card - India Focused */}
             <div className="lg:col-span-5 bg-white rounded-xl border border-[#c6c6cd]/30 industrial-shadow p-4 flex flex-col min-h-[320px]">
               <div className="flex justify-between items-center mb-2 px-1">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-[#45464d]">
-                  National Deployment Overview
+                  India Coal Mine Risk Overview
                 </span>
                 <button
                   onClick={() => onNavigate('mines')}
@@ -100,23 +175,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <span className="material-symbols-outlined text-[18px]">open_in_full</span>
                 </button>
               </div>
-              <div className="flex-1 rounded-lg relative overflow-hidden border border-[#e0e3e5] bg-[#eceef0] min-h-[240px]">
-                <div
-                  className="absolute inset-0 bg-cover bg-center opacity-90"
-                  style={{ backgroundImage: `url('${ASSETS.nationalMap}')` }}
-                ></div>
-                {/* Animated Pins */}
-                <div className="absolute top-[30%] left-[45%] flex flex-col items-center cursor-pointer group" onClick={() => onSelectMine('mine-a')}>
-                  <span className="relative flex h-3.5 w-3.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ba1a1a] opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#ba1a1a] border-2 border-white shadow-xs"></span>
-                  </span>
-                  <span className="hidden group-hover:block bg-[#0F172A] text-white text-[10px] px-2 py-0.5 rounded shadow mt-1">Mine Alpha (Crit)</span>
-                </div>
-                <div className="absolute top-[40%] left-[60%] w-3 h-3 bg-black rounded-full border-2 border-white shadow-xs cursor-pointer" onClick={() => onSelectMine('blackwood-north')}></div>
-                <div className="absolute top-[65%] left-[50%] w-3 h-3 bg-[#515f74] rounded-full border-2 border-white shadow-xs cursor-pointer" onClick={() => onSelectMine('site-beta')}></div>
-                <div className="absolute top-[55%] left-[30%] w-3 h-3 bg-black rounded-full border-2 border-white shadow-xs cursor-pointer" onClick={() => onSelectMine('silvercreek')}></div>
-                <div className="absolute top-[25%] left-[70%] w-3 h-3 bg-[#ba1a1a] rounded-full border-2 border-white shadow-xs animate-pulse cursor-pointer" onClick={() => onSelectMine('ironridge-alpha')}></div>
+              <div className="flex-1 rounded-lg overflow-hidden border border-[#e0e3e5] min-h-[240px]">
+                <IndiaMap onSelectMine={onSelectMine} onNavigate={onNavigate} />
               </div>
             </div>
           </div>
@@ -173,7 +233,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       ) : null}
 
-      {/* STANDARD SITE COMMAND VIEW (Screen 1) */}
+      {/* STANDARD SITE COMMAND VIEW */}
       {/* 4 Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Critical Risks */}
@@ -244,37 +304,23 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-3xl font-extrabold text-[#191c1e]">8</span>
-            <span className="text-xs text-[#45464d]">Across 3 regions</span>
+            <span className="text-xs text-[#45464d]">Across 5 states</span>
           </div>
         </div>
       </div>
 
       {/* Main Bento Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Map Widget (Span 2) */}
+        {/* Map Widget (Span 2) - India Focused */}
         <div className="lg:col-span-2 bg-white border border-[#c6c6cd]/30 rounded-xl overflow-hidden industrial-shadow flex flex-col h-[420px]">
           <div className="p-4 border-b border-[#e6e8ea] flex justify-between items-center bg-white">
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-sm text-[#45464d]">pin_drop</span>
               <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#191c1e]">
-                Interactive Mine Risk Map
+                India Coal Mine Risk Map
               </h3>
             </div>
             <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => setMapZoom((prev) => Math.min(prev + 0.2, 1.8))}
-                className="p-1.5 rounded bg-[#eceef0] hover:bg-[#e0e3e5] text-[#45464d] transition-colors"
-                title="Zoom in"
-              >
-                <span className="material-symbols-outlined text-[18px]">zoom_in</span>
-              </button>
-              <button
-                onClick={() => setMapZoom((prev) => Math.max(prev - 0.2, 0.8))}
-                className="p-1.5 rounded bg-[#eceef0] hover:bg-[#e0e3e5] text-[#45464d] transition-colors"
-                title="Zoom out"
-              >
-                <span className="material-symbols-outlined text-[18px]">zoom_out</span>
-              </button>
               <button
                 onClick={() => onNavigate('mines')}
                 className="text-xs text-blue-600 font-bold px-2 py-1 hover:underline"
@@ -284,51 +330,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
           </div>
 
-          <div
-            className="flex-1 relative bg-[#f2f4f6] overflow-hidden bg-cover bg-center transition-all duration-300"
-            style={{
-              backgroundImage: `url('${ASSETS.mapBackground}')`,
-              transform: `scale(${mapZoom})`,
-              transformOrigin: 'center center',
-            }}
-          >
-            {/* Map Pins / Overlay */}
-            <div className="absolute inset-0 p-4 pointer-events-auto">
-              {/* Site Alpha Pin (Critical) */}
-              <div
-                onClick={() => {
-                  setSelectedPin('alpha');
-                  onSelectMine('mine-a');
-                }}
-                className="absolute top-1/4 left-1/3 flex flex-col items-center cursor-pointer group z-20"
-              >
-                <span className="relative flex h-4 w-4">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ba1a1a] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-4 w-4 bg-[#ba1a1a] border-2 border-white shadow-sm"></span>
-                </span>
-                <span className="mt-1 bg-white/95 backdrop-blur text-[11px] font-mono font-semibold px-2 py-0.5 rounded shadow-sm border border-[#ba1a1a]/30 group-hover:scale-105 transition-transform text-[#191c1e]">
-                  Site Alpha (Crit)
-                </span>
-              </div>
-
-              {/* Site Beta Pin (Nominal) */}
-              <div
-                onClick={() => {
-                  setSelectedPin('beta');
-                  onSelectMine('site-beta');
-                }}
-                className="absolute top-2/3 right-1/4 flex flex-col items-center cursor-pointer group z-20"
-              >
-                <span className="relative inline-flex rounded-full h-4 w-4 bg-[#10B981] border-2 border-white shadow-sm"></span>
-                <span className="mt-1 bg-white/95 backdrop-blur text-[11px] font-mono font-semibold px-2 py-0.5 rounded shadow-sm border border-[#c6c6cd]/40 group-hover:scale-105 transition-transform text-[#191c1e]">
-                  Site Beta (Nom)
-                </span>
-              </div>
-            </div>
+          <div className="flex-1 relative overflow-hidden">
+            <IndiaMap onSelectMine={onSelectMine} onNavigate={onNavigate} />
           </div>
         </div>
 
-        {/* AI Insights Widget (Span 1) */}
+        {/* AI Insights Widget (Span 1) - Priority Actions */}
         <div className="bg-white rounded-xl p-4 industrial-shadow ai-border flex flex-col h-[420px]">
           <div className="flex justify-between items-center mb-3 pb-2 border-b border-[#e6e8ea]">
             <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#191c1e] flex items-center gap-2">
@@ -341,51 +348,166 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           <div className="flex-1 overflow-y-auto pr-1 space-y-3">
-            {/* Ventilation Anomaly Card */}
-            <div className="p-3 bg-[#ba1a1a]/5 border border-[#ba1a1a]/20 rounded-lg hover:bg-[#ba1a1a]/10 transition-colors">
-              <div className="flex justify-between items-start mb-1">
-                <span className="font-bold text-sm text-[#191c1e]">Ventilation Anomaly</span>
-                <span className="font-mono text-[#ba1a1a] text-xs font-bold">98% PROB</span>
-              </div>
-              <p className="text-xs text-[#45464d] mb-2 leading-relaxed">
-                Sensor array in Sector 4G indicates declining airflow. Predict critical failure in 4 hrs.
-              </p>
-              <button
-                onClick={() => onDispatchInspection('Sector 4G Ventilation')}
-                className="bg-[#000000] text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-[#271901] transition-colors w-full active:scale-98"
+            {PRIORITY_ACTIONS.map((action, idx) => (
+              <div
+                key={idx}
+                className="p-3 bg-[#f7f9fb] border border-[#c6c6cd]/30 rounded-lg hover:bg-[#eceef0] transition-colors"
               >
-                Dispatch Inspection Team
-              </button>
-            </div>
-
-            {/* Contractor Certification */}
-            <div
-              onClick={() => onNavigate('contractors')}
-              className="p-3 bg-[#f7f9fb] border border-[#c6c6cd]/30 rounded-lg hover:bg-[#eceef0] transition-colors cursor-pointer"
-            >
-              <div className="flex justify-between items-start mb-1">
-                <span className="font-bold text-sm text-[#191c1e]">Contractor Certification</span>
-                <span className="font-mono text-[#515f74] text-xs font-bold">EXP 2 DAYS</span>
+                <div className="flex justify-between items-start mb-1">
+                  <span className="font-bold text-sm text-[#191c1e]">{action.title}</span>
+                  <span className="font-mono text-xs font-bold" style={{ color: action.severityColor }}>
+                    {action.severity.toUpperCase()}
+                  </span>
+                </div>
+                <p className="text-xs text-[#45464d] mb-2 leading-relaxed">
+                  {action.description}
+                </p>
+                {action.actionType === 'dispatch' ? (
+                  <button
+                    onClick={() => onDispatchInspection(action.location)}
+                    className="bg-[#000000] text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-[#271901] transition-colors w-full active:scale-98"
+                  >
+                    {action.action}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => onNavigate(action.navigateTo as NavigationTab)}
+                    className="bg-[#000000] text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-[#271901] transition-colors w-full active:scale-98"
+                  >
+                    {action.action}
+                  </button>
+                )}
               </div>
-              <p className="text-xs text-[#45464d] leading-relaxed">
-                12 contractors at Site Beta have MSHA certifications expiring within 48 hours.
-              </p>
-            </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
-            {/* Dust Suppression Low */}
-            <div
-              onClick={() => onNavigate('alerts')}
-              className="p-3 bg-[#f7f9fb] border border-[#c6c6cd]/30 rounded-lg hover:bg-[#eceef0] transition-colors cursor-pointer"
-            >
-              <div className="flex justify-between items-start mb-1">
-                <span className="font-bold text-sm text-[#191c1e]">Dust Suppression Low</span>
-                <span className="font-mono text-[#515f74] text-xs font-bold">REVIEW</span>
-              </div>
-              <p className="text-xs text-[#45464d] leading-relaxed">
-                Water pressure in suppression lines on Level 3 below optimal thresholds.
-              </p>
+      {/* Predictive Risk Intelligence Section */}
+      <div className="bg-white rounded-xl border border-[#c6c6cd]/30 industrial-shadow overflow-hidden">
+        <div className="p-5 border-b border-[#e6e8ea] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white">
+              <span className="material-symbols-outlined">psychology</span>
+            </div>
+            <div>
+              <h3 className="text-base font-extrabold text-[#191c1e]">Predictive Risk Intelligence</h3>
+              <p className="text-xs text-[#45464d]">What could go wrong next? AI-powered governance insights.</p>
             </div>
           </div>
+          <button
+            onClick={() => onNavigate('ai-command')}
+            className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 self-start sm:self-auto"
+          >
+            Ask CoalGuard
+            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </button>
+        </div>
+
+        <div className="p-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {PREDICTIVE_RISK_DATA.map((risk, idx) => (
+              <div
+                key={idx}
+                className="border border-[#e0e3e5] rounded-xl p-4 hover:shadow-md transition-shadow"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h4 className="font-bold text-sm text-[#191c1e]">{risk.mine}</h4>
+                    <p className="text-[11px] text-[#45464d]">{risk.state}</p>
+                  </div>
+                  <span
+                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                      risk.predictedRisk === 'HIGH'
+                        ? 'bg-[#ffdad6] text-[#ba1a1a]'
+                        : risk.predictedRisk === 'MEDIUM'
+                        ? 'bg-[#fcdeb5] text-[#574425]'
+                        : 'bg-emerald-100 text-emerald-800'
+                    }`}
+                  >
+                    {risk.predictedRisk} RISK
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="flex-1">
+                    <div className="flex justify-between text-[11px] mb-1">
+                      <span className="text-[#45464d]">Risk Score</span>
+                      <span className="font-mono font-bold text-[#191c1e]">{risk.riskScore}/100</span>
+                    </div>
+                    <div className="w-full bg-[#e6e8ea] rounded-full h-2 overflow-hidden">
+                      <div
+                        className="h-2 rounded-full transition-all duration-500"
+                        style={{
+                          width: `${risk.riskScore}%`,
+                          backgroundColor: risk.riskScore > 70 ? '#ba1a1a' : risk.riskScore > 40 ? '#f59e0b' : '#10B981'
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1" style={{ color: getTrendColor(risk.riskTrend) }}>
+                    <span className="material-symbols-outlined text-[18px]">{getTrendIcon(risk.riskTrend)}</span>
+                  </div>
+                </div>
+
+                <div className="mb-3">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#45464d] mb-1">Contributing Factors</p>
+                  <ul className="text-[11px] text-[#45464d] space-y-0.5">
+                    {risk.contributingFactors.map((factor, fIdx) => (
+                      <li key={fIdx} className="flex items-start gap-1">
+                        <span className="text-[#ba1a1a] mt-0.5">•</span>
+                        <span>{factor}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="p-2.5 bg-indigo-50/70 border border-indigo-200/80 rounded-lg">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-indigo-700 mb-1">Recommendation</p>
+                  <p className="text-[11px] text-[#45464d] leading-relaxed">{risk.recommendation}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Ask CoalGuard Entry Section */}
+      <div className="bg-gradient-to-r from-[#131b2e] to-[#2e3b5e] rounded-xl p-5 industrial-shadow">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-white">
+              <span className="material-symbols-outlined text-[28px]">psychology</span>
+            </div>
+            <div>
+              <h3 className="text-base font-extrabold text-white">Ask CoalGuard</h3>
+              <p className="text-xs text-[#bec6e0]">Get AI-powered insights on mine risks, compliance, and preventive actions.</p>
+            </div>
+          </div>
+          <button
+            onClick={() => onNavigate('ai-command')}
+            className="bg-white text-[#131b2e] px-5 py-2.5 rounded-lg text-xs font-bold hover:bg-[#dae2fd] transition-colors flex items-center gap-2"
+          >
+            <span className="material-symbols-outlined text-[18px]">chat</span>
+            Open AI Assistant
+          </button>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {[
+            'Which mines are high risk?',
+            'What could go wrong next?',
+            'Why is Korba Deep Mine high risk?',
+            'Show overdue compliance.',
+            'What preventive action is recommended?'
+          ].map((prompt, idx) => (
+            <button
+              key={idx}
+              onClick={() => onNavigate('ai-command')}
+              className="px-3 py-1.5 bg-white/10 border border-white/20 rounded-full text-[11px] font-semibold text-white hover:bg-white/20 transition-colors"
+            >
+              {prompt}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -403,10 +525,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
           <div
             onClick={() => setShowChartModal('compliance')}
-            className="flex-1 w-full bg-[#f7f9fb] relative rounded-lg border border-[#e6e8ea] overflow-hidden bg-cover bg-center cursor-pointer hover:border-gray-400 transition-colors"
-            style={{ backgroundImage: `url('${ASSETS.complianceTrend}')` }}
-            title="Click to view detailed telemetry metrics"
+            className="flex-1 w-full bg-[#f7f9fb] relative rounded-lg border border-[#e6e8ea] overflow-hidden cursor-pointer hover:border-gray-400 transition-colors p-2"
+            title="Click to view detailed compliance metrics"
           >
+            <ComplianceTrendChart />
             <div className="absolute bottom-2 right-2 bg-white/90 px-2 py-1 rounded text-[10px] font-mono text-gray-700 shadow-xs">
               Avg: 92.4%
             </div>
@@ -423,13 +545,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
           <div
             onClick={() => setShowChartModal('safety')}
-            className="flex-1 w-full bg-[#f7f9fb] relative rounded-lg border border-[#e6e8ea] overflow-hidden bg-cover bg-center cursor-pointer hover:border-gray-400 transition-colors"
-            style={{ backgroundImage: `url('${ASSETS.safetyIncidents}')` }}
-            title="Click to view detailed telemetry metrics"
+            className="flex-1 w-full bg-[#f7f9fb] relative rounded-lg border border-[#e6e8ea] overflow-hidden cursor-pointer hover:border-gray-400 transition-colors p-2"
+            title="Click to view detailed safety metrics"
           >
-            <div className="absolute bottom-2 right-2 bg-white/90 px-2 py-1 rounded text-[10px] font-mono text-gray-700 shadow-xs">
-              Total: 14 Events
-            </div>
+            <SafetyIncidentsChart />
           </div>
         </div>
       </div>
@@ -470,11 +589,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <p className="mb-2">Recorded incidents grouped by operational safety category:</p>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                      <span>Airflow & Ventilation Degradation</span>
+                      <span>Ventilation Compliance Findings</span>
                       <span className="font-mono font-bold text-red-600">6 incidents</span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                      <span>Conveyor & Mechanical Roller Wear</span>
+                      <span>Conveyor & Mechanical Maintenance</span>
                       <span className="font-mono font-bold text-amber-600">4 incidents</span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
@@ -482,7 +601,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       <span className="font-mono font-bold text-gray-800">3 incidents</span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                      <span>Electrical Sensor Loss</span>
+                      <span>Contractor Certification Lapses</span>
                       <span className="font-mono font-bold text-gray-800">1 incident</span>
                     </div>
                   </div>
