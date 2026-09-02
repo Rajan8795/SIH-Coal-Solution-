@@ -13,3 +13,7 @@ dist/
 venv/
 __pycache__/
 *.pyc
+GEMINI.md
+data/raw/
+data/processed/
+
