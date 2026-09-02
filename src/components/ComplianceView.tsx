@@ -483,10 +483,10 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
                   onChange={(e) => setNewOfficer(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black outline-none"
                 >
-                  <option value="J. Mitchell">J. Mitchell</option>
-                  <option value="S. Reynolds">S. Reynolds</option>
-                  <option value="A. Kowalski">A. Kowalski</option>
-                  <option value="T. Russo">T. Russo</option>
+                  <option value="R. Sharma">R. Sharma</option>
+                  <option value="S. Patel">S. Patel</option>
+                  <option value="A. Kumar">A. Kumar</option>
+                  <option value="T. Reddy">T. Reddy</option>
                 </select>
               </div>
 
@@ -525,18 +525,18 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
             </div>
             <div className="space-y-3 text-xs text-gray-600">
               <p>
-                <strong>Target:</strong> Structural Support Recertification at SilverCreek.
+                <strong>Target:</strong> Structural Support Recertification at Godavari Valley Block III.
               </p>
               <div className="p-3 bg-indigo-50 border border-indigo-100 rounded-xl space-y-1.5">
                 <p className="font-bold text-indigo-950">Key Correlating Factors:</p>
                 <ul className="list-disc list-inside space-y-1 text-indigo-900">
-                  <li>Frontier Geotech LLC has 3 active projects in the Powder River Basin.</li>
+                  <li>Deccan Geotech Mining Ltd has 3 active projects in the Godavari Valley region.</li>
                   <li>Structural engineer capacity currently booked at 92%.</li>
                   <li>Average lead time for certified ultrasonic testing rigs is 14 days.</li>
                 </ul>
               </div>
               <p className="text-gray-500">
-                <strong>Recommended Mitigation:</strong> Contract secondary certified inspector from Apex Mining Solutions to prevent overdue non-compliance fine.
+                <strong>Recommended Mitigation:</strong> Contract secondary certified inspector from Bharat Coal Mining Services to prevent overdue non-compliance penalty.
               </p>
             </div>
             <button

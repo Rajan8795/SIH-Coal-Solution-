@@ -27,7 +27,7 @@ export const ContractorsView: React.FC<ContractorsViewProps> = ({
             Contractor Governance
           </h2>
           <p className="text-sm text-[#45464d] mt-1">
-            MSHA 30 CFR Part 48 workforce training, safety audits, and certification tracking.
+            DGMS workforce training, safety audits, and certification tracking.
           </p>
         </div>
         <button
@@ -123,10 +123,10 @@ export const ContractorsView: React.FC<ContractorsViewProps> = ({
                 </div>
                 <div>
                   <span className="text-gray-400 text-[10px] uppercase font-bold block">
-                    Last MSHA Audit
+                    Last DGMS Audit
                   </span>
                   <span className="font-mono text-gray-800 text-sm">
-                    {contractor.mshaAuditDate}
+                    {contractor.lastAuditDate}
                   </span>
                 </div>
               </div>
@@ -173,22 +173,22 @@ export const ContractorsView: React.FC<ContractorsViewProps> = ({
             <div className="space-y-2 max-h-72 overflow-y-auto pr-1 text-xs">
               <div className="p-2.5 bg-gray-50 rounded-lg flex justify-between items-center">
                 <div>
-                  <p className="font-bold text-gray-800">Marcus Vance (Heavy Equipment Lead)</p>
-                  <p className="text-gray-500">Cert: MSHA §48 Underground Miner • EXP: 2024-06-15</p>
+                  <p className="font-bold text-gray-800">Rajesh Kumar (Heavy Equipment Lead)</p>
+                  <p className="text-gray-500">Cert: DGMS Underground Miner • EXP: 2025-06-15</p>
                 </div>
                 <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded text-[10px]">Valid</span>
               </div>
               <div className="p-2.5 bg-amber-50 rounded-lg flex justify-between items-center border border-amber-200">
                 <div>
-                  <p className="font-bold text-amber-900">Dave Henderson (Ventilation Tech)</p>
-                  <p className="text-amber-700">Cert: MSHA Air Quality Specialist • EXP: 2023-10-31</p>
+                  <p className="font-bold text-amber-900">Suresh Patel (Ventilation Tech)</p>
+                  <p className="text-amber-700">Cert: DGMS Air Quality Specialist • EXP: 2024-10-31</p>
                 </div>
                 <span className="px-2 py-0.5 bg-amber-200 text-amber-900 font-bold rounded text-[10px]">Expiring 48h</span>
               </div>
               <div className="p-2.5 bg-gray-50 rounded-lg flex justify-between items-center">
                 <div>
-                  <p className="font-bold text-gray-800">Elena Rostova (Electrical PE)</p>
-                  <p className="text-gray-500">Cert: MSHA High-Voltage Certified • EXP: 2024-11-20</p>
+                  <p className="font-bold text-gray-800">Anita Sharma (Electrical Engineer)</p>
+                  <p className="text-gray-500">Cert: DGMS High-Voltage Certified • EXP: 2025-11-20</p>
                 </div>
                 <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded text-[10px]">Valid</span>
               </div>

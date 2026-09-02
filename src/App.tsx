@@ -46,7 +46,6 @@ export function App() {
 
   // Handlers
   const handleDispatchInspection = (sectorName: string) => {
-    // Switch to field ops with target sector
     setFieldInspection((prev) => ({
       ...prev,
       location: `${sectorName} - Active Audit`,
@@ -68,13 +67,13 @@ export function App() {
       id: `alert-${Date.now()}`,
       title: `${insp.analysis.title} - ${insp.location}`,
       location: insp.location,
-      mine: 'Mine A (Site Alpha)',
+      mine: 'Jharia Main Colliery',
       time: 'Just now',
       status: 'Unacknowledged',
       severity: 'Critical',
       assignedTo: {
-        name: 'J. Doe',
-        initials: 'JD',
+        name: 'V. Singh',
+        initials: 'VS',
       },
       deadline: '24 Hours',
       description: `${insp.analysis.description} (${insp.analysis.standardRef})`,
@@ -126,55 +125,90 @@ export function App() {
 
     setChatMessages((prev) => [...prev, userMsg]);
 
-    // Simulated AI response engine grounded in CoalGuard telemetry
     setTimeout(() => {
       let aiReply: ChatMessage;
       const lower = text.toLowerCase();
 
-      if (lower.includes('mine a') || lower.includes('alpha')) {
+      if (lower.includes('high risk') || lower.includes('which mines')) {
         aiReply = {
           id: `ai-${Date.now()}`,
           role: 'assistant',
-          text: `Analyzing telemetry for **Mine A (Site Alpha)**. High risk score (78/100) is driven by 4 active safety violations and ventilation differential drops in Sector 4.`,
+          text: `Based on current compliance records and inspection data, here are the **highest risk mines** in the network:\n\n1. **Korba Deep Mine** (Chhattisgarh) - Risk Score: 84/100\n   - 5 active safety violations, 3 overdue actions\n2. **Jharia Main Colliery** (Jharkhand) - Risk Score: 78/100\n   - 4 active safety violations, contractor compliance issues\n3. **Singrauli North Extension** (Madhya Pradesh) - Risk Score: 56/100\n   - Pending environmental audit, overdue certifications`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           richData: {
-            mineName: 'Mine A (Site Alpha)',
-            riskScore: 78,
+            mineName: 'Korba Deep Mine',
+            riskScore: 84,
             factorBreakdown: [
-              { label: 'Ventilation & Airflow', value: 85, color: '#ba1a1a' },
-              { label: 'Combustible Dust', value: 68, color: '#f59e0b' },
-              { label: 'Contractor Training', value: 34, color: '#3b82f6' },
+              { label: 'Safety Violations', value: 92, color: '#ba1a1a' },
+              { label: 'Overdue Compliance', value: 78, color: '#f59e0b' },
+              { label: 'Inspection Findings', value: 65, color: '#3b82f6' },
             ],
             recommendation: {
-              title: 'MSHA Title 30 §75.370 Priority Action',
-              text: 'Recommend immediate maintenance team dispatch to Sector 4 fan drive motor to avoid forced regulatory stop.',
+              title: 'Predictive Governance Insight',
+              text: 'Schedule targeted safety inspection and resolve overdue compliance actions to reduce risk escalation.',
+              actionText: 'Schedule Inspection',
+            },
+          },
+        };
+      } else if (lower.includes('go wrong') || lower.includes('predict') || lower.includes('what could')) {
+        aiReply = {
+          id: `ai-${Date.now()}`,
+          role: 'assistant',
+          text: `Based on historical patterns and current compliance data, here are the **predicted risks**:\n\n**Korba Deep Mine (Chhattisgarh)**\n- Predicted Risk: HIGH (Score: 84/100)\n- Trend: Increasing\n- Main factors: Repeated safety violations, overdue compliance, recurring inspection findings\n\n**Jharia Main Colliery (Jharkhand)**\n- Predicted Risk: HIGH (Score: 78/100)\n- Trend: Increasing\n- Main factors: Active safety violations, contractor compliance issues\n\nRecommended preventive action: Schedule targeted inspections and resolve overdue compliance actions.`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        };
+      } else if (lower.includes('korba') || lower.includes('why is')) {
+        aiReply = {
+          id: `ai-${Date.now()}`,
+          role: 'assistant',
+          text: `**Korba Deep Mine** is classified as HIGH RISK due to the following factors:\n\n- **5 active safety violations** - highest in the network\n- **3 overdue compliance actions** including ventilation shaft integrity check\n- **Recurring inspection findings** related to ventilation maintenance\n- **Contractor compliance issues** with Bharat Coal Mining Services\n\nHistorical data shows a pattern of repeated findings in consecutive inspections, indicating systemic compliance gaps.`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          richData: {
+            mineName: 'Korba Deep Mine',
+            riskScore: 84,
+            factorBreakdown: [
+              { label: 'Safety Violations', value: 92, color: '#ba1a1a' },
+              { label: 'Overdue Actions', value: 78, color: '#f59e0b' },
+              { label: 'Contractor Issues', value: 54, color: '#3b82f6' },
+            ],
+            recommendation: {
+              title: 'DGMS Compliance Priority',
+              text: 'Recommend immediate targeted inspection focusing on ventilation compliance and resolution of overdue actions as per CMR 2017 requirements.',
               actionText: 'Deploy Inspection Team',
             },
           },
         };
-      } else if (lower.includes('violation') || lower.includes('msha')) {
+      } else if (lower.includes('overdue') || lower.includes('compliance')) {
         aiReply = {
           id: `ai-${Date.now()}`,
           role: 'assistant',
-          text: `Currently tracking **12 active compliance items** and **4 critical safety violations** across Appalachian and Northern coalfields. \n\n1. **Ventilation Shaft Integrity Check** (REQ-2023-084) - Overdue\n2. **Conveyor Combustible Dust Build-up** (MSHA §75.400) - Sector 4\n3. **Methane Detector MS-409 Offline** - Blackwood North Pit`,
+          text: `Currently tracking **12 active compliance items** across the network. **Overdue items:**\n\n1. **Ventilation Shaft Integrity Check** (DGMS-2024-084)\n   - Mine: Korba Deep Mine | Due: 2024-10-24 | Risk: High\n\n2. **Structural Support Recertification** (DGMS-2024-145)\n   - Mine: Godavari Valley Block III | Due: 2024-11-12 | Risk: Medium\n\n3. **Dust Suppression System Calibration** (DGMS-2024-199)\n   - Mine: Jharia Main Colliery | Due: 2024-11-20 | Risk: High`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         };
-      } else if (lower.includes('conveyor') || lower.includes('sector 4') || lower.includes('failure')) {
+      } else if (lower.includes('preventive') || lower.includes('recommendation') || lower.includes('action')) {
         aiReply = {
           id: `ai-${Date.now()}`,
           role: 'assistant',
-          text: `Acoustic and thermal sensors on **Conveyor Belt B (Sector 4)** indicate high friction near roller assembly #12. Probability of motor burn-out within 18 hours is **89%**.`,
+          text: `**Recommended Preventive Actions:**\n\n1. **Korba Deep Mine** - Schedule targeted safety inspection focusing on recurring ventilation findings\n2. **Jharia Main Colliery** - Review contractor certifications and dispatch inspection team to Sector 4\n3. **Singrauli North Extension** - Schedule overdue emissions audit with certified inspector\n\nThese actions are based on compliance history patterns and aim to prevent escalation of identified risks.`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        };
+      } else if (lower.includes('jharia') || lower.includes('mine a') || lower.includes('alpha')) {
+        aiReply = {
+          id: `ai-${Date.now()}`,
+          role: 'assistant',
+          text: `Analyzing compliance data for **Jharia Main Colliery** (Jharkhand). Risk score: 78/100 driven by 4 active safety violations and contractor compliance issues in Sector 4.`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           richData: {
-            mineName: 'Sector 4 - Conveyor Belt B',
-            riskScore: 89,
+            mineName: 'Jharia Main Colliery',
+            riskScore: 78,
             factorBreakdown: [
-              { label: 'Thermal Sensor Variance', value: 92, color: '#ba1a1a' },
-              { label: 'Vibration Harmonics', value: 78, color: '#f59e0b' },
+              { label: 'Safety Violations', value: 85, color: '#ba1a1a' },
+              { label: 'Overdue Compliance', value: 68, color: '#f59e0b' },
+              { label: 'Contractor Training', value: 34, color: '#3b82f6' },
             ],
             recommendation: {
-              title: 'Predictive Maintenance Alert',
-              text: 'Perform bearing lubrication and replace worn belt skirt seals.',
+              title: 'AI Recommendation',
+              text: 'Immediate inspection recommended for Sector 4 ventilation compliance. Schedule targeted inspection to address recurring findings.',
               actionText: 'Schedule Inspection',
             },
           },
@@ -183,7 +217,7 @@ export function App() {
         aiReply = {
           id: `ai-${Date.now()}`,
           role: 'assistant',
-          text: `Central command telemetry has indexed your query: "${text}". All atmospheric sensors (Methane CH4, CO PPM) and contractor compliance records are synchronized. Let me know if you would like a detailed risk assessment or inspector dispatch.`,
+          text: `CoalGuard AI has indexed your query: "${text}". I analyze compliance records, inspection reports, environmental data, contractor records, and field observations to provide predictive risk insights. Ask me about high-risk mines, overdue compliance, or preventive actions recommended for your facilities.`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         };
       }

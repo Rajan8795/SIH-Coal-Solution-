@@ -334,7 +334,7 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
                 <p className="font-bold text-gray-800">Operational Response Protocol:</p>
                 <p>1. Dispatch primary safety officer with calibrated handheld Multi-Gas Detector.</p>
                 <p>2. Verify backup power on auxiliary suction blower.</p>
-                <p>3. Upload inspection image via Field Operations module for real-time MSHA clearance.</p>
+                <p>3. Upload inspection image via Field Operations module for DGMS clearance documentation.</p>
               </div>
             </div>
 
@@ -430,10 +430,10 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
                   onChange={(e) => setNewAssignee(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-black"
                 >
-                  <option value="J. Doe">J. Doe (Mechanical Inspector)</option>
-                  <option value="J. Mitchell">J. Mitchell (MSHA Tier 3)</option>
-                  <option value="S. Miller">S. Miller (Vibration Tech)</option>
-                  <option value="A. Kowalski">A. Kowalski (Safety Lead)</option>
+                  <option value="V. Singh">V. Singh (Mechanical Inspector)</option>
+                  <option value="R. Sharma">R. Sharma (DGMS Certified)</option>
+                  <option value="M. Gupta">M. Gupta (Maintenance Lead)</option>
+                  <option value="A. Kumar">A. Kumar (Safety Lead)</option>
                 </select>
               </div>
 
@@ -443,7 +443,7 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
                   rows={2}
                   value={newDesc}
                   onChange={(e) => setNewDesc(e.target.value)}
-                  placeholder="Details of the hazard detected by sensors or field personnel..."
+                  placeholder="Details of the hazard observed during inspection or field visit..."
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-black"
                 />
               </div>

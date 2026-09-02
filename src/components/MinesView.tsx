@@ -1,6 +1,87 @@
 import React, { useState } from 'react';
 import { Mine, NavigationTab } from '../types';
 import { ASSETS } from '../data/mockData';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+const getRiskColor = (riskScore: number) => {
+  if (riskScore > 70) return '#ba1a1a';
+  if (riskScore > 40) return '#f59e0b';
+  return '#10B981';
+};
+
+const getRiskLevel = (riskScore: number) => {
+  if (riskScore > 70) return 'High';
+  if (riskScore > 40) return 'Medium';
+  return 'Low';
+};
+
+const deriveComplianceScore = (riskScore: number) =>
+  Math.max(40, Math.min(98, 100 - riskScore + 10));
+
+const extractCoalfield = (location: string): string => {
+  const parts = location.split(',').map((p) => p.trim());
+  return parts[0] || location;
+};
+
+const extractState = (location: string, region: string): string => {
+  const parts = location.split(',').map((p) => p.trim());
+  return parts[parts.length - 1] || region;
+};
+
+const createMineIcon = (riskScore: number) => {
+  const color = getRiskColor(riskScore);
+  const html = `
+    <div style="position: relative;">
+      <div style="
+        width: 26px;
+        height: 26px;
+        background: ${color};
+        border: 3px solid white;
+        border-radius: 50%;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      ">
+        <div style="
+          width: 9px;
+          height: 9px;
+          background: white;
+          border-radius: 50%;
+        "></div>
+      </div>
+      <div style="
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        width: 36px;
+        height: 36px;
+        border: 2px solid ${color};
+        border-radius: 50%;
+        animation: coalguard-pulse 1.8s infinite;
+        opacity: 0.6;
+      "></div>
+    </div>
+  `;
+  return L.divIcon({
+    className: 'coalguard-marker',
+    html,
+    iconSize: [26, 26],
+    iconAnchor: [13, 13],
+    popupAnchor: [0, -14],
+  });
+};
+
+const MapInvalidator: React.FC = () => {
+  const map = useMap();
+  React.useEffect(() => {
+    const t = setTimeout(() => map.invalidateSize(), 100);
+    return () => clearTimeout(t);
+  }, [map]);
+  return null;
+};
 
 interface MinesViewProps {
   mines: Mine[];
@@ -21,7 +102,7 @@ export const MinesView: React.FC<MinesViewProps> = ({
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [showMapModal, setShowMapModal] = useState(false);
-  const [assignedInspector, setAssignedInspector] = useState('Officer J. Mitchell');
+  const [assignedInspector, setAssignedInspector] = useState('Officer R. Sharma');
   const [assignmentSuccess, setAssignmentSuccess] = useState(false);
 
   // SVG Gauge calculations
@@ -139,11 +220,13 @@ export const MinesView: React.FC<MinesViewProps> = ({
 
           {/* Map Thumbnail Placeholder */}
           <div className="bg-white border border-[#e0e3e5] rounded-xl overflow-hidden industrial-shadow h-48 relative group">
-            <img
-              src={ASSETS.satelliteMap}
-              alt="Mine Location Map"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
+            <div className="w-full h-full bg-gradient-to-br from-[#e8f4f8] to-[#d4e8ed] flex items-center justify-center">
+              <div className="text-center">
+                <span className="material-symbols-outlined text-4xl text-[#515f74]">map</span>
+                <p className="text-xs text-[#515f74] mt-2 font-medium">{currentMine.location}</p>
+                <p className="text-[10px] text-[#76777d] font-mono">{currentMine.coordinates.gpsText}</p>
+              </div>
+            </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-4">
               <button
                 onClick={() => setShowMapModal(true)}
@@ -382,10 +465,10 @@ export const MinesView: React.FC<MinesViewProps> = ({
                     onChange={(e) => setAssignedInspector(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black outline-none"
                   >
-                    <option value="Officer J. Mitchell (MSHA Tier 3)">Officer J. Mitchell (MSHA Tier 3)</option>
-                    <option value="Officer S. Reynolds (Environmental PE)">Officer S. Reynolds (Environmental PE)</option>
-                    <option value="Officer J. Doe (Mechanical Inspector)">Officer J. Doe (Mechanical Inspector)</option>
-                    <option value="Officer A. Kowalski (Safety Lead)">Officer A. Kowalski (Safety Lead)</option>
+                    <option value="Officer R. Sharma (DGMS Certified)">Officer R. Sharma (DGMS Certified)</option>
+                    <option value="Officer S. Patel (Environmental Inspector)">Officer S. Patel (Environmental Inspector)</option>
+                    <option value="Officer V. Singh (Mechanical Inspector)">Officer V. Singh (Mechanical Inspector)</option>
+                    <option value="Officer A. Kumar (Safety Lead)">Officer A. Kumar (Safety Lead)</option>
                   </select>
                 </div>
 
@@ -457,7 +540,7 @@ export const MinesView: React.FC<MinesViewProps> = ({
                     <span className="font-bold text-gray-800">Sep 28, 2023 - North Pit Diesel Haulers</span>
                     <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 font-bold rounded text-[10px]">Resolved</span>
                   </div>
-                  <p className="text-gray-600">Emissions filters replaced and certified under MSHA §75.325.</p>
+                  <p className="text-gray-600">Emissions filters replaced and certified under CMR 2017 guidelines.</p>
                 </div>
                 <span className="font-mono text-gray-500">Insp. #0941</span>
               </div>
@@ -485,17 +568,82 @@ export const MinesView: React.FC<MinesViewProps> = ({
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
-            <div className="flex-1 relative rounded-xl overflow-hidden border border-gray-200 bg-gray-900">
-              <img
-                src={ASSETS.satelliteMap}
-                alt="Full Mine Satellite Map"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute top-4 left-4 bg-black/80 text-white p-3 rounded-lg backdrop-blur-md text-xs space-y-1">
-                <p className="font-bold text-emerald-400">Atmospheric Sensors: Nominal</p>
-                <p className="font-mono">Methane: 0.18% (Permissible &lt; 1.0%)</p>
-                <p className="font-mono">CO Level: 4.2 PPM</p>
-              </div>
+            <div className="flex-1 relative rounded-xl overflow-hidden border border-gray-200 bg-[#e8f4f8]">
+              <style>{`
+                @keyframes coalguard-pulse {
+                  0% { transform: scale(1); opacity: 0.6; }
+                  100% { transform: scale(2); opacity: 0; }
+                }
+                .coalguard-marker { background: transparent; border: none; }
+                .leaflet-popup-content-wrapper { border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.18); }
+                .leaflet-popup-content { margin: 0; min-width: 220px; }
+                .leaflet-container { font-family: inherit; }
+              `}</style>
+              <MapContainer
+                key={`${currentMine.id}-${showMapModal ? 'open' : 'closed'}`}
+                center={[currentMine.coordinates.lat, currentMine.coordinates.lng]}
+                zoom={11}
+                style={{ height: '100%', width: '100%' }}
+                scrollWheelZoom={true}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <MapInvalidator />
+                <Marker
+                  position={[currentMine.coordinates.lat, currentMine.coordinates.lng]}
+                  icon={createMineIcon(currentMine.riskScore)}
+                >
+                  <Popup>
+                    <div className="p-2 min-w-[220px]">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h4 className="font-bold text-sm text-gray-900 leading-tight">{currentMine.name}</h4>
+                          <p className="text-xs text-gray-500">{extractCoalfield(currentMine.location)} • {extractState(currentMine.location, currentMine.region)}</p>
+                        </div>
+                        <span
+                          className="px-2 py-0.5 rounded-full text-[10px] font-bold"
+                          style={{
+                            backgroundColor: currentMine.riskScore > 70 ? '#fee2e2' : currentMine.riskScore > 40 ? '#fef3c7' : '#d1fae5',
+                            color: getRiskColor(currentMine.riskScore),
+                          }}
+                        >
+                          {getRiskLevel(currentMine.riskScore).toUpperCase()}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 mb-2 text-xs">
+                        <div className="bg-gray-50 p-2 rounded">
+                          <span className="text-gray-500 text-[10px] uppercase tracking-wide">Coalfield</span>
+                          <p className="font-bold text-gray-900">{extractCoalfield(currentMine.location)}</p>
+                        </div>
+                        <div className="bg-gray-50 p-2 rounded">
+                          <span className="text-gray-500 text-[10px] uppercase tracking-wide">State</span>
+                          <p className="font-bold text-gray-900">{extractState(currentMine.location, currentMine.region)}</p>
+                        </div>
+                        <div className="bg-gray-50 p-2 rounded">
+                          <span className="text-gray-500 text-[10px] uppercase tracking-wide">Lat / Lng</span>
+                          <p className="font-mono font-bold text-gray-900">
+                            {currentMine.coordinates.lat.toFixed(4)}, {currentMine.coordinates.lng.toFixed(4)}
+                          </p>
+                        </div>
+                        <div className="bg-gray-50 p-2 rounded">
+                          <span className="text-gray-500 text-[10px] uppercase tracking-wide">Risk</span>
+                          <p className="font-bold" style={{ color: getRiskColor(currentMine.riskScore) }}>
+                            {currentMine.riskScore}/100
+                          </p>
+                        </div>
+                        <div className="bg-gray-50 p-2 rounded col-span-2">
+                          <span className="text-gray-500 text-[10px] uppercase tracking-wide">Compliance Score</span>
+                          <p className="font-bold text-gray-900">
+                            {deriveComplianceScore(currentMine.riskScore)}% (DGMS)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </Popup>
+                </Marker>
+              </MapContainer>
             </div>
             <div className="mt-3 flex justify-end gap-2">
               <button

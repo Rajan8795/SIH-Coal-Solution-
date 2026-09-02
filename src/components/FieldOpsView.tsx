@@ -44,7 +44,7 @@ export const FieldOpsView: React.FC<FieldOpsViewProps> = ({
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#191c1e] tracking-tight">
               Field Operations
             </h2>
-            <p className="text-xs text-[#45464d]">Inspection Telemetry & AI Computer Vision</p>
+            <p className="text-xs text-[#45464d]">Inspection Documentation & AI Analysis</p>
           </div>
         </div>
         <button
