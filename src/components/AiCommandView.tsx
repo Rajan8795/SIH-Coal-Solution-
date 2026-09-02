@@ -17,14 +17,15 @@ export const AiCommandView: React.FC<AiCommandViewProps> = ({
 }) => {
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [showLogsModal, setShowLogsModal] = useState(false);
+  const [showComplianceModal, setShowComplianceModal] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const quickPrompts = [
-    'Show risk breakdown for Mine A',
-    'Summarize active MSHA violations',
-    'Predict equipment failure in Sector 4',
-    'Atmospheric telemetry logs for Sector 4',
+    'Which mines are high risk?',
+    'What could go wrong next?',
+    'Why is Korba Deep Mine high risk?',
+    'Show overdue compliance.',
+    'What preventive action is recommended?',
   ];
 
   const scrollToBottom = () => {
@@ -60,7 +61,7 @@ export const AiCommandView: React.FC<AiCommandViewProps> = ({
               </span>
             </h2>
             <p className="text-xs text-[#76777d]">
-              Predictive risk assistant • MSHA Title 30 & Telemetry Grounded
+              Predictive risk assistant • DGMS Compliance & Governance Intelligence
             </p>
           </div>
         </div>
@@ -144,7 +145,7 @@ export const AiCommandView: React.FC<AiCommandViewProps> = ({
                     {msg.richData.factorBreakdown && (
                       <div className="space-y-2">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
-                          Subsystem Risk Attribution
+                          Risk Factor Attribution
                         </span>
                         {msg.richData.factorBreakdown.map((item) => (
                           <div key={item.label} className="space-y-1">
@@ -183,7 +184,7 @@ export const AiCommandView: React.FC<AiCommandViewProps> = ({
                             <button
                               onClick={() =>
                                 onScheduleInspectionFromAi(
-                                  msg.richData?.mineName || 'Mine A (Site Alpha)'
+                                  msg.richData?.mineName || 'Jharia Main Colliery'
                                 )
                               }
                               className="px-3 py-1.5 bg-[#0F172A] hover:bg-[#1e293b] text-white rounded-lg text-xs font-bold transition-colors shadow-xs"
@@ -192,10 +193,10 @@ export const AiCommandView: React.FC<AiCommandViewProps> = ({
                             </button>
                           )}
                           <button
-                            onClick={() => setShowLogsModal(true)}
+                            onClick={() => setShowComplianceModal(true)}
                             className="px-3 py-1.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg text-xs font-bold transition-colors"
                           >
-                            View Telemetry Logs
+                            View Compliance Records
                           </button>
                         </div>
                       </div>
@@ -252,9 +253,9 @@ export const AiCommandView: React.FC<AiCommandViewProps> = ({
           <div className="flex items-center gap-1">
             <button
               type="button"
-              onClick={() => onSendMessage('Show live methane sensor stream for Mine Alpha')}
+              onClick={() => onSendMessage('Which mines are high risk?')}
               className="p-1.5 rounded-full text-gray-500 hover:text-black hover:bg-gray-200 transition-colors"
-              title="Voice / Telemetry shortcut"
+              title="Voice / Quick prompt shortcut"
             >
               <span className="material-symbols-outlined text-[20px]">mic</span>
             </button>
@@ -269,34 +270,52 @@ export const AiCommandView: React.FC<AiCommandViewProps> = ({
         </div>
       </form>
 
-      {/* Logs Modal */}
-      {showLogsModal && (
+      {/* Compliance Records Modal */}
+      {showComplianceModal && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-gray-200">
             <div className="flex justify-between items-center pb-3 border-b border-gray-100 mb-4">
               <div>
                 <h3 className="font-bold text-base text-gray-900">
-                  Sector 7 Ventilation Subsystem Logs
+                  Compliance Records Summary
                 </h3>
-                <p className="text-xs text-gray-500">Telemetry Stream ID: #TEL-VNT-7049</p>
+                <p className="text-xs text-gray-500">DGMS Compliance Data • Last Updated: Today</p>
               </div>
-              <button onClick={() => setShowLogsModal(false)} className="text-gray-400 hover:text-gray-600">
+              <button onClick={() => setShowComplianceModal(false)} className="text-gray-400 hover:text-gray-600">
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
-            <div className="bg-gray-950 text-emerald-400 font-mono text-xs p-4 rounded-xl max-h-72 overflow-y-auto space-y-1.5">
-              <p>[10:40:02] FAN-M04: RPM 1420 &rarr; Static Pressure 4.1 in. w.g. (Nominal)</p>
-              <p>[10:41:15] SENS-AIR-7A: Velocity 320 FPM (Variance -8%)</p>
-              <p className="text-amber-400">[10:42:30] SENS-AIR-7B: Velocity 280 FPM (Variance -19% [THRESHOLD EXCEEDED])</p>
-              <p className="text-red-400">[10:43:00] ALARM: Sector 7 Static Drop Alert Dispatched to Central Control</p>
-              <p>[10:44:12] Methane CH4 Level: 0.22% (Permissible band &lt; 1.0%)</p>
-              <p>[10:45:00] AI Model CoalGuard-Risk-v3: Disruption Probability elevated to 85%</p>
+            <div className="space-y-3 text-xs text-gray-700">
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <p className="font-bold text-gray-900 mb-1">Inspection History (Last 90 Days)</p>
+                <ul className="space-y-1 text-gray-600">
+                  <li>• 3 recurring ventilation findings at Korba Deep Mine</li>
+                  <li>• 2 overdue compliance actions at Jharia Main Colliery</li>
+                  <li>• 1 pending environmental audit at Singrauli North</li>
+                </ul>
+              </div>
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <p className="font-bold text-gray-900 mb-1">Contractor Compliance Status</p>
+                <ul className="space-y-1 text-gray-600">
+                  <li>• Bharat Coal Mining Services: 8 expiring certifications</li>
+                  <li>• Eastern Mining Contractors: 12 expiring certifications</li>
+                  <li>• Central Mine Ventilation Services: Compliant</li>
+                </ul>
+              </div>
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <p className="font-bold text-gray-900 mb-1">Environmental Data</p>
+                <ul className="space-y-1 text-gray-600">
+                  <li>• Groundwater sampling: Current at all sites</li>
+                  <li>• Emissions audit: Pending at Singrauli North</li>
+                  <li>• Dust suppression: Calibration due at Jharia Main</li>
+                </ul>
+              </div>
             </div>
             <button
-              onClick={() => setShowLogsModal(false)}
+              onClick={() => setShowComplianceModal(false)}
               className="mt-4 w-full py-2.5 bg-[#0F172A] text-white rounded-lg text-xs font-bold"
             >
-              Close Telemetry
+              Close Records
             </button>
           </div>
         </div>

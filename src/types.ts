@@ -1,4 +1,4 @@
-export type NavigationTab = 
+export type NavigationTab =
   | 'dashboard'
   | 'mines'
   | 'compliance'
@@ -128,5 +128,16 @@ export interface Contractor {
   complianceScore: number;
   expiringCertifications: number;
   status: 'Compliant' | 'Flagged' | 'Review Required';
-  mshaAuditDate: string;
+  lastAuditDate: string;
+}
+
+export interface PredictiveRiskItem {
+  mineId: string;
+  mineName: string;
+  state: string;
+  predictedRisk: 'HIGH' | 'MEDIUM' | 'LOW';
+  riskScore: number;
+  riskTrend: 'increasing' | 'stable' | 'decreasing';
+  contributingFactors: string[];
+  recommendation: string;
 }

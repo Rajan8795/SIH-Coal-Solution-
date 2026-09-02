@@ -11,35 +11,35 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ onNavigate }) => {
   const reportsList = [
     {
       id: 'rep-1',
-      title: 'MSHA Form 7000-2 Quarterly Production & Injury Report',
-      period: 'Q3 2023 Comprehensive',
+      title: 'DGMS Quarterly Production & Injury Report',
+      period: 'Q3 2024 Comprehensive',
       size: '2.4 MB PDF',
       status: 'Certified',
-      date: 'Oct 20, 2023',
+      date: 'Oct 20, 2024',
     },
     {
       id: 'rep-2',
-      title: 'Mine A (Site Alpha) Ventilation & Airflow Variance Log',
-      period: 'Oct 01 - Oct 24, 2023',
+      title: 'Jharia Main Colliery Ventilation Compliance Log',
+      period: 'Oct 01 - Oct 24, 2024',
       size: '8.1 MB CSV',
       status: 'Auto-Generated',
-      date: 'Oct 24, 2023',
+      date: 'Oct 24, 2024',
     },
     {
       id: 'rep-3',
       title: 'Annual Combustible Coal Dust & Rock Dust Compliance Audit',
-      period: 'Fiscal Year 2023',
+      period: 'Fiscal Year 2024',
       size: '4.7 MB PDF',
       status: 'Review Pending',
-      date: 'Oct 15, 2023',
+      date: 'Oct 15, 2024',
     },
     {
       id: 'rep-4',
-      title: 'Contractor Safety Index & MSHA Certification Expiration Rollup',
+      title: 'Contractor Safety Index & DGMS Certification Expiration Rollup',
       period: 'Rolling 30-Day',
       size: '1.2 MB XLSX',
       status: 'Certified',
-      date: 'Oct 23, 2023',
+      date: 'Oct 23, 2024',
     },
   ];
 
@@ -58,7 +58,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ onNavigate }) => {
             Regulatory Reports & Audits
           </h2>
           <p className="text-sm text-[#45464d] mt-1">
-            MSHA Title 30 regulatory compliance filings, safety telemetry exports, and audit trails.
+            DGMS regulatory compliance filings, safety inspection exports, and audit trails.
           </p>
         </div>
         <button

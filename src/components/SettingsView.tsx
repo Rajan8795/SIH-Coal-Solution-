@@ -7,9 +7,9 @@ interface SettingsViewProps {
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({ onNavigate }) => {
-  const [methaneThreshold, setMethaneThreshold] = useState('1.0');
-  const [coThreshold, setCoThreshold] = useState('50');
-  const [airflowVariance, setAirflowVariance] = useState('15');
+  const [inspectionFrequency, setInspectionFrequency] = useState('30');
+  const [complianceAlertThreshold, setComplianceAlertThreshold] = useState('80');
+  const [riskScoreThreshold, setRiskScoreThreshold] = useState('70');
   const [refreshInterval, setRefreshInterval] = useState('5');
   const [savedToast, setSavedToast] = useState(false);
 
@@ -23,10 +23,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onNavigate }) => {
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-200 pb-10">
       <div>
         <h2 className="text-3xl sm:text-4xl font-extrabold text-[#191c1e] tracking-tight">
-          System & Telemetry Settings
+          System & Compliance Settings
         </h2>
         <p className="text-sm text-[#45464d] mt-1">
-          Configure sensor alarm thresholds, AI computer vision sensitivity, and officer profiles.
+          Configure compliance thresholds, AI risk prediction sensitivity, and officer profiles.
         </p>
       </div>
 
@@ -40,67 +40,66 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onNavigate }) => {
           />
           <div>
             <h3 className="text-base font-bold text-gray-900">Chief Safety Officer</h3>
-            <p className="text-xs text-gray-500">Badge ID: #MSHA-OFFICER-4890 • Appalachian Division</p>
+            <p className="text-xs text-gray-500">Badge ID: #DGMS-OFFICER-4890 • Eastern Coalfields Division</p>
             <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
               Level 4 Admin Clearance
             </span>
           </div>
         </div>
 
-        {/* MSHA Sensor Alarm Thresholds */}
+        {/* DGMS Compliance Thresholds */}
         <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 industrial-shadow space-y-4">
           <div className="flex items-center gap-2 border-b border-gray-100 pb-3">
             <span className="material-symbols-outlined text-red-600">warning</span>
-            <h3 className="font-bold text-sm text-gray-900">Atmospheric Sensor Alarm Thresholds</h3>
+            <h3 className="font-bold text-sm text-gray-900">Compliance Alert Thresholds</h3>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
-              <label className="block font-bold text-gray-700 mb-1">Methane (CH4) Trigger %</label>
+              <label className="block font-bold text-gray-700 mb-1">Inspection Frequency (Days)</label>
               <input
                 type="number"
-                step="0.1"
-                value={methaneThreshold}
-                onChange={(e) => setMethaneThreshold(e.target.value)}
+                value={inspectionFrequency}
+                onChange={(e) => setInspectionFrequency(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-black"
               />
-              <span className="text-[10px] text-gray-400 mt-1 block">MSHA Permissible &lt; 1.0%</span>
+              <span className="text-[10px] text-gray-400 mt-1 block">DGMS Recommended: 30 Days</span>
             </div>
 
             <div>
-              <label className="block font-bold text-gray-700 mb-1">Carbon Monoxide (CO) PPM</label>
+              <label className="block font-bold text-gray-700 mb-1">Compliance Score Alert %</label>
               <input
                 type="number"
-                value={coThreshold}
-                onChange={(e) => setCoThreshold(e.target.value)}
+                value={complianceAlertThreshold}
+                onChange={(e) => setComplianceAlertThreshold(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-black"
               />
-              <span className="text-[10px] text-gray-400 mt-1 block">Warning at 50 PPM</span>
+              <span className="text-[10px] text-gray-400 mt-1 block">Alert below 80%</span>
             </div>
 
             <div>
-              <label className="block font-bold text-gray-700 mb-1">Airflow Variance Trigger %</label>
+              <label className="block font-bold text-gray-700 mb-1">Risk Score Alert Threshold</label>
               <input
                 type="number"
-                value={airflowVariance}
-                onChange={(e) => setAirflowVariance(e.target.value)}
+                value={riskScoreThreshold}
+                onChange={(e) => setRiskScoreThreshold(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-black"
               />
-              <span className="text-[10px] text-gray-400 mt-1 block">Alert on &gt; 15% drop</span>
+              <span className="text-[10px] text-gray-400 mt-1 block">Alert above 70</span>
             </div>
           </div>
         </div>
 
-        {/* Telemetry Sync */}
+        {/* Data Sync & AI */}
         <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 industrial-shadow space-y-4">
           <div className="flex items-center gap-2 border-b border-gray-100 pb-3">
             <span className="material-symbols-outlined text-indigo-600">sync</span>
-            <h3 className="font-bold text-sm text-gray-900">Telemetry Engine & AI Vision</h3>
+            <h3 className="font-bold text-sm text-gray-900">Data Sync & AI Risk Engine</h3>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
-              <label className="block font-bold text-gray-700 mb-1">Telemetry Refresh Frequency</label>
+              <label className="block font-bold text-gray-700 mb-1">Data Refresh Frequency</label>
               <select
                 value={refreshInterval}
                 onChange={(e) => setRefreshInterval(e.target.value)}

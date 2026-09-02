@@ -129,7 +129,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         <button
           onClick={() => setShowHelp(true)}
           className="w-10 h-10 hidden sm:flex items-center justify-center rounded-full text-[#45464d] hover:bg-[#f2f4f6] transition-colors"
-          title="System Help & MSHA Guides"
+          title="System Help & DGMS Guides"
         >
           <span className="material-symbols-outlined">help</span>
         </button>
@@ -172,9 +172,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             </div>
             <div className="space-y-3 text-xs text-gray-600">
               <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
-                <p className="font-bold text-blue-900 mb-1">MSHA Compliance & Risk Intelligence</p>
+                <p className="font-bold text-blue-900 mb-1">DGMS Compliance & Risk Intelligence</p>
                 <p>
-                  CoalGuard AI aggregates telemetry from atmospheric sensors, equipment vibrations, and contractor certifications to calculate predictive risk scores.
+                  CoalGuard AI aggregates compliance records, inspection reports, environmental data, contractor records, and field observations to calculate predictive risk scores.
                 </p>
               </div>
               <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
