@@ -377,7 +377,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 </p>
                 {action.actionType === 'dispatch' ? (
                   <button
-                    onClick={() => onDispatchInspection(action.location)}
+                    onClick={() => action.location && onDispatchInspection(action.location)}
                     className="bg-[#000000] text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-[#271901] transition-colors w-full active:scale-98"
                   >
                     {action.action}
