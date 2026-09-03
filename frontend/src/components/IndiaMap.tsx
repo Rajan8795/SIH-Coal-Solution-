@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { NavigationTab } from '../types';
+import { geocodeLocation } from '../services/nominatim';
 
 interface IndiaMapProps {
   onSelectMine: (mineId: string) => void;
@@ -18,8 +19,8 @@ interface MineLocation {
   complianceScore: number;
   openIssues: number;
   status: 'critical' | 'warning' | 'nominal';
-  lat: number;
-  lng: number;
+  lat?: number;
+  lng?: number;
 }
 
 const MINE_LOCATIONS: MineLocation[] = [
@@ -149,6 +150,41 @@ const MapController = () => {
 
 export const IndiaMap: React.FC<IndiaMapProps> = ({ onSelectMine, onNavigate }) => {
   const [selectedMine, setSelectedMine] = useState<MineLocation | null>(null);
+  const [resolvedCoords, setResolvedCoords] = useState<Record<string, { lat: number; lng: number }>>({});
+  const [geocodingIds, setGeocodingIds] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const missing = MINE_LOCATIONS.filter(m => m.lat == null || m.lng == null);
+    if (missing.length === 0) return;
+
+    const resolveCoordinates = async () => {
+      for (const mine of missing) {
+        setGeocodingIds(prev => new Set(prev).add(mine.id));
+        const result = await geocodeLocation(`${mine.name}, ${mine.state}`);
+        if (result) {
+          setResolvedCoords(prev => ({ ...prev, [mine.id]: result }));
+        }
+        setGeocodingIds(prev => {
+          const next = new Set(prev);
+          next.delete(mine.id);
+          return next;
+        });
+      }
+    };
+
+    resolveCoordinates();
+  }, []);
+
+  const getCoords = (mine: MineLocation): [number, number] | null => {
+    if (mine.lat != null && mine.lng != null) {
+      return [mine.lat, mine.lng];
+    }
+    const resolved = resolvedCoords[mine.id];
+    if (resolved) {
+      return [resolved.lat, resolved.lng];
+    }
+    return null;
+  };
 
   const handleMarkerClick = (mine: MineLocation) => {
     setSelectedMine(mine);
@@ -192,15 +228,19 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ onSelectMine, onNavigate }) 
         />
         <MapController />
 
-        {MINE_LOCATIONS.map((mine) => (
-          <Marker
-            key={mine.id}
-            position={[mine.lat, mine.lng]}
-            icon={createCustomIcon(mine.status)}
-            eventHandlers={{
-              click: () => handleMarkerClick(mine),
-            }}
-          >
+        {MINE_LOCATIONS.map((mine) => {
+          const coords = getCoords(mine);
+          if (!coords) return null;
+
+          return (
+            <Marker
+              key={mine.id}
+              position={coords}
+              icon={createCustomIcon(mine.status)}
+              eventHandlers={{
+                click: () => handleMarkerClick(mine),
+              }}
+            >
             <Popup>
               <div className="p-2 min-w-[220px]">
                 <div className="flex justify-between items-start mb-2">
@@ -251,7 +291,8 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ onSelectMine, onNavigate }) 
               </div>
             </Popup>
           </Marker>
-        ))}
+          );
+        })}
       </MapContainer>
 
       {/* Legend */}
