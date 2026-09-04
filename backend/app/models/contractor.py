@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import DateTime, Integer, String, func
+from sqlalchemy import CheckConstraint, DateTime, Index, Integer, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -28,4 +28,15 @@ class Contractor(Base):
     )
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.now(), onupdate=func.now()
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('Compliant', 'Flagged', 'Review Required')",
+            name="ck_contractor_status",
+        ),
+        CheckConstraint("compliance_score >= 0 AND compliance_score <= 100", name="ck_contractor_compliance_score"),
+        CheckConstraint("active_personnel >= 0", name="ck_contractor_active_personnel"),
+        CheckConstraint("expiring_certifications >= 0", name="ck_contractor_expiring_certifications"),
+        Index("ix_contractors_status", "status"),
     )

@@ -17,7 +17,7 @@ def test_create_contractor_returns_201_and_schema(client):
     assert response.status_code == status.HTTP_201_CREATED
     body = response.json()
     for key in ("id", "name", "primarySite", "activePersonnel", "complianceScore",
-                "expiringCertifications", "status", "mshaAuditDate",
+                "expiringCertifications", "status", "lastAuditDate",
                 "created_at", "updated_at"):
         assert key in body
     assert uuid.UUID(body["id"]).version == 4
@@ -57,7 +57,7 @@ def test_list_contractors_filter_by_status(client):
 
 def test_list_contractors_pagination(client):
     for i in range(3):
-        create_contractor(client, contractor_payload(name=f"C{i}", mshaAuditDate=f"2023-0{i}-01"))
+        create_contractor(client, contractor_payload(name=f"C{i}", lastAuditDate=f"2023-0{i}-01"))
     assert len(client.get(f"{BASE}/?skip=0&limit=2").json()) == 2
     assert len(client.get(f"{BASE}/?skip=2&limit=1000").json()) == 1
 
@@ -107,7 +107,7 @@ def test_delete_contractor_not_found_404(client):
 
 @pytest.mark.parametrize("field", [
     "id", "name", "primarySite", "activePersonnel", "complianceScore",
-    "expiringCertifications", "status", "mshaAuditDate", "created_at", "updated_at",
+    "expiringCertifications", "status", "lastAuditDate", "created_at", "updated_at",
 ])
 def test_create_contractor_response_contains_all_fields(client, field):
     assert field in create_contractor(client).json()

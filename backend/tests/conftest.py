@@ -1,3 +1,5 @@
+import uuid
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, delete
@@ -12,8 +14,9 @@ from app.models.compliance import ComplianceRequirement
 from app.models.contractor import Contractor
 from app.models.inspection import FieldInspection
 from app.models.mine import Mine
+from app.models.user import User, UserRole
 
-_MODELS = [Mine, Alert, ComplianceRequirement, Contractor, FieldInspection]
+_MODELS = [Mine, Alert, ComplianceRequirement, Contractor, FieldInspection, User]
 _TABLES = [m.__table__ for m in _MODELS]
 
 engine = create_engine(
@@ -63,6 +66,36 @@ def client(db):
             db.close()
 
     app.dependency_overrides[get_db] = override_get_db
+    with TestClient(app) as test_client:
+        yield test_client
+    app.dependency_overrides.clear()
+
+
+@pytest.fixture()
+def auth_client(db):
+    from app.api.deps import get_current_user
+    from app.models.user import User, UserRole
+
+    user = User(
+        id=uuid.uuid4(),
+        name="Test Admin",
+        email="admin@test.com",
+        password_hash="fake",
+        role=UserRole.ADMIN,
+        is_active=True,
+    )
+
+    app = app_module.app
+
+    def override_get_db():
+        try:
+            yield db
+        finally:
+            db.close()
+
+    app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[get_current_user] = lambda: user
+
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
