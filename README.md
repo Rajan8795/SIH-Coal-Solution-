@@ -1,61 +1,3 @@
-# 🛡️ CoalGuard AI
-
-AI-powered coal mine safety and monitoring platform developed for Smart India Hackathon (SIH).
-
-## 🚀 Overview
-
-CoalGuard AI is designed to monitor coal-mining operations, identify safety risks, manage alerts, inspections and compliance, and provide intelligent assistance through an AI interface.
-
-## ✨ Key Features
-
-- 🗺️ Mine monitoring dashboard
-- ⚠️ Safety alerts
-- ⛏️ Mine and field operations monitoring
-- 📋 Inspection management
-- 📊 Compliance tracking
-- 👷 Contractor management
-- 🤖 AI-powered assistance
-- 📈 Reports and analytics
-
-## 🏗️ Technology Stack
-
-### Frontend
-- React
-- TypeScript
-- Vite
-
-### Backend
-- Python
-- FastAPI
-- SQLAlchemy
-- PostgreSQL
-
-## 📁 Project Structure
-
-```text
-SIH-Coal-Solution-
-├── backend/
-│   ├── app/
-│   │   ├── api/
-│   │   ├── core/
-│   │   ├── db/
-│   │   ├── models/
-│   │   ├── schemas/
-│   │   └── services/
-│   └── requirements.txt
-│
-├── src/
-│   ├── components/
-│   ├── data/
-│   ├── App.tsx
-│   └── main.tsx
-│
-├── .env.example
-├── package.json
-├── package-lock.json
-├── tsconfig.json
-└── vite.config.ts
-
 # Mining Compliance Security App
 
 ## Features
@@ -126,4 +68,4 @@ Once running, visit `/docs` for interactive Swagger UI.
 2. Commit and push to your branch
 3. Open a Pull Request for review before merging
 
-Made with ❤️ by Rajan Prajapati, Amit Kumar Yadav, Anshika Mishra, Aryan Chaudhary, Tanya agarwal, Riddhika Agarwal
+Made with ❤️ by Rajan Prajapati
