@@ -1,22 +1,33 @@
+import os
+import sys
 from logging.config import fileConfig
+from pathlib import Path
+
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 config = context.config
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-from app.db.base import Base
 from app.core.config import settings
-
-target_metadata = Base.metadata
+from app.db.base import Base
+from app.models import (  # noqa: F401
+    Alert,
+    ComplianceRequirement,
+    Contractor,
+    FieldInspection,
+    Mine,
+    User,
+)
 
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
 
-# Import models here for autogenerate support
-# from app.models import user, item  # noqa: F401
+target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:
