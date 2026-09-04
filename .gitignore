@@ -13,3 +13,10 @@ dist/
 venv/
 __pycache__/
 *.pyc
+venv/
+.env
+__pycache__/
+*.pyc
+localhost.pem
+localhost-key.pem
+*.pem
