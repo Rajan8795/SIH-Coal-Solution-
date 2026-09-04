@@ -16,7 +16,7 @@ class ContractorBase(BaseModel):
     compliance_score: int = Field(alias="complianceScore", ge=0, le=100)
     expiring_certifications: int = Field(default=0, alias="expiringCertifications", ge=0)
     status: ContractorStatus
-    msha_audit_date: str = Field(alias="mshaAuditDate")
+    msha_audit_date: str = Field(alias="lastAuditDate")
 
 
 class ContractorCreate(ContractorBase):
@@ -32,7 +32,7 @@ class ContractorUpdate(BaseModel):
     compliance_score: Optional[int] = Field(default=None, alias="complianceScore", ge=0, le=100)
     expiring_certifications: Optional[int] = Field(default=None, alias="expiringCertifications", ge=0)
     status: Optional[ContractorStatus] = None
-    msha_audit_date: Optional[str] = Field(default=None, alias="mshaAuditDate")
+    msha_audit_date: Optional[str] = Field(default=None, alias="lastAuditDate")
 
 
 class ContractorResponse(ContractorBase):

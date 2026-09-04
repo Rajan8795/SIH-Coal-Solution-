@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.v1.alerts import router as alerts_router
+from app.api.v1.auth import router as auth_router
 from app.api.v1.compliance import router as compliance_router
 from app.api.v1.contractors import router as contractors_router
 from app.api.v1.inspections import router as inspections_router
@@ -19,3 +20,4 @@ api_router.include_router(
 api_router.include_router(
     inspections_router, prefix="/inspections", tags=["inspections"]
 )
+api_router.include_router(auth_router, prefix="/auth", tags=["auth"])

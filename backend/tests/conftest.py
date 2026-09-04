@@ -35,6 +35,8 @@ def _create_test_tables():
 
 @pytest.fixture(autouse=True)
 def _clean_database():
+    from app.core.rate_limit import limiter
+    limiter.reset()
     yield
     session = TestingSessionLocal()
     try:

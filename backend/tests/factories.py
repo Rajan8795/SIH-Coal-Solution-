@@ -79,7 +79,7 @@ def contractor_payload(**overrides):
         "complianceScore": 74,
         "expiringCertifications": 8,
         "status": "Flagged",
-        "mshaAuditDate": "2023-09-12",
+        "lastAuditDate": "2023-09-12",
     }
     payload.update(overrides)
     return copy.deepcopy(payload)

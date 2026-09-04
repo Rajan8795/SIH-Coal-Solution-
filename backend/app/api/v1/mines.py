@@ -3,7 +3,9 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
+from app.api.deps import require_roles
 from app.db import get_db
+from app.models.user import UserRole
 from app.schemas.mine import MineCreate, MineResponse, MineUpdate
 from app.services.mine import (
     create_mine,
@@ -30,6 +32,17 @@ def list_mines(
     region: str | None = Query(default=None),
     mine_type: str | None = Query(default=None, alias="mineType"),
     db: Session = Depends(get_db),
+    current_user: UserRole = Depends(
+        require_roles(
+            [
+                UserRole.ADMIN,
+                UserRole.MINE_MANAGER,
+                UserRole.INSPECTOR,
+                UserRole.COMPLIANCE_OFFICER,
+                UserRole.FIELD_OFFICER,
+            ]
+        )
+    ),
 ):
     return get_mines(
         db, skip=skip, limit=limit, status=status, region=region, mine_type=mine_type
@@ -43,7 +56,11 @@ def list_mines(
     summary="Create a mine",
     description="Register a new mine.",
 )
-def create_new_mine(payload: MineCreate, db: Session = Depends(get_db)):
+def create_new_mine(
+    payload: MineCreate,
+    db: Session = Depends(get_db),
+    current_user: UserRole = Depends(require_roles([UserRole.ADMIN, UserRole.MINE_MANAGER])),
+):
     return create_mine(db, payload)
 
 
@@ -53,7 +70,21 @@ def create_new_mine(payload: MineCreate, db: Session = Depends(get_db)):
     summary="Get a mine by code",
     description="Retrieve a single mine using its unique code.",
 )
-def read_mine_by_code(code: str, db: Session = Depends(get_db)):
+def read_mine_by_code(
+    code: str,
+    db: Session = Depends(get_db),
+    current_user: UserRole = Depends(
+        require_roles(
+            [
+                UserRole.ADMIN,
+                UserRole.MINE_MANAGER,
+                UserRole.INSPECTOR,
+                UserRole.COMPLIANCE_OFFICER,
+                UserRole.FIELD_OFFICER,
+            ]
+        )
+    ),
+):
     mine = get_mine_by_code(db, code)
     if mine is None:
         raise HTTPException(
@@ -69,7 +100,21 @@ def read_mine_by_code(code: str, db: Session = Depends(get_db)):
     summary="Get a mine by id",
     description="Retrieve a single mine using its UUID.",
 )
-def read_mine(mine_id: uuid.UUID, db: Session = Depends(get_db)):
+def read_mine(
+    mine_id: uuid.UUID,
+    db: Session = Depends(get_db),
+    current_user: UserRole = Depends(
+        require_roles(
+            [
+                UserRole.ADMIN,
+                UserRole.MINE_MANAGER,
+                UserRole.INSPECTOR,
+                UserRole.COMPLIANCE_OFFICER,
+                UserRole.FIELD_OFFICER,
+            ]
+        )
+    ),
+):
     mine = get_mine(db, mine_id)
     if mine is None:
         raise HTTPException(
@@ -89,6 +134,7 @@ def update_existing_mine(
     mine_id: uuid.UUID,
     payload: MineUpdate,
     db: Session = Depends(get_db),
+    current_user: UserRole = Depends(require_roles([UserRole.ADMIN, UserRole.MINE_MANAGER])),
 ):
     mine = update_mine(db, mine_id, payload)
     if mine is None:
@@ -105,7 +151,11 @@ def update_existing_mine(
     summary="Delete a mine",
     description="Delete a mine by its id.",
 )
-def delete_existing_mine(mine_id: uuid.UUID, db: Session = Depends(get_db)):
+def delete_existing_mine(
+    mine_id: uuid.UUID,
+    db: Session = Depends(get_db),
+    current_user: UserRole = Depends(require_roles([UserRole.ADMIN, UserRole.MINE_MANAGER])),
+):
     mine = delete_mine(db, mine_id)
     if mine is None:
         raise HTTPException(

@@ -22,6 +22,15 @@ from app.schemas.mine import (
     MineRiskFactors,
     MineUpdate,
 )
+from app.schemas.user import (
+    RefreshRequest,
+    Token,
+    TokenPayload,
+    UserCreate,
+    UserLogin,
+    UserResponse,
+    UserUpdate,
+)
 
 __all__ = [
     "OfficerRef",
@@ -46,4 +55,11 @@ __all__ = [
     "InspectionCreate",
     "InspectionUpdate",
     "InspectionResponse",
+    "RefreshRequest",
+    "Token",
+    "TokenPayload",
+    "UserCreate",
+    "UserLogin",
+    "UserResponse",
+    "UserUpdate",
 ]

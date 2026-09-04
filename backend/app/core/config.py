@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     # Security (placeholder for future auth)
     SECRET_KEY: str = "change-me-in-production"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+    REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
+    ALGORITHM: str = "HS256"
 
     @property
     def cors_origins(self) -> list[str]:
