@@ -346,7 +346,9 @@ export const INITIAL_FIELD_INSPECTION: FieldInspection = {
     severity: 'HIGH SEVERITY',
     description: 'Combustible dust build-up near active heat source exceeds permissible thresholds as per DGMS guidelines.',
     confidenceScore: 94,
-    standardRef: 'Ref: CMR 2017 Regulation 173 - Accumulation of combustible materials.'
+    standardRef: 'Ref: CMR 2017 Regulation 173 - Accumulation of combustible materials.',
+    category: 'Safety',
+    recommendedAction: 'Initiate immediate dust suppression and housekeeping protocols in Sector 4. Isolate conveyor drive motor until cleaned. Schedule follow-up inspection within 48 hours per DGMS CMR 2017 Regulation 173.',
   }
 };
 

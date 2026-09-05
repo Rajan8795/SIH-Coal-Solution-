@@ -13,6 +13,7 @@ import { TopNavbar } from './components/TopNavbar';
 import { DashboardView } from './components/DashboardView';
 import { MinesView } from './components/MinesView';
 import { FieldOpsView } from './components/FieldOpsView';
+import { InspectionsView } from './components/InspectionsView';
 import { ComplianceView } from './components/ComplianceView';
 import { AiCommandView } from './components/AiCommandView';
 import { AlertsView } from './components/AlertsView';
@@ -55,6 +56,39 @@ export function App() {
     }));
     setCurrentTab('field-ops');
     showToast(`Inspection team dispatched to ${sectorName}`);
+  };
+
+  const handleStartInspection = (inspection: {
+    id: string;
+    inspectionId: string;
+    location: string;
+    sector: string;
+    gpsText: string;
+    category: string;
+    notes?: string;
+  }) => {
+    setFieldInspection({
+      ...INITIAL_FIELD_INSPECTION,
+      id: inspection.id,
+      location: inspection.location,
+      sector: inspection.sector,
+      gpsText: inspection.gpsText,
+      time: '11:05 AM',
+      date: 'Today',
+      notes: inspection.notes || '',
+      status: 'Active',
+      analysis: {
+        title: 'Pending Analysis',
+        severity: 'LOW SEVERITY',
+        description: 'Awaiting field evidence capture and AI vision analysis. Proceed through Location, Capture, and Analysis steps.',
+        confidenceScore: 0,
+        standardRef: '',
+        category: inspection.category,
+        recommendedAction: '',
+      },
+    });
+    setCurrentTab('field-ops');
+    showToast(`Inspection ${inspection.inspectionId} started — field evidence workflow active`);
   };
 
   const handleSelectMine = (mineId: string) => {
@@ -322,10 +356,9 @@ export function App() {
           )}
 
           {currentTab === 'inspections' && (
-            <FieldOpsView
-              inspection={fieldInspection}
+            <InspectionsView
+              onStartInspection={handleStartInspection}
               onNavigate={setCurrentTab}
-              onCreateCorrectiveAction={handleCreateCorrectiveAction}
             />
           )}
 

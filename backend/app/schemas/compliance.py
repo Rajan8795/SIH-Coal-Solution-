@@ -6,7 +6,9 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from app.schemas.common import OfficerRef
 
-ComplianceCategory = Literal["Safety", "Environmental", "Equipment", "Ventilation"]
+ComplianceCategory = Literal[
+    "Safety", "Environmental", "Equipment", "Ventilation", "Labour/Contractor"
+]
 ComplianceStatus = Literal["Overdue", "Pending", "Completed"]
 ComplianceRiskLevel = Literal["High", "Medium", "Low"]
 

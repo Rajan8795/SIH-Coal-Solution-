@@ -42,7 +42,7 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
 
   // New Requirement Form State
   const [newTitle, setNewTitle] = useState('');
-  const [newMine, setNewMine] = useState(mines[0]?.name || 'Blackwood North');
+  const [newMine, setNewMine] = useState(mines[0]?.name || 'Jharia Main Colliery');
   const [newCategory, setNewCategory] = useState<'Safety' | 'Environmental' | 'Equipment' | 'Ventilation'>('Safety');
   const [newDueDate, setNewDueDate] = useState('2023-11-30');
   const [newRisk, setNewRisk] = useState<'High' | 'Medium' | 'Low'>('High');
@@ -143,11 +143,11 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
             className="px-3 py-2 bg-[#f2f4f6] text-xs font-bold text-[#191c1e] rounded-lg border-none outline-none cursor-pointer"
           >
             <option value="all">All Mines</option>
-            <option value="Blackwood">Blackwood North</option>
-            <option value="Alpha">Mine Alpha</option>
-            <option value="Beta">Site Beta</option>
-            <option value="IronRidge">IronRidge Alpha</option>
-            <option value="SilverCreek">SilverCreek</option>
+            <option value="Jharia Main Colliery">Jharia Main Colliery</option>
+            <option value="Raniganj Eastern Block">Raniganj Eastern Block</option>
+            <option value="Korba Deep Mine">Korba Deep Mine</option>
+            <option value="Singrauli North Extension">Singrauli North Extension</option>
+            <option value="Godavari Valley Block III">Godavari Valley Block III</option>
           </select>
 
           {/* Category Filter */}

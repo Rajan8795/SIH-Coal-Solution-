@@ -12,7 +12,10 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     # CORS
-    CORS_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3000"
+    CORS_ORIGINS: str = (
+        "http://localhost:3000,http://127.0.0.1:3000,"
+        "http://localhost:3001,http://127.0.0.1:3001"
+    )
 
     # Database
     DATABASE_URL: str = "postgresql://snapui:snapui@localhost:5432/snapui"

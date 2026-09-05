@@ -95,6 +95,8 @@ export interface FieldInspection {
     description: string;
     confidenceScore: number;
     standardRef: string;
+    category?: string;
+    recommendedAction?: string;
   };
 }
 
