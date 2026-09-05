@@ -1,0 +1,409 @@
+Mine Name,Company Name,State,District,Coalfield,Area,Type,Production,Mine_Type,Peer_Mean,Peer_Std,Peer_Count,Peer_Production_ZScore,Peer_Production_Anomaly,Peer_Operational_Risk,Peer_Production_Category,Peer_Production_Direction
+Aadocm,CCL,Jharkhand,BOKARO,E. Bokaro,Dhori Area,OC,2.613,Opencast,4.168157205240175,7.919370943015163,229,-0.19637383024870356,0,4.909345756217589,Normal,Lower than peer average
+ABGC,BCCL,Jharkhand,DHANBAD,Jharia,Govindpur,OC,0.228,Opencast,4.168157205240175,7.919370943015163,229,-0.49753411395830244,0,12.43835284895756,Normal,Lower than peer average
+Adasa (UG to OC),WCL,Maharashtra,NAGPUR,Kamptee/Silewara,Nagpur,OC,0.715,Opencast,4.168157205240175,7.919370943015163,229,-0.4360393306599483,0,10.900983266498708,Normal,Lower than peer average
+Adriyala Saft Project,SCCL,Telangana,PEDDAPALLI,Godavari Valley,Adriyala,UG,1.47,Underground,0.2080848484848485,0.3309294635266063,165,3.8132450887489355,1,95.3311272187234,Highly Unusual,Higher than peer average
+AGKCC,BCCL,Jharkhand,DHANBAD,Jharia,Katras,OC,0.02,Opencast,4.168157205240175,7.919370943015163,229,-0.5237988263321375,0,13.094970658303437,Normal,Lower than peer average
+AKK OCP,CCL,Jharkhand,BOKARO,E. Bokaro,B & K Area,OC,5.36,Opencast,4.168157205240175,7.919370943015163,229,0.1504971548038198,0,3.762428870095495,Normal,Higher than peer average
+AKWMC,BCCL,Jharkhand,DHANBAD,Jharia,Katras,OC,3.1,Opencast,4.168157205240175,7.919370943015163,229,-0.13487904695034938,0,3.3719761737587346,Normal,Lower than peer average
+Amadand,SECL,Madhya Pradesh,SHAHDOL,Central India,Jamuna & Kotma,OC,1.38,Opencast,4.168157205240175,7.919370943015163,229,-0.3520680146570622,0,8.801700366426555,Normal,Lower than peer average
+Amagamated Dhansar-Industry,BCCL,Jharkhand,DHANBAD,Jharia,Kusunda,OC,0.79,Opencast,4.168157205240175,7.919370943015163,229,-0.4265688814866905,0,10.664222037167262,Normal,Lower than peer average
+Amalgamated BOCP,BCCL,Jharkhand,DHANBAD,Jharia,Block-II,OC,5.357,Opencast,4.168157205240175,7.919370943015163,229,0.15011833683688947,0,3.7529584209222366,Normal,Higher than peer average
+Amalgamated Gondegaon Ghatrohana,WCL,Maharashtra,NAGPUR,Kamptee/Silewara,Nagpur,OC,3.501,Opencast,4.168157205240175,7.919370943015163,229,-0.0842437120373309,0,2.1060928009332724,Normal,Lower than peer average
+Amalgamated Inder Kamptee OCM,WCL,Maharashtra,NAGPUR,Kamptee/Silewara,Nagpur,OC,3.09,Opencast,4.168157205240175,7.919370943015163,229,-0.1361417735067838,0,3.403544337669595,Normal,Lower than peer average
+Amalgamated Yekona I & II,WCL,Maharashtra,CHANDRAPUR,Wardha,Majri,OC,2.75,Opencast,4.168157205240175,7.919370943015163,229,-0.1790744764255526,0,4.4768619106388154,Normal,Lower than peer average
+Amalgameted Sudamdih-Patherdih,BCCL,Jharkhand,DHANBAD,Jharia,E.Jharia,OC,0.411,Opencast,4.168157205240175,7.919370943015163,229,-0.47442621797555334,0,11.860655449388833,Normal,Lower than peer average
+Amelia (North ) Coal Mine,JPVL,Madhya Pradesh,SINGRAULI,Singrauli,Singrauli Main Basin,OC,3.92,Opencast,4.168157205240175,7.919370943015163,229,-0.031335469322730514,0,0.7833867330682629,Normal,Lower than peer average
+Amelia Coal Block,THDC,Madhya Pradesh,SINGRAULI,Singrauli,Pidarwah,OC,1.251,Opencast,4.168157205240175,7.919370943015163,229,-0.3683571872350657,0,9.208929680876643,Normal,Lower than peer average
+Amera,SECL,Chhattisgarh,SURGUJA,Central India,Bisrampur,OC,0.279,Opencast,4.168157205240175,7.919370943015163,229,-0.49109420852048713,0,12.277355213012179,Normal,Lower than peer average
+Amgaon,SECL,Chhattisgarh,SURGUJA,Central India,Bisrampur,OC,1.0,Opencast,4.168157205240175,7.919370943015163,229,-0.40005162380156856,0,10.001290595039213,Normal,Lower than peer average
+Amlai OC,SECL,Madhya Pradesh,SHAHDOL,Central India,Sohagpur,OC,2.025,Opencast,4.168157205240175,7.919370943015163,229,-0.2706221517670449,0,6.765553794176123,Normal,Lower than peer average
+Amlohri,NCL,Madhya Pradesh,SINGRAULI,Singrauli,Amlohri,OC,22.003,Opencast,4.168157205240175,7.919370943015163,229,2.252052962677553,1,56.30132406693883,Unusual,Higher than peer average
+AMP Colliery,BCCL,Jharkhand,DHANBAD,Jharia,Barora,Mixed,4.86,Mixed,0.6418571428571429,1.2806088009610512,14,3.2938574637135805,1,82.34643659283951,Highly Unusual,Higher than peer average
+Amrapali OCP,CCL,Jharkhand,CHATRA,N.K.Coalfields,Amrapali,OC,22.581,Opencast,4.168157205240175,7.919370943015163,229,2.32503855763946,1,58.1259639409865,Unusual,Higher than peer average
+Amritnagar Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kunustoria,UG,0.052,Underground,0.2080848484848485,0.3309294635266063,165,-0.4716559439026785,0,11.791398597566962,Normal,Lower than peer average
+Ananta OCP,MCL,Odisha,Angul,Talcher,Jagannath,OC,20.0,Opencast,4.168157205240175,7.919370943015163,229,1.9991288334237476,0,49.97822083559369,Normal,Higher than peer average
+ARA Reorganisation,CCL,Jharkhand,RAMGARH,W.Bokaro,Kuju,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Ashoka,CCL,Jharkhand,CHATRA,N.K.Coalfields,Piparwar,OC,9.853,Opencast,4.168157205240175,7.919370943015163,229,0.7178401966097853,0,17.946004915244632,Normal,Higher than peer average
+Badjna Colliery,ECL,Jharkhand,DHANBAD,Mugma/Salanpur,Mugma,Mixed,0.105,Mixed,0.6418571428571429,1.2806088009610512,14,-0.4192202509105441,0,10.480506272763602,Normal,Lower than peer average
+Bagdeva,SECL,Chhattisgarh,KORBA,Central India,Korba,UG,0.285,Underground,0.2080848484848485,0.3309294635266063,165,0.2324215882608095,0,5.810539706520237,Normal,Higher than peer average
+Bahula Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kenda,UG,0.048,Underground,0.2080848484848485,0.3309294635266063,165,-0.4837431118368156,0,12.09357779592039,Normal,Lower than peer average
+Ballarpur 3 & 4 Pits,WCL,Maharashtra,CHANDRAPUR,Wardha,Ballarpur,UG,0.071,Underground,0.2080848484848485,0.3309294635266063,165,-0.4142418962155272,0,10.35604740538818,Normal,Lower than peer average
+Ballarpur OCM,WCL,Maharashtra,CHANDRAPUR,Wardha,Ballarpur,OC,0.625,Opencast,4.168157205240175,7.919370943015163,229,-0.44740386966785767,0,11.18509674169644,Normal,Lower than peer average
+Balram OCP,MCL,Odisha,Angul,Talcher,Hingula,OC,7.74,Opencast,4.168157205240175,7.919370943015163,229,0.4510260752352015,0,11.275651880880037,Normal,Higher than peer average
+Balrampur,SECL,Chhattisgarh,SURGUJA,Central India,Bisrampur,UG,0.119,Underground,0.2080848484848485,0.3309294635266063,165,-0.26919588100588154,0,6.7298970251470385,Normal,Lower than peer average
+Bangwar,SECL,Madhya Pradesh,SHAHDOL,Central India,Sohagpur,UG,0.65,Underground,0.2080848484848485,0.3309294635266063,165,1.335375662250823,0,33.38439155627058,Normal,Higher than peer average
+Bankola Colliery,ECL,West Bengal,Bardhaman,Raniganj,Bankola,UG,0.157,Underground,0.2080848484848485,0.3309294635266063,165,-0.1543677856315787,0,3.8591946407894677,Normal,Lower than peer average
+Bansra Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kunustoria,Mixed,0.126,Mixed,0.6418571428571429,1.2806088009610512,14,-0.4028218004358634,0,10.070545010896586,Normal,Lower than peer average
+Baranj,KPCL,Maharashtra,CHANDRAPUR,Warda Valley,Maijari,OC,2.5,Opencast,4.168157205240175,7.919370943015163,229,-0.21064264033641203,0,5.2660660084103,Normal,Lower than peer average
+Barjora (North) Coal Mine,WBPDCL,West Bengal,BANKURA,Barjora North,Barjora North,OC,1.124,Opencast,4.168157205240175,7.919370943015163,229,-0.3843938145017823,0,9.609845362544558,Normal,Lower than peer average
+Barmuri,ECL,Jharkhand,DHANBAD,Mugma/Salanpur,Mugma,OC,0.505,Opencast,4.168157205240175,7.919370943015163,229,-0.4625565883450702,0,11.563914708626754,Normal,Lower than peer average
+Baroud OC,SECL,Chhattisgarh,RAIGARH,Central India,Raigarh,OC,4.2,Opencast,4.168157205240175,7.919370943015163,229,0.004020874257432071,0,0.10052185643580178,Normal,Higher than peer average
+Bartarai,SECL,Madhya Pradesh,SHAHDOL,Central India,Jamuna & Kotma,UG,0.172,Underground,0.2080848484848485,0.3309294635266063,165,-0.10904090587856452,0,2.726022646964113,Normal,Lower than peer average
+Basantimata -Dahibari,BCCL,Jharkhand,DHANBAD,Mugma,Chanch/Victoria,OC,0.546,Opencast,4.168157205240175,7.919370943015163,229,-0.4573794094636892,0,11.43448523659223,Normal,Lower than peer average
+Basdeopur,BCCL,Jharkhand,DHANBAD,Jharia,Sijua,OC,0.14,Opencast,4.168157205240175,7.919370943015163,229,-0.508646107654925,0,12.716152691373125,Normal,Lower than peer average
+Bastacolla,BCCL,Jharkhand,DHANBAD,Jharia,Bastacolla,OC,2.099,Opencast,4.168157205240175,7.919370943015163,229,-0.2612779752494305,0,6.531949381235763,Normal,Lower than peer average
+Basundhara (West) OCP,MCL,Odisha,SUNDARGARH,IB Valley,Mahalaxmi,OC,1.432,Opencast,4.168157205240175,7.919370943015163,229,-0.34550183656360345,0,8.637545914090087,Normal,Lower than peer average
+Behraband,SECL,Madhya Pradesh,SHAHDOL,Central India,Hasdeo,UG,0.6,Underground,0.2080848484848485,0.3309294635266063,165,1.1842860630741088,0,29.60715157685272,Normal,Higher than peer average
+Bejdih Colliery,ECL,West Bengal,Bardhaman,Raniganj,Sodepur,UG,0.038,Underground,0.2080848484848485,0.3309294635266063,165,-0.5139610316721585,0,12.849025791803962,Normal,Lower than peer average
+Belbaid Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kunustoria,UG,0.044,Underground,0.2080848484848485,0.3309294635266063,165,-0.49583027977095273,0,12.395756994273817,Normal,Lower than peer average
+Belgaon Coal Mine,SISCO,Maharashtra,CHANDRAPUR,Wardha Valley,Warora,UG,0.146,Underground,0.2080848484848485,0.3309294635266063,165,-0.18760749745045588,0,4.690187436261397,Normal,Lower than peer average
+Bhadra,SECL,Madhya Pradesh,SHAHDOL,Central India,Jamuna & Kotma,UG,0.1,Underground,0.2080848484848485,0.3309294635266063,165,-0.3266099286930329,0,8.165248217325823,Normal,Lower than peer average
+Bhanegaon OCM,WCL,Maharashtra,NAGPUR,Kamptee/Silewara,Nagpur,OC,1.15,Opencast,4.168157205240175,7.919370943015163,229,-0.3811107254550529,0,9.527768136376324,Normal,Lower than peer average
+Bhanora West Block colliery & Bhanora OC patch (H),ECL,West Bengal,Bardhaman,Raniganj,Sripur,Mixed,0.028,Mixed,0.6418571428571429,1.2806088009610512,14,-0.4793479026510399,0,11.983697566275996,Normal,Lower than peer average
+Bharatpur OCP,MCL,Odisha,Angul,Talcher,Bharatpur,OC,11.12,Opencast,4.168157205240175,7.919370943015163,229,0.8778276513100207,0,21.945691282750516,Normal,Higher than peer average
+Bhatadi OC Mine,WCL,Maharashtra,CHANDRAPUR,Wardha,Chandrapur,OC,0.854,Opencast,4.168157205240175,7.919370943015163,229,-0.41848743152551043,0,10.462185788137761,Normal,Lower than peer average
+Bhatgaon,SECL,Chhattisgarh,SURGUJA,Central India,Bhatgaon,UG,0.185,Underground,0.2080848484848485,0.3309294635266063,165,-0.06975761009261879,0,1.7439402523154697,Normal,Lower than peer average
+Bhelatand Colliery,TSL,Jharkhand,DHANBAD,Jharia,Bhelatand,UG,0.219,Underground,0.2080848484848485,0.3309294635266063,165,0.03298331734754686,0,0.8245829336886714,Normal,Higher than peer average
+Bhowra(S),BCCL,Jharkhand,DHANBAD,Jharia,E.Jharia,OC,0.707,Opencast,4.168157205240175,7.919370943015163,229,-0.4370495119050958,0,10.926237797627394,Normal,Lower than peer average
+Bhubaneswari OCP,MCL,Odisha,Angul,Talcher,Bhubaneswari,OC,24.235,Opencast,4.168157205240175,7.919370943015163,229,2.533893530073706,1,63.34733825184266,Unusual,Higher than peer average
+Bhurkunda,CCL,Jharkhand,RAMGARH,S.K.Coalfields,Barka-Sayal,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Bhurkunda (Sangum),CCL,Jharkhand,RAMGARH,S.K.Coalfields,Barka-Sayal,OC,0.138,Opencast,4.168157205240175,7.919370943015163,229,-0.5088986529662118,0,12.722466324155295,Normal,Lower than peer average
+Bicharpur,UTCL,Madhya Pradesh,SHAHDOL,Sohagpur,Bicharpur,UG,0.75,Underground,0.2080848484848485,0.3309294635266063,165,1.6375548606042514,0,40.938871515106285,Normal,Higher than peer average
+Bijari OC,SECL,Chhattisgarh,RAIGARH,Central India,Raigarh,OC,1.608,Opencast,4.168157205240175,7.919370943015163,229,-0.3232778491703584,0,8.08194622925896,Normal,Lower than peer average
+Bijuri,SECL,Madhya Pradesh,SHAHDOL,Central India,Hasdeo,UG,0.715,Underground,0.2080848484848485,0.3309294635266063,165,1.5317921411805513,0,38.294803529513786,Normal,Higher than peer average
+Bina Extn,NCL,Uttar Pradesh,SONBHADRA,Singrauli,Bina,OC,3.894,Opencast,4.168157205240175,7.919370943015163,229,-0.034618558369459866,0,0.8654639592364967,Normal,Lower than peer average
+Block-B Project,NCL,Madhya Pradesh,SINGRAULI,Singrauli,Block-B,OC,8.027,Opencast,4.168157205240175,7.919370943015163,229,0.48726632740486797,0,12.1816581851217,Normal,Higher than peer average
+Bokaro OC (Bermo),CCL,Jharkhand,BOKARO,E. Bokaro,B & K Area,OC,0.325,Opencast,4.168157205240175,7.919370943015163,229,-0.48528566636088893,0,12.132141659022224,Normal,Lower than peer average
+Bonjemehari OC (Extn),ECL,West Bengal,Bardhaman,Mugma/Salanpur,Salanpur,OC,0.321,Opencast,4.168157205240175,7.919370943015163,229,-0.4857907569834627,0,12.144768924586566,Normal,Lower than peer average
+C L Jambad OCP,ECL,West Bengal,Bardhaman,Raniganj,Kenda,OC,0.031,Opencast,4.168157205240175,7.919370943015163,229,-0.5224098271200597,0,13.060245678001491,Normal,Lower than peer average
+Central Kajora Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kajora,UG,0.071,Underground,0.2080848484848485,0.3309294635266063,165,-0.4142418962155272,0,10.35604740538818,Normal,Lower than peer average
+Central Saunda,CCL,Jharkhand,RAMGARH,S.K.Coalfields,Barka-Sayal,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Chainpur(Sarubera) Colly.,CCL,Jharkhand,RAMGARH,W.Bokaro,Kuju,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Chanda Rayatwari Colliery,WCL,Maharashtra,CHANDRAPUR,Wardha,Chandrapur,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Chapapur-II & Chappapur 10 Quarry (OC),ECL,Jharkhand,DHANBAD,Mugma/Salanpur,Mugma,Mixed,0.445,Mixed,0.6418571428571429,1.2806088009610512,14,-0.15372152893952362,0,3.8430382234880907,Normal,Lower than peer average
+Chapuikhas Colliery,ECL,West Bengal,Bardhaman,Raniganj,Satgram,UG,0.024,Underground,0.2080848484848485,0.3309294635266063,165,-0.5562661194416385,0,13.906652986040962,Normal,Lower than peer average
+Chasnalla Colliery,IISCO,Jharkhand,DHANBAD,Jharia,Chasnala,UG,0.104,Underground,0.2080848484848485,0.3309294635266063,165,-0.3145227607588958,0,7.863069018972395,Normal,Lower than peer average
+Chatti Bariatu Coal Mining Project,NTPC,Jharkhand,HAZARIBAGH,North Karanpura,Keredari,OC,3.304,Opencast,4.168157205240175,7.919370943015163,229,-0.10911942519908814,0,2.7279856299772036,Normal,Lower than peer average
+Chhal OC,SECL,Chhattisgarh,RAIGARH,Central India,Raigarh,OC,5.512,Opencast,4.168157205240175,7.919370943015163,229,0.16969059846162224,0,4.242264961540556,Normal,Higher than peer average
+Chhatarpur -II,WCL,Madhya Pradesh,BETUL,Pathakhera,Pathakhera,UG,0.052,Underground,0.2080848484848485,0.3309294635266063,165,-0.4716559439026785,0,11.791398597566962,Normal,Lower than peer average
+Chhatarpur 1,WCL,Madhya Pradesh,BETUL,Pathakhera,Pathakhera,UG,0.65,Underground,0.2080848484848485,0.3309294635266063,165,1.335375662250823,0,33.38439155627058,Normal,Higher than peer average
+Chhinda,WCL,Madhya Pradesh,CHHINDWARA,Pench & Kanhan,Pench,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Chinakuri Mine III,ECL,West Bengal,Bardhaman,Raniganj,Sodepur,UG,0.069,Underground,0.2080848484848485,0.3309294635266063,165,-0.42028548018259565,0,10.50713700456489,Normal,Lower than peer average
+Chirimiri,SECL,Chhattisgarh,KOREA,Central India,Chirimiri,OC,0.961,Opencast,4.168157205240175,7.919370943015163,229,-0.40497625737166265,0,10.124406434291567,Normal,Lower than peer average
+Chitra East OCP,ECL,Jharkhand,DEOGHAR,Saherjuri Coalfield,S. P. Mines,OC,1.755,Opencast,4.168157205240175,7.919370943015163,229,-0.3047157687907731,0,7.617894219769328,Normal,Lower than peer average
+Chora 10 Pit Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kenda,UG,0.041,Underground,0.2080848484848485,0.3309294635266063,165,-0.5048956557215556,0,12.622391393038889,Normal,Lower than peer average
+Chora 7&9 Pits Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kenda,UG,0.064,Underground,0.2080848484848485,0.3309294635266063,165,-0.4353944401002671,0,10.884861002506678,Normal,Lower than peer average
+Chora Block Incline UG & Shankarpur OC & Banbahal OC,ECL,West Bengal,Bardhaman,Raniganj,Kenda,Mixed,0.277,Mixed,0.6418571428571429,1.2806088009610512,14,-0.284909132736969,0,7.122728318424225,Normal,Lower than peer average
+Churcha RO,SECL,Chhattisgarh,KOREA,Central India,Baikunthpur,UG,1.408,Underground,0.2080848484848485,0.3309294635266063,165,3.62589398576981,1,90.64734964424524,Highly Unusual,Higher than peer average
+Dabor Ph-II & III OC,ECL,West Bengal,Bardhaman,Mugma/Salanpur,Salanpur,OC,0.335,Opencast,4.168157205240175,7.919370943015163,229,-0.4840229398044546,0,12.100573495111364,Normal,Lower than peer average
+Dakra Bukbuka OC,CCL,Jharkhand,RANCHI,N.K.Coalfields,North Karanpura,OC,0.293,Opencast,4.168157205240175,7.919370943015163,229,-0.489326391341479,0,12.233159783536975,Normal,Lower than peer average
+Dalurband OC,ECL,West Bengal,Bardhaman,Raniganj,Pandaveswar,OC,0.729,Opencast,4.168157205240175,7.919370943015163,229,-0.4342715134809401,0,10.856787837023504,Normal,Lower than peer average
+Damini,SECL,Madhya Pradesh,SHAHDOL,Central India,Sohagpur,UG,0.265,Underground,0.2080848484848485,0.3309294635266063,165,0.17198574859012394,0,4.299643714753099,Normal,Higher than peer average
+Damoda,BCCL,Jharkhand,DHANBAD,Jharia,Barora,OC,0.556,Opencast,4.168157205240175,7.919370943015163,229,-0.4561166829072549,0,11.402917072681372,Normal,Lower than peer average
+Dhankasa & Jamunia,WCL,Madhya Pradesh,CHHINDWARA,Pench & Kanhan,Pench,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Dhanpuri,SECL,Madhya Pradesh,SHAHDOL,Central India,Sohagpur,OC,0.128,Opencast,4.168157205240175,7.919370943015163,229,-0.5101613795226462,0,12.754034488066154,Normal,Lower than peer average
+Dhelwadih Colliery,SECL,Chhattisgarh,KORBA,Central India,Korba,UG,0.205,Underground,0.2080848484848485,0.3309294635266063,165,-0.00932177042193315,0,0.23304426054832875,Normal,Lower than peer average
+Dhemomain Incl Colliery,ECL,West Bengal,Bardhaman,Raniganj,Sodepur,UG,0.023,Underground,0.2080848484848485,0.3309294635266063,165,-0.5592879114251728,0,13.98219778562932,Normal,Lower than peer average
+Dhemomain Pit Colliery,ECL,West Bengal,Bardhaman,Raniganj,Sodepur,UG,0.025,Underground,0.2080848484848485,0.3309294635266063,165,-0.5532443274581041,0,13.831108186452603,Normal,Lower than peer average
+Dhoptala OC (Sasti Colliery),WCL,Maharashtra,CHANDRAPUR,Wardha,Ballarpur,OC,1.681,Opencast,4.168157205240175,7.919370943015163,229,-0.3140599453083875,0,7.851498632709688,Normal,Lower than peer average
+Dhori Khas(UG),CCL,Jharkhand,BOKARO,E. Bokaro,Dhori Area,UG,0.136,Underground,0.2080848484848485,0.3309294635266063,165,-0.21782541728579866,0,5.445635432144966,Normal,Lower than peer average
+Dipka,SECL,Chhattisgarh,KORBA,Central India,Dipka,OC,33.417,Opencast,4.168157205240175,7.919370943015163,229,3.6933290541917514,1,92.33322635479378,Highly Unusual,Higher than peer average
+Dubeswari Colliery,ECL,West Bengal,PURULIA,Raniganj,Sodepur,UG,0.052,Underground,0.2080848484848485,0.3309294635266063,165,-0.4716559439026785,0,11.791398597566962,Normal,Lower than peer average
+Dudhichua Project,NCL,Uttar Pradesh,SONBHADRA,Singrauli,Dudhichua,OC,9.272,Opencast,4.168157205240175,7.919370943015163,229,0.644475783680948,0,16.111894592023702,Normal,Higher than peer average
+Dulanga Coal Mining Project,NTPC,Odisha,SUNDARGARH,IB Vlley,Dulanga,OC,7.0,Opencast,4.168157205240175,7.919370943015163,229,0.35758431005905755,0,8.939607751476439,Normal,Higher than peer average
+Durgapur Open Cast,WCL,Maharashtra,CHANDRAPUR,Wardha,Chandrapur,OC,2.5,Opencast,4.168157205240175,7.919370943015163,229,-0.21064264033641203,0,5.2660660084103,Normal,Lower than peer average
+Durgapur Rayatwari Colly,WCL,Maharashtra,CHANDRAPUR,Wardha,Chandrapur,UG,0.1,Underground,0.2080848484848485,0.3309294635266063,165,-0.3266099286930329,0,8.165248217325823,Normal,Lower than peer average
+DVC Tubed Mines,DVC,Jharkhand,LATEHAR,Auranga,DVC Tubed,OC,1.52,Opencast,4.168157205240175,7.919370943015163,229,-0.3343898428669809,0,8.359746071674524,Normal,Lower than peer average
+E.Basuria,BCCL,Jharkhand,DHANBAD,Jharia,Kusunda,OC,0.142,Opencast,4.168157205240175,7.919370943015163,229,-0.5083935623436381,0,12.709839058590951,Normal,Lower than peer average
+Ena,BCCL,Jharkhand,DHANBAD,Jharia,Kusunda,OC,2.998,Opencast,4.168157205240175,7.919370943015163,229,-0.14775885782598003,0,3.6939714456495008,Normal,Lower than peer average
+G & G B Coal Mine,WBPDCL,West Bengal,BIRBHUM,Raniganj,Gangaramchak,OC,3.0,Opencast,4.168157205240175,7.919370943015163,229,-0.14750631251469318,0,3.6876578128673296,Normal,Lower than peer average
+Gare Palma IV 6,JSPL,Chhattisgarh,RAIGARH,Mand-Raigarh,Raigarh,OC,1.803,Opencast,4.168157205240175,7.919370943015163,229,-0.2986546813198881,0,7.466367032997202,Normal,Lower than peer average
+Gare Palma IV-2&3,BALCO,Chhattisgarh,KORBA,Hasdeo-Arand,Korba,OC,1.0,Opencast,4.168157205240175,7.919370943015163,229,-0.40005162380156856,0,10.001290595039213,Normal,Lower than peer average
+Gare Palma IV/1,JPL,Chhattisgarh,RAIGARH,Mand Raigarh,Gare Palma,OC,7.195,Opencast,4.168157205240175,7.919370943015163,229,0.38220747790952797,0,9.5551869477382,Normal,Higher than peer average
+Gare Palma IV/2&3,JPL,Chhattisgarh,RAIGARH,Mand- Raigarh,Gare Palma,OC,0.712,Opencast,4.168157205240175,7.919370943015163,229,-0.4364181486268786,0,10.910453715671965,Normal,Lower than peer average
+Gare Palma IV/2&3,SECL,Chhattisgarh,RAIGARH,Central India,Raigarh,OC,0.16,Opencast,4.168157205240175,7.919370943015163,229,-0.5061206545420562,0,12.653016363551405,Normal,Lower than peer average
+Gare Palma IV/7,SEML,Chhattisgarh,RAIGARH,Mand Raigarh,Tamnar Tehsil,OC,1.44,Opencast,4.168157205240175,7.919370943015163,229,-0.344491655318456,0,8.6122913829614,Normal,Lower than peer average
+Gare Palma Sector III,CSPGCL,Chhattisgarh,RAIGARH,Mand Raigarh,Raigarh,OC,4.003,Opencast,4.168157205240175,7.919370943015163,229,-0.02085483890432516,0,0.521370972608129,Normal,Lower than peer average
+Garjanbahal OCP,MCL,Odisha,SUNDARGARH,IB Valley,Basundhara,OC,18.2,Opencast,4.168157205240175,7.919370943015163,229,1.7718380532655598,0,44.295951331638996,Normal,Higher than peer average
+Gayatri,SECL,Chhattisgarh,SURGUJA,Central India,Bisrampur,UG,0.579,Underground,0.2080848484848485,0.3309294635266063,165,1.1208284314198889,0,28.020710785497222,Normal,Higher than peer average
+Gevra,SECL,Chhattisgarh,KORBA,Central India,Gevra,OC,59.107,Opencast,4.168157205240175,7.919370943015163,229,6.9372735776716645,1,100.0,Highly Unusual,Higher than peer average
+"Ghonsa,",WCL,Maharashtra,YAVATMAL,Wardha Valley,Wani North,OC,0.6,Opencast,4.168157205240175,7.919370943015163,229,-0.4505606860589436,0,11.26401715147359,Normal,Lower than peer average
+Gidi `A',CCL,Jharkhand,HAZARIBAGH,S.K.Coalfields,Argada,OC,0.494,Opencast,4.168157205240175,7.919370943015163,229,-0.46394558755714804,0,11.598639688928701,Normal,Lower than peer average
+Gidi `C',CCL,Jharkhand,HAZARIBAGH,S.K.Coalfields,Argada,OC,0.599,Opencast,4.168157205240175,7.919370943015163,229,-0.450686958714587,0,11.267173967864675,Normal,Lower than peer average
+Giridih OC,CCL,Jharkhand,GIRIDIH,Giridih,Giridih OC,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Godavari Khani 1 & 3,SCCL,Telangana,KHAMMAM,Godavari Valley,Ramagundam-I,UG,0.169,Underground,0.2080848484848485,0.3309294635266063,165,-0.11810628182916728,0,2.952657045729182,Normal,Lower than peer average
+Godavari Khani-11 Incline,SCCL,Telangana,PEDDAPALLI,Godavari Valley,Ramagundam-I,UG,0.606,Underground,0.2080848484848485,0.3309294635266063,165,1.2024168149753145,0,30.06042037438286,Normal,Higher than peer average
+Godavari Khani-2 & 2A,SCCL,Telangana,KHAMMAM,Godavari Valley,Ramagundam-I,UG,0.215,Underground,0.2080848484848485,0.3309294635266063,165,0.020896149413409712,0,0.5224037353352428,Normal,Higher than peer average
+Godavarikhani V OC,SCCL,Telangana,PEDDAPALLI,Godavari Valley,Ramagundam-I,OC,3.505,Opencast,4.168157205240175,7.919370943015163,229,-0.08373862141475716,0,2.093465535368929,Normal,Lower than peer average
+Gokul OC Mine + Gokul Extn.,WCL,Maharashtra,NAGPUR,Umrer,Umrer,OC,1.807,Opencast,4.168157205240175,7.919370943015163,229,-0.29814959069731434,0,7.453739767432858,Normal,Lower than peer average
+Gondudih/Khas Kusunda,BCCL,Jharkhand,DHANBAD,Jharia,Kusunda,OC,1.45,Opencast,4.168157205240175,7.919370943015163,229,-0.34322892876202155,0,8.580723219050538,Normal,Lower than peer average
+Gopalichuck,BCCL,Jharkhand,DHANBAD,Jharia,P.B.Project,OC,0.358,Opencast,4.168157205240175,7.919370943015163,229,-0.48111866872465553,0,12.027966718116389,Normal,Lower than peer average
+Gopinathpur,ECL,Jharkhand,DHANBAD,Mugma/Salanpur,Mugma,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Gotitoria E & W,BSMPL,Madhya Pradesh,Narsinghpur,Mohpani,Dharamsthal,OC,0.3,Opencast,4.168157205240175,7.919370943015163,229,-0.48844248275197494,0,12.211062068799373,Normal,Lower than peer average
+Gourangdi-A OCP,ECL,West Bengal,Bardhaman,Mugma/Salanpur,Salanpur,OC,1.407,Opencast,4.168157205240175,7.919370943015163,229,-0.3486586529546894,0,8.716466323867236,Normal,Lower than peer average
+Gourangdih Extn OC,ECL,West Bengal,Bardhaman,Mugma/Salanpur,Salanpur,OC,0.74,Opencast,4.168157205240175,7.919370943015163,229,-0.4328825142688623,0,10.822062856721558,Normal,Lower than peer average
+Gouri -Pauni(A) OCM,WCL,Maharashtra,CHANDRAPUR,Wardha,Ballarpur,OC,2.574,Opencast,4.168157205240175,7.919370943015163,229,-0.20129846381879765,0,5.032461595469941,Normal,Lower than peer average
+Gouri Deep,WCL,Maharashtra,CHANDRAPUR,Wardha,Ballarpur,OC,0.378,Opencast,4.168157205240175,7.919370943015163,229,-0.47859321561178675,0,11.964830390294669,Normal,Lower than peer average
+Gouthampur Khani OCP,SCCL,Telangana,KHAMMAM,Godavari Valley,Kothagudem,OC,0.127,Opencast,4.168157205240175,7.919370943015163,229,-0.5102876521782896,0,12.75719130445724,Normal,Lower than peer average
+Govindpur,CCL,Jharkhand,BOKARO,E. Bokaro,Kathara,UG,0.016,Underground,0.2080848484848485,0.3309294635266063,165,-0.5804404553099127,0,14.511011382747817,Normal,Lower than peer average
+Govindpur Ph-II OCP,CCL,Jharkhand,BOKARO,E. Bokaro,Kathara,OC,0.944,Opencast,4.168157205240175,7.919370943015163,229,-0.4071228925176011,0,10.178072312940028,Normal,Lower than peer average
+GP-IV-8 Coal Mine,AMBUJA,Chhattisgarh,RAIGARH,Mand Raigarh,Raigarh,UG,0.95,Underground,0.2080848484848485,0.3309294635266063,165,2.241913257311108,1,56.0478314327777,Unusual,Higher than peer average
+Haldibari,SECL,Chhattisgarh,KOREA,Central India,Hasdeo,UG,0.592,Underground,0.2080848484848485,0.3309294635266063,165,1.1601117272058346,0,29.002793180145865,Normal,Higher than peer average
+Hariajam,ECL,Jharkhand,DHANBAD,Mugma/Salanpur,Mugma,UG,0.047,Underground,0.2080848484848485,0.3309294635266063,165,-0.48676490382034987,0,12.169122595508746,Normal,Lower than peer average
+Hindustan Lalpeth Colliery No.1,WCL,Maharashtra,CHANDRAPUR,Wardha,Chandrapur,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Hindustan Lalpeth OC,WCL,Maharashtra,CHANDRAPUR,Wardha,Chandrapur,OC,1.0,Opencast,4.168157205240175,7.919370943015163,229,-0.40005162380156856,0,10.001290595039213,Normal,Lower than peer average
+Hingula OCP,MCL,Odisha,Angul,Talcher,Hingula,OC,13.06,Opencast,4.168157205240175,7.919370943015163,229,1.12279660325829,0,28.069915081457246,Normal,Higher than peer average
+Hirakhand Bundia Mine,MCL,Odisha,JHARSUGUDA,IB Valley,Orient,UG,0.201,Underground,0.2080848484848485,0.3309294635266063,165,-0.02140893835607021,0,0.5352234589017553,Normal,Lower than peer average
+Hurra C,ECL,Jharkhand,GODDA,Rajmahal,Rajmahal,OC,2.074,Opencast,4.168157205240175,7.919370943015163,229,-0.2644347916405165,0,6.610869791012912,Normal,Lower than peer average
+"Indaram Khani-1A, Incline",SCCL,Telangana,MANCHERIAL,Godavari Valley,Srirampur,UG,0.196,Underground,0.2080848484848485,0.3309294635266063,165,-0.03651789827374164,0,0.9129474568435411,Normal,Lower than peer average
+Indaram Khani-OC,SCCL,Telangana,MANCHERIAL,Godavari Valley,Srirampur,OC,1.221,Opencast,4.168157205240175,7.919370943015163,229,-0.3721453669043688,0,9.30363417260922,Normal,Lower than peer average
+Int. Lakhanpur-Belpahar-Lilari OCP,MCL,Odisha,JHARSUGUDA,IB Valley,Lakhanpur,OC,32.201,Opencast,4.168157205240175,7.919370943015163,229,3.539781504929331,1,88.49453762323327,Highly Unusual,Higher than peer average
+Itapara OC Patch,ECL,West Bengal,Bardhaman,Mugma/Salanpur,Salanpur,OC,0.208,Opencast,4.168157205240175,7.919370943015163,229,-0.5000595670711712,0,12.501489176779279,Normal,Lower than peer average
+J. K. Nagar Colliery,ECL,West Bengal,Bardhaman,Raniganj,Satgram,UG,0.137,Underground,0.2080848484848485,0.3309294635266063,165,-0.21480362530226438,0,5.370090632556609,Normal,Lower than peer average
+Jaganathpur,SECL,Chhattisgarh,SURGUJA,Central India,Bhatgaon,OC,2.832,Opencast,4.168157205240175,7.919370943015163,229,-0.1687201186627907,0,4.218002966569768,Normal,Lower than peer average
+Jagannath Re-org OCP,MCL,Odisha,Angul,Talcher,Jagannath,OC,7.5,Opencast,4.168157205240175,7.919370943015163,229,0.4207206378807764,0,10.51801594701941,Normal,Higher than peer average
+Jalagam Vengala Rao OC-2,SCCL,Telangana,KHAMMAM,Godavari Valley,Kothagudem,OC,11.068,Opencast,4.168157205240175,7.919370943015163,229,0.871261473216562,0,21.78153683041405,Normal,Higher than peer average
+Jalipa,HIL,Chhattisgarh,RAIGARH,Mand-Raigarh,Gare Palma Area,OC,0.468,Opencast,4.168157205240175,7.919370943015163,229,-0.4672286766038774,0,11.680716915096935,Normal,Lower than peer average
+Jamadoba Colliery,TSL,Jharkhand,DHANBAD,Jharia,Jamadoba,Mixed,0.05,Mixed,0.6418571428571429,1.2806088009610512,14,-0.46216857358232677,0,11.55421433955817,Normal,Lower than peer average
+Jambad OCP,ECL,West Bengal,Bardhaman,Raniganj,Kajora,OC,0.47,Opencast,4.168157205240175,7.919370943015163,229,-0.4669761312925905,0,11.674403282314763,Normal,Lower than peer average
+Jambad UG Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kajora,UG,0.113,Underground,0.2080848484848485,0.3309294635266063,165,-0.2873266329070872,0,7.18316582267718,Normal,Lower than peer average
+Jamkhani Coal Mine,Vedanta,Odisha,SUNDARGARH,IB River,IB River,OC,2.126,Opencast,4.168157205240175,7.919370943015163,229,-0.2578686135470577,0,6.446715338676443,Normal,Lower than peer average
+Jampali,SECL,Chhattisgarh,RAIGARH,Central India,Raigarh,OC,3.0,Opencast,4.168157205240175,7.919370943015163,229,-0.14750631251469318,0,3.6876578128673296,Normal,Lower than peer average
+Jamuna 9 & 10 Jamuna RO,SECL,Madhya Pradesh,SHAHDOL,Central India,Jamuna & Kotma,UG,0.142,Underground,0.2080848484848485,0.3309294635266063,165,-0.19969466538459302,0,4.992366634614825,Normal,Lower than peer average
+Jarangdih OC,CCL,Jharkhand,BOKARO,E. Bokaro,Kathara,OC,1.481,Opencast,4.168157205240175,7.919370943015163,229,-0.339314476437075,0,8.482861910926875,Normal,Lower than peer average
+"Jawahar Khani OC-5,",SCCL,Telangana,KHAMMAM,Godavari Valley,Yellandu,OC,1.369,Opencast,4.168157205240175,7.919370943015163,229,-0.3534570138691401,0,8.836425346728502,Normal,Lower than peer average
+Jayant Project,NCL,Madhya Pradesh,SINGRAULI,Singrauli,Jayant,OC,44.007,Opencast,4.168157205240175,7.919370943015163,229,5.030556477455756,1,100.0,Highly Unusual,Higher than peer average
+Jhanjra Project Colliery,ECL,West Bengal,Bardhaman,Raniganj,Jhanjra,UG,2.659,Underground,0.2080848484848485,0.3309294635266063,165,7.406155757171199,1,100.0,Highly Unusual,Higher than peer average
+Jharkhand OCP,CCL,Jharkhand,RAMGARH,W.Bokaro,Hazaribagh,OC,0.408,Opencast,4.168157205240175,7.919370943015163,229,-0.4748050359424837,0,11.870125898562092,Normal,Lower than peer average
+Jhilimili Colliery,SECL,Chhattisgarh,KOREA,Central India,Baikunthpur,UG,0.37,Underground,0.2080848484848485,0.3309294635266063,165,0.4892739068612237,0,12.231847671530591,Normal,Higher than peer average
+Jhingurda Project,NCL,Madhya Pradesh,SINGRAULI,Singrauli,Jhingurda,OC,4.9,Opencast,4.168157205240175,7.919370943015163,229,0.09241173320783848,0,2.310293330195962,Normal,Higher than peer average
+Jhiria,SECL,Madhya Pradesh,SHAHDOL,Central India,Hasdeo,UG,0.189,Underground,0.2080848484848485,0.3309294635266063,165,-0.05767044215848165,0,1.4417610539620411,Normal,Lower than peer average
+Jitpur Colliery,IISCO,Jharkhand,DHANBAD,Jharia,SAIL-BSL,UG,0.027,Underground,0.2080848484848485,0.3309294635266063,165,-0.5472007434910356,0,13.68001858727589,Normal,Lower than peer average
+Jogidih,BCCL,Jharkhand,DHANBAD,Jharia,Govindpur,UG,0.013,Underground,0.2080848484848485,0.3309294635266063,165,-0.5895058312605156,0,14.73764578151289,Normal,Lower than peer average
+Joyrampur,BCCL,Jharkhand,DHANBAD,Jharia,Lodna,OC,0.705,Opencast,4.168157205240175,7.919370943015163,229,-0.43730205721638266,0,10.932551430409566,Normal,Lower than peer average
+"Junad,",WCL,Maharashtra,YAVATMAL,Wardha Valley,Wani North,OC,0.464,Opencast,4.168157205240175,7.919370943015163,229,-0.46773376722645116,0,11.69334418066128,Normal,Lower than peer average
+K. Dewarkhand,CCL,Jharkhand,RANCHI,N.K.Coalfields,North Karanpura,OC,0.863,Opencast,4.168157205240175,7.919370943015163,229,-0.4173509776247195,0,10.433774440617988,Normal,Lower than peer average
+Kabribad OC,CCL,Jharkhand,GIRIDIH,Giridih,Giridih OC,OC,0.41,Opencast,4.168157205240175,7.919370943015163,229,-0.47455249063119676,0,11.863812265779918,Normal,Lower than peer average
+Kakatiya Khani-1 & 1A Incline,SCCL,Telangana,JAYASHANKAR BHUPALPALLY,Godavari Valley,Bhupalpalli,UG,0.221,Underground,0.2080848484848485,0.3309294635266063,165,0.039026901314615434,0,0.9756725328653858,Normal,Higher than peer average
+Kakatiya Khani-5 Incline,SCCL,Telangana,JAYASHANKAR BHUPALPALLY,Godavari Valley,Bhupalpalli,UG,0.208,Underground,0.2080848484848485,0.3309294635266063,165,-0.00025639447133029067,0,0.0064098617832572665,Normal,Lower than peer average
+"Kakatiya Khani-6, Incline",SCCL,Telangana,JAYASHANKAR BHUPALPALLY,Godavari Valley,Bhupalpalli,UG,0.121,Underground,0.2080848484848485,0.3309294635266063,165,-0.26315229703881293,0,6.578807425970323,Normal,Lower than peer average
+Kakatiya Khani-8 & 8A Incline,SCCL,Telangana,JAYASHANKAR BHUPALPALLY,Godavari Valley,Bhupalpalli,UG,0.167,Underground,0.2080848484848485,0.3309294635266063,165,-0.12414986579623587,0,3.103746644905897,Normal,Lower than peer average
+Kakatiya Khani-OC II,SCCL,Telangana,JAYASHANKAR BHUPALPALLY,Godavari Valley,Bhupalpalli,OC,1.499,Opencast,4.168157205240175,7.919370943015163,229,-0.3370415686354931,0,8.426039215887329,Normal,Lower than peer average
+Kakatiya Khani-OC-III,SCCL,Telangana,JAYASHANKAR BHUPALPALLY,Godavari Valley,Bhupalpalli,OC,1.369,Opencast,4.168157205240175,7.919370943015163,229,-0.3534570138691401,0,8.836425346728502,Normal,Lower than peer average
+Kakri Project,NCL,Madhya Pradesh,SINGRAULI,Singrauli,Kakri,OC,2.695,Opencast,4.168157205240175,7.919370943015163,229,-0.1860194724859417,0,4.650486812148542,Normal,Lower than peer average
+Kalidaspur Project,ECL,West Bengal,BANKURA,Raniganj,Satgram,UG,0.075,Underground,0.2080848484848485,0.3309294635266063,165,-0.40215472828139004,0,10.053868207034752,Normal,Lower than peer average
+Kalyan Khani OC,SCCL,Telangana,MANCHERIAL,Godavari Valley,Mandamari,OC,1.775,Opencast,4.168157205240175,7.919370943015163,229,-0.30219031567790433,0,7.554757891947609,Normal,Lower than peer average
+Kalyan Khani-1 & 5 Incline,SCCL,Telangana,MANCHERIAL,Godavari Valley,Mandamari,UG,0.213,Underground,0.2080848484848485,0.3309294635266063,165,0.014852565446341141,0,0.37131413615852854,Normal,Higher than peer average
+Kanchan OC,SECL,Madhya Pradesh,UMARIA,Central India,Johilla,OC,0.908,Opencast,4.168157205240175,7.919370943015163,229,-0.41166870812076484,0,10.29171770301912,Normal,Lower than peer average
+Kaniha OCP,MCL,Odisha,Angul,Talcher,Kaniha,OC,11.811,Opencast,4.168157205240175,7.919370943015163,229,0.9650820563596363,0,24.12705140899091,Normal,Higher than peer average
+Kankanee,BCCL,Jharkhand,DHANBAD,Jharia,Sijua,OC,0.334,Opencast,4.168157205240175,7.919370943015163,229,-0.484149212460098,0,12.103730311502451,Normal,Lower than peer average
+Kapasara,ECL,Jharkhand,DHANBAD,Mugma/Salanpur,Mugma,OC,0.04,Opencast,4.168157205240175,7.919370943015163,229,-0.5212733732192687,0,13.031834330481718,Normal,Lower than peer average
+Kapurdi,HIL,Chhattisgarh,RAIGARH,Mand-Raigarh,Gare Palma Area,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Kargali OC,CCL,Jharkhand,BOKARO,E. Bokaro,B & K Area,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Karma,CCL,Jharkhand,RAMGARH,W.Bokaro,Kuju,OC,0.861,Opencast,4.168157205240175,7.919370943015163,229,-0.4176035229360064,0,10.44008807340016,Normal,Lower than peer average
+KARO SPL OC,CCL,Jharkhand,BOKARO,E. Bokaro,B & K Area,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Karo-I OC,CCL,Jharkhand,BOKARO,E. Bokaro,B & K Area,OC,1.318,Opencast,4.168157205240175,7.919370943015163,229,-0.35989691930695533,0,8.997422982673884,Normal,Lower than peer average
+Kasipet 1 Incline,SCCL,Telangana,MANCHERIAL,Godavari Valley,Mandamari,UG,0.146,Underground,0.2080848484848485,0.3309294635266063,165,-0.18760749745045588,0,4.690187436261397,Normal,Lower than peer average
+Kasipet 2 Incline,SCCL,Telangana,MANCHERIAL,Godavari Valley,Mandamari,UG,0.097,Underground,0.2080848484848485,0.3309294635266063,165,-0.33567530464363576,0,8.391882616090895,Normal,Lower than peer average
+Kathara Colly,CCL,Jharkhand,BOKARO,E. Bokaro,Kathara,OC,0.419,Opencast,4.168157205240175,7.919370943015163,229,-0.47341603673040583,0,11.835400918260145,Normal,Lower than peer average
+Kathautia Open Cast Coal Mine,HIL,Jharkhand,PALAMU,Daltonganj,Kathautia,OC,0.183,Opencast,4.168157205240175,7.919370943015163,229,-0.5032163834622572,0,12.58040958655643,Normal,Lower than peer average
+Katkona 1 & 2,SECL,Chhattisgarh,KOREA,Central India,Baikunthpur,UG,0.216,Underground,0.2080848484848485,0.3309294635266063,165,0.023917941396944,0,0.5979485349236,Normal,Higher than peer average
+Kedla (OC),CCL,Jharkhand,RAMGARH,W.Bokaro,Hazaribagh,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Kedla UG,CCL,Jharkhand,RAMGARH,W.Bokaro,Hazaribagh,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Kerandari,NTPC,Jharkhand,HAZARIBAGH,North Karanpura,Keredari,OC,0.235,Opencast,4.168157205240175,7.919370943015163,229,-0.4966502053687984,0,12.41625513421996,Normal,Lower than peer average
+Ketki,SECL,Chhattisgarh,SURGUJA,Central India,Bisrampur,UG,0.028,Underground,0.2080848484848485,0.3309294635266063,165,-0.5441789515075013,0,13.604473787687532,Normal,Lower than peer average
+Khadia Project,NCL,Uttar Pradesh,SONBHADRA,Singrauli,Khadia,OC,5.563,Opencast,4.168157205240175,7.919370943015163,229,0.17613050389943757,0,4.40326259748594,Normal,Higher than peer average
+Khairagura OC,SCCL,Telangana,Komaram Bheem,Godavari Valley,Belampalli,OC,3.749,Opencast,4.168157205240175,7.919370943015163,229,-0.05292809343775833,0,1.3232023359439582,Normal,Lower than peer average
+Khairaha,SECL,Madhya Pradesh,SHAHDOL,Central India,Sohagpur,UG,0.877,Underground,0.2080848484848485,0.3309294635266063,165,2.0213224425131053,1,50.533061062827635,Unusual,Higher than peer average
+Khandra Colliery,ECL,West Bengal,Bardhaman,Raniganj,Bankola,UG,0.091,Underground,0.2080848484848485,0.3309294635266063,165,-0.35380605654484143,0,8.845151413621036,Normal,Lower than peer average
+Kharkharee,BCCL,Jharkhand,DHANBAD,Jharia,Govindpur,UG,0.005,Underground,0.2080848484848485,0.3309294635266063,165,-0.6136801671287898,0,15.342004178219746,Normal,Lower than peer average
+Khas Kajora Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kajora,UG,0.136,Underground,0.2080848484848485,0.3309294635266063,165,-0.21782541728579866,0,5.445635432144966,Normal,Lower than peer average
+Khoodia,ECL,Jharkhand,DHANBAD,Mugma/Salanpur,Mugma,UG,0.025,Underground,0.2080848484848485,0.3309294635266063,165,-0.5532443274581041,0,13.831108186452603,Normal,Lower than peer average
+Khottadih OCP,ECL,West Bengal,Bardhaman,Raniganj,Pandaveswar,OC,0.435,Opencast,4.168157205240175,7.919370943015163,229,-0.4713956742401108,0,11.784891856002771,Normal,Lower than peer average
+Khottadih UG,ECL,West Bengal,Bardhaman,Raniganj,Pandaveswar,UG,0.521,Underground,0.2080848484848485,0.3309294635266063,165,0.9455644963749005,0,23.639112409372512,Normal,Higher than peer average
+Kistaram OC,SCCL,Telangana,KHAMMAM,Godavari Valley,Kothagudem,OC,2.4,Opencast,4.168157205240175,7.919370943015163,229,-0.2232699059007558,0,5.5817476475188945,Normal,Lower than peer average
+"Kolarpimpri,",WCL,Maharashtra,YAVATMAL,Wardha Valley,Wani North,OC,1.5,Opencast,4.168157205240175,7.919370943015163,229,-0.3369152959798497,0,8.422882399496242,Normal,Lower than peer average
+Kolgaon OC,WCL,Maharashtra,YAVATMAL,Wardha,Wani,OC,0.6,Opencast,4.168157205240175,7.919370943015163,229,-0.4505606860589436,0,11.26401715147359,Normal,Lower than peer average
+Kondapuram UG,SCCL,Telangana,KHAMMAM,Godavari Valley,Manuguru,UG,0.141,Underground,0.2080848484848485,0.3309294635266063,165,-0.2027164573681273,0,5.067911434203182,Normal,Lower than peer average
+Koya Gundem OC II,SCCL,Telangana,KHAMMAM,Godavari Valley,Yellandu,OC,3.001,Opencast,4.168157205240175,7.919370943015163,229,-0.14738003985904974,0,3.6845009964762436,Normal,Lower than peer average
+Krishnshila OCP,NCL,Uttar Pradesh,SONBHADRA,Singrauli,Krishnshila,OC,2.781,Opencast,4.168157205240175,7.919370943015163,229,-0.17516002410060602,0,4.37900060251515,Normal,Lower than peer average
+Kujama,BCCL,Jharkhand,DHANBAD,Jharia,Lodna,OC,0.588,Opencast,4.168157205240175,7.919370943015163,229,-0.4520759579266649,0,11.301898948166622,Normal,Lower than peer average
+Kuju Colliery,CCL,Jharkhand,RAMGARH,W.Bokaro,Kuju,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Kulda OCP Balinga,MCL,Odisha,SUNDARGARH,IB Valley,Basundhara,OC,21.0,Opencast,4.168157205240175,7.919370943015163,229,2.125401489067185,1,53.13503722667963,Unusual,Higher than peer average
+Kumardhubi Colliery,ECL,Jharkhand,DHANBAD,Mugma/Salanpur,Mugma,UG,0.02,Underground,0.2080848484848485,0.3309294635266063,165,-0.5683532873757756,0,14.20883218439439,Normal,Lower than peer average
+Kumardihi-A Colliery,ECL,West Bengal,Bardhaman,Raniganj,Bankola,UG,0.089,Underground,0.2080848484848485,0.3309294635266063,165,-0.35984964051191004,0,8.996241012797752,Normal,Lower than peer average
+Kumda 7 & 8,SECL,Chhattisgarh,SURGUJA,Central India,Bisrampur,UG,0.011,Underground,0.2080848484848485,0.3309294635266063,165,-0.5955494152275841,0,14.888735380689603,Normal,Lower than peer average
+Kunustoria Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kunustoria,UG,0.079,Underground,0.2080848484848485,0.3309294635266063,165,-0.3900675603472529,0,9.751689008681321,Normal,Lower than peer average
+Kurasia UG,SECL,Chhattisgarh,KOREA,Central India,Chirimiri,UG,0.204,Underground,0.2080848484848485,0.3309294635266063,165,-0.012343562405467436,0,0.3085890601366859,Normal,Lower than peer average
+Kurja/Sheetaldhara/Kapildhara,SECL,Madhya Pradesh,SHAHDOL,Central India,Hasdeo,UG,0.808,Underground,0.2080848484848485,0.3309294635266063,165,1.81281879564924,0,45.320469891231,Normal,Higher than peer average
+Kusmunda Project,SECL,Chhattisgarh,KORBA,Central India,Kusmunda,OC,50.125,Opencast,4.168157205240175,7.919370943015163,229,5.803092584682307,1,100.0,Highly Unusual,Higher than peer average
+Kuya,BCCL,Jharkhand,DHANBAD,Jharia,Bastacolla,OC,2.8,Opencast,4.168157205240175,7.919370943015163,229,-0.17276084364338073,0,4.319021091084519,Normal,Lower than peer average
+Laiyo UGP,CCL,Jharkhand,RAMGARH,W.Bokaro,Hazaribagh,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Lajkura OCP,MCL,Odisha,JHARSUGUDA,IB Valley,IB Valley,OC,4.5,Opencast,4.168157205240175,7.919370943015163,229,0.04190267095046336,0,1.047566773761584,Normal,Higher than peer average
+Lakhimata,ECL,Jharkhand,DHANBAD,Mugma/Salanpur,Mugma,UG,0.059,Underground,0.2080848484848485,0.3309294635266063,165,-0.45050340001793854,0,11.262585000448464,Normal,Lower than peer average
+Lingaraj OCP,MCL,Odisha,Angul,Talcher,Lingaraj,OC,17.54,Opencast,4.168157205240175,7.919370943015163,229,1.6884981005408908,0,42.21245251352227,Normal,Higher than peer average
+Lower Kenda Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kenda,UG,0.048,Underground,0.2080848484848485,0.3309294635266063,165,-0.4837431118368156,0,12.09357779592039,Normal,Lower than peer average
+Madhaipur,ECL,West Bengal,Bardhaman,Raniganj,Kajora,Mixed,0.036,Mixed,0.6418571428571429,1.2806088009610512,14,-0.4731008738987806,0,11.827521847469514,Normal,Lower than peer average
+Madhaipur Mixed,ECL,West Bengal,Bardhaman,Raniganj,Pandaveswar,Mixed,0.162,Mixed,0.6418571428571429,1.2806088009610512,14,-0.37471017105069654,0,9.367754276267414,Normal,Lower than peer average
+Madhusudanpur 7 Pit & Incline,ECL,West Bengal,Bardhaman,Raniganj,Kajora,UG,0.018,Underground,0.2080848484848485,0.3309294635266063,165,-0.5743968713428442,0,14.359921783571107,Normal,Lower than peer average
+Magadh OCP,CCL,Jharkhand,CHATRA,N.K.Coalfields,Magadh,OC,20.0,Opencast,4.168157205240175,7.919370943015163,229,1.9991288334237476,0,49.97822083559369,Normal,Higher than peer average
+Mahadeopuri,WCL,Madhya Pradesh,CHHINDWARA,Pench & Kanhan,Pench,UG,0.033,Underground,0.2080848484848485,0.3309294635266063,165,-0.5290699915898299,0,13.226749789745748,Normal,Lower than peer average
+Mahakali Colliery,WCL,Maharashtra,CHANDRAPUR,Wardha,Chandrapur,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Maheshpur,BCCL,Jharkhand,DHANBAD,Jharia,Govindpur,UG,0.029,Underground,0.2080848484848485,0.3309294635266063,165,-0.541157159523967,0,13.528928988099176,Normal,Lower than peer average
+Makardhokra-I OC Expansion Mine,WCL,Maharashtra,NAGPUR,Umrer,Umrer,OC,4.2,Opencast,4.168157205240175,7.919370943015163,229,0.004020874257432071,0,0.10052185643580178,Normal,Higher than peer average
+Makardhokra-III OC MINE,WCL,Maharashtra,NAGPUR,Umrer,Umrer,OC,4.433,Opencast,4.168157205240175,7.919370943015163,229,0.03344240302235301,0,0.8360600755588252,Normal,Higher than peer average
+Mandarboni,ECL,West Bengal,Bardhaman,Raniganj,Pandaveswar,UG,0.033,Underground,0.2080848484848485,0.3309294635266063,165,-0.5290699915898299,0,13.226749789745748,Normal,Lower than peer average
+Manikpur,SECL,Chhattisgarh,KORBA,Central India,Korba,OC,5.25,Opencast,4.168157205240175,7.919370943015163,229,0.13660716268304163,0,3.415179067076041,Normal,Higher than peer average
+Manki/Churi,CCL,Jharkhand,RANCHI,N.K.Coalfields,North Karanpura,UG,0.628,Underground,0.2080848484848485,0.3309294635266063,165,1.2688962386130689,0,31.722405965326722,Normal,Higher than peer average
+Manna Incline,WCL,Maharashtra,CHANDRAPUR,Wardha,Chandrapur,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Manoharpur Coal Mine,OCPL,Odisha,SUNDARGARH,IB Valley,Sundargarh,OC,8.509,Opencast,4.168157205240175,7.919370943015163,229,0.5481297474250051,0,13.703243685625127,Normal,Higher than peer average
+Manuguru Opencast,SCCL,Telangana,KHAMMAM,Godavari Valley,Manuguru,OC,2.1,Opencast,4.168157205240175,7.919370943015163,229,-0.26115170259378706,0,6.528792564844677,Normal,Lower than peer average
+Marki Mangli - I Coal Mine,TUML,Maharashtra,YAVATMAL,Wardha Valley,Marki Mangli-1 Coal Mine,OC,0.001,Opencast,4.168157205240175,7.919370943015163,229,-0.5261980067893628,0,13.15495016973407,Normal,Lower than peer average
+Marki Mangli III,BSIL,Maharashtra,YAVATMAL,Warda Valley,Marki Mangli -III,OC,0.105,Opencast,4.168157205240175,7.919370943015163,229,-0.5130656506024452,0,12.82664126506113,Normal,Lower than peer average
+Mathani,WCL,Madhya Pradesh,CHHINDWARA,Pench & Kanhan,Pench,UG,0.091,Underground,0.2080848484848485,0.3309294635266063,165,-0.35380605654484143,0,8.845151413621036,Normal,Lower than peer average
+Meera,SECL,Madhya Pradesh,SHAHDOL,Central India,Jamuna & Kotma,UG,0.076,Underground,0.2080848484848485,0.3309294635266063,165,-0.39913293629785573,0,9.978323407446393,Normal,Lower than peer average
+Methani Colliery,ECL,West Bengal,Bardhaman,Raniganj,Sodepur,UG,0.054,Underground,0.2080848484848485,0.3309294635266063,165,-0.46561235993560995,0,11.64030899839025,Normal,Lower than peer average
+Metica Coal Mine,JKML,Jammu & Kashmir,Rajouri,Kalakota,Kalakota,UG,0.002,Underground,0.2080848484848485,0.3309294635266063,165,-0.6227455430793927,0,15.568638576984817,Normal,Lower than peer average
+Mohan (Mohan UG),WCL,Madhya Pradesh,CHHINDWARA,Pench & Kanhan,Kanhan,Mixed,0.038,Mixed,0.6418571428571429,1.2806088009610512,14,-0.47153911671071574,0,11.788477917767894,Normal,Lower than peer average
+Mohanpur (Expn),ECL,West Bengal,Bardhaman,Mugma/Salanpur,Salanpur,OC,2.0,Opencast,4.168157205240175,7.919370943015163,229,-0.27377896815813085,0,6.844474203953271,Normal,Lower than peer average
+Moher & Moher Amlohri Extn,WBPDCL,West Bengal,BIRBHUM,Raniganj,Bhimgarah,OC,0.5,Opencast,4.168157205240175,7.919370943015163,229,-0.4631879516232874,0,11.579698790582185,Normal,Lower than peer average
+Moher & Moher Amlohri Extn,Sasan Power Limited,Madhya Pradesh,SINGRAULI,Singrauli,Sasan Power Ltd,OC,18.276,Opencast,4.168157205240175,7.919370943015163,229,1.781434775094461,0,44.53586937736153,Normal,Higher than peer average
+Moonidih,BCCL,Jharkhand,DHANBAD,Jharia,West Jharia,UG,0.484,Underground,0.2080848484848485,0.3309294635266063,165,0.8337581929841319,0,20.843954824603298,Normal,Higher than peer average
+Mudidih,BCCL,Jharkhand,DHANBAD,Jharia,Sijua,OC,0.823,Opencast,4.168157205240175,7.919370943015163,229,-0.422401883850457,0,10.560047096261425,Normal,Lower than peer average
+Mungoli OCM,WCL,Maharashtra,YAVATMAL,Wardha,Wani,OC,5.25,Opencast,4.168157205240175,7.919370943015163,229,0.13660716268304163,0,3.415179067076041,Normal,Higher than peer average
+N.C.P.H. Colliery (NEW),SECL,Chhattisgarh,KOREA,Central India,Chirimiri,UG,0.351,Underground,0.2080848484848485,0.3309294635266063,165,0.4318598591740722,0,10.796496479351806,Normal,Higher than peer average
+Nabakajora Colliery,ECL,Jharkhand,RAMGARH,Raniganj,Kajora,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Naigaon OCM,WCL,Maharashtra,YAVATMAL,Wardha,Wani,OC,1.25,Opencast,4.168157205240175,7.919370943015163,229,-0.36848345989070913,0,9.212086497267729,Normal,Lower than peer average
+NAKC,BCCL,Jharkhand,DHANBAD,Jharia,Govindpur,Mixed,0.707,Mixed,0.6418571428571429,1.2806088009610512,14,0.050868662696968554,0,1.271716567424214,Normal,Higher than peer average
+Nakrakonda -Kumardihi 'B' UG,ECL,West Bengal,Bardhaman,Raniganj,Bankola,Mixed,1.511,Mixed,0.6418571428571429,1.2806088009610512,14,0.6786950522990286,0,16.967376307475714,Normal,Higher than peer average
+Nandgaon Incline,WCL,Maharashtra,CHANDRAPUR,Wardha,Chandrapur,UG,0.064,Underground,0.2080848484848485,0.3309294635266063,165,-0.4353944401002671,0,10.884861002506678,Normal,Lower than peer average
+Nandira Colliery,MCL,Odisha,Angul,Talcher,Talcher (UG),UG,0.056,Underground,0.2080848484848485,0.3309294635266063,165,-0.4595687759685414,0,11.489219399213535,Normal,Lower than peer average
+Narsamuda Colliery,ECL,West Bengal,Bardhaman,Raniganj,Sodepur,UG,0.053,Underground,0.2080848484848485,0.3309294635266063,165,-0.46863415191914426,0,11.715853797978607,Normal,Lower than peer average
+Navapara,SECL,Chhattisgarh,SURGUJA,Central India,Bhatgaon,UG,0.052,Underground,0.2080848484848485,0.3309294635266063,165,-0.4716559439026785,0,11.791398597566962,Normal,Lower than peer average
+Neelijay OCM,WCL,Maharashtra,YAVATMAL,Wardha,Wani,OC,4.5,Opencast,4.168157205240175,7.919370943015163,229,0.04190267095046336,0,1.047566773761584,Normal,Higher than peer average
+Nehariya,WCL,Madhya Pradesh,CHHINDWARA,Pench & Kanhan,Pench,UG,0.25,Underground,0.2080848484848485,0.3309294635266063,165,0.12665886883710964,0,3.166471720927741,Normal,Higher than peer average
+New Godhur-Kusunda-Alkusa,BCCL,Jharkhand,DHANBAD,Jharia,Kusunda,OC,1.208,Opencast,4.168157205240175,7.919370943015163,229,-0.37378691142773346,0,9.344672785693337,Normal,Lower than peer average
+New Kenda Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kenda,OC,0.622,Opencast,4.168157205240175,7.919370943015163,229,-0.447782687634788,0,11.1945671908697,Normal,Lower than peer average
+New Majri - I(A) & II Extn. (A) OC,WCL,Maharashtra,CHANDRAPUR,Wardha,Majri,OC,2.5,Opencast,4.168157205240175,7.919370943015163,229,-0.21064264033641203,0,5.2660660084103,Normal,Lower than peer average
+New Majri UG to OC Expn.,WCL,Maharashtra,CHANDRAPUR,Wardha,Majri,OC,1.527,Opencast,4.168157205240175,7.919370943015163,229,-0.3335059342774769,0,8.337648356936922,Normal,Lower than peer average
+New Moghla Coal Mine,JKML,Jammu & Kashmir,Rajouri,Kalakota,Kalakota,UG,0.006,Underground,0.2080848484848485,0.3309294635266063,165,-0.6106583751452556,0,15.266459378631389,Normal,Lower than peer average
+New Sethia,WCL,Madhya Pradesh,CHHINDWARA,Pench & Kanhan,Pench,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Nichitpur,BCCL,Jharkhand,DHANBAD,Jharia,Sijua,OC,1.794,Opencast,4.168157205240175,7.919370943015163,229,-0.299791135220679,0,7.494778380516975,Normal,Lower than peer average
+Nigahi Project,NCL,Madhya Pradesh,SINGRAULI,Singrauli,Nigahi,OC,33.006,Opencast,4.168157205240175,7.919370943015163,229,3.6414309927222983,1,91.03577481805746,Highly Unusual,Higher than peer average
+"Nimcha Colliery , Nimcha OC (Amkola) & Nimcha Highwall",ECL,West Bengal,Bardhaman,Raniganj,Satgram,Mixed,0.59,Mixed,0.6418571428571429,1.2806088009610512,14,-0.040494132804823765,0,1.012353320120594,Normal,Lower than peer average
+Ningah Colliery,ECL,West Bengal,Bardhaman,Raniganj,Sripur,UG,0.017,Underground,0.2080848484848485,0.3309294635266063,165,-0.5774186633263785,0,14.435466583159462,Normal,Lower than peer average
+Ningha (SSI) OC,ECL,West Bengal,Bardhaman,Raniganj,Sripur,OC,0.258,Opencast,4.168157205240175,7.919370943015163,229,-0.4937459342889993,0,12.343648357224984,Normal,Lower than peer average
+Nirsha,ECL,Jharkhand,DHANBAD,Mugma/Salanpur,Mugma,OC,0.147,Opencast,4.168157205240175,7.919370943015163,229,-0.5077621990654209,0,12.694054976635522,Normal,Lower than peer average
+North Searsole OC Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kunustoria,OC,1.056,Opencast,4.168157205240175,7.919370943015163,229,-0.392980355085536,0,9.8245088771384,Normal,Lower than peer average
+North Urimari/Birsa-OC,CCL,Jharkhand,HAZARIBAGH,S.K.Coalfields,Barka-Sayal,OC,4.2,Opencast,4.168157205240175,7.919370943015163,229,0.004020874257432071,0,0.10052185643580178,Normal,Higher than peer average
+Nowrozabad (W),SECL,Madhya Pradesh,UMARIA,Central India,Johilla,UG,0.098,Underground,0.2080848484848485,0.3309294635266063,165,-0.33265351266010146,0,8.316337816502536,Normal,Lower than peer average
+NTST-Jeenagora,BCCL,Jharkhand,DHANBAD,Jharia,Lodna,OC,4.767,Opencast,4.168157205240175,7.919370943015163,229,0.07561747000726125,0,1.8904367501815313,Normal,Higher than peer average
+Orient Mine No. 1 & 2,MCL,Odisha,JHARSUGUDA,IB Valley,Orient,UG,0.199,Underground,0.2080848484848485,0.3309294635266063,165,-0.027452522323138783,0,0.6863130580784695,Normal,Lower than peer average
+Pacchwara North Coal Mine,WBPDCL,Jharkhand,PAKUR,Rajmahal Area,Pacchwara,OC,13.707,Opencast,4.168157205240175,7.919370943015163,229,1.2044950114595943,0,30.112375286489858,Normal,Higher than peer average
+Pachhwara Central Coal Mine,PSPCL,Jharkhand,PAKUR,Rajmahal,Amrapara-Maheshpur,OC,4.628,Opencast,4.168157205240175,7.919370943015163,229,0.058065570872823394,0,1.4516392718205848,Normal,Higher than peer average
+Padampur OC,WCL,Maharashtra,CHANDRAPUR,Wardha,Chandrapur,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Padmavathi Khani No.5 Incline,SCCL,Telangana,KHAMMAM,Godavari Valley,Kothagudem,UG,0.206,Underground,0.2080848484848485,0.3309294635266063,165,-0.006299978438398864,0,0.15749946095997158,Normal,Lower than peer average
+Pakri Barwadih,NTPC,Jharkhand,HAZARIBAGH,North Karanpura,Hazaribagh,OC,16.308,Opencast,4.168157205240175,7.919370943015163,229,1.5329301887881757,0,38.323254719704394,Normal,Higher than peer average
+Pali,SECL,Madhya Pradesh,UMARIA,Central India,Johilla,UG,0.085,Underground,0.2080848484848485,0.3309294635266063,165,-0.37193680844604715,0,9.298420211151178,Normal,Lower than peer average
+Pandaveswar UG,ECL,West Bengal,Bardhaman,Raniganj,Pandaveswar,UG,0.076,Underground,0.2080848484848485,0.3309294635266063,165,-0.39913293629785573,0,9.978323407446393,Normal,Lower than peer average
+Pandavpara Colliery,SECL,Chhattisgarh,KOREA,Central India,Baikunthpur,UG,0.248,Underground,0.2080848484848485,0.3309294635266063,165,0.12061528487004108,0,3.0153821217510273,Normal,Higher than peer average
+Paoni II OCM,WCL,Maharashtra,CHANDRAPUR,Wardha,Ballarpur,OC,3.25,Opencast,4.168157205240175,7.919370943015163,229,-0.11593814860383375,0,2.898453715095844,Normal,Lower than peer average
+Parasea Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kunustoria,UG,0.109,Underground,0.2080848484848485,0.3309294635266063,165,-0.2994138008412243,0,7.485345021030608,Normal,Lower than peer average
+Parbelia Colliery,ECL,West Bengal,PURULIA,Raniganj,Sodepur,UG,0.043,Underground,0.2080848484848485,0.3309294635266063,165,-0.49885207175448704,0,12.471301793862176,Normal,Lower than peer average
+Parej East OCP,CCL,Jharkhand,RAMGARH,W.Bokaro,Hazaribagh,OC,0.403,Opencast,4.168157205240175,7.919370943015163,229,-0.47543639922070086,0,11.885909980517521,Normal,Lower than peer average
+Parsa East and Kanta Basan OCM,RRVUNL,Chhattisgarh,SURGUJA,Hasdo-Arand,Parsa East and Kanta,OC,6.701,Opencast,4.168157205240175,7.919370943015163,229,0.31982878602166964,0,7.995719650541741,Normal,Higher than peer average
+Patansaongi Colliery,WCL,Maharashtra,NAGPUR,Kamptee/Silewara,Nagpur,UG,0.039,Underground,0.2080848484848485,0.3309294635266063,165,-0.5109392396886242,0,12.773480992215605,Normal,Lower than peer average
+Patmohana Colliery,ECL,West Bengal,Bardhaman,Raniganj,Sodepur,UG,0.046,Underground,0.2080848484848485,0.3309294635266063,165,-0.4897866958038842,0,12.244667395097105,Normal,Lower than peer average
+Penganga OC,WCL,Maharashtra,CHANDRAPUR,Wardha,Wani,OC,4.806,Opencast,4.168157205240175,7.919370943015163,229,0.08054210357735529,0,2.0135525894338824,Normal,Higher than peer average
+"Pimpalgaon,",WCL,Maharashtra,YAVATMAL,Wardha Valley,Wani North,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Pindra Colliery,CCL,Jharkhand,RAMGARH,W.Bokaro,Kuju,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Piparia,SECL,Madhya Pradesh,UMARIA,Central India,Johilla,UG,0.081,Underground,0.2080848484848485,0.3309294635266063,165,-0.3840239763801843,0,9.600599409504609,Normal,Lower than peer average
+Porascol East Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kajora,UG,0.065,Underground,0.2080848484848485,0.3309294635266063,165,-0.4323726481167328,0,10.809316202918321,Normal,Lower than peer average
+Porascol West Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kajora,UG,0.062,Underground,0.2080848484848485,0.3309294635266063,165,-0.4414380240673357,0,11.035950601683393,Normal,Lower than peer average
+Prakasham Khani OC,SCCL,Telangana,KHAMMAM,Godavari Valley,Manuguru,OC,10.45,Opencast,4.168157205240175,7.919370943015163,229,0.7932249720289175,0,19.83062430072294,Normal,Higher than peer average
+Pundi,CCL,Jharkhand,RAMGARH,W.Bokaro,Kuju,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Pure Searsole Colliery,ECL,West Bengal,Bardhaman,Raniganj,Satgram,UG,0.035,Underground,0.2080848484848485,0.3309294635266063,165,-0.5230264076227613,0,13.075660190569034,Normal,Lower than peer average
+Purnadih,CCL,Jharkhand,RANCHI,N.K.Coalfields,North Karanpura,OC,0.589,Opencast,4.168157205240175,7.919370943015163,229,-0.4519496852710214,0,11.298742131775535,Normal,Lower than peer average
+Rajendra,SECL,Madhya Pradesh,SHAHDOL,Central India,Sohagpur,UG,0.158,Underground,0.2080848484848485,0.3309294635266063,165,-0.15134599364804444,0,3.783649841201111,Normal,Lower than peer average
+Rajhara,CCL,Jharkhand,PALAMU,N.K.Coalfields,Rajhara,OC,0.0,Opencast,4.168157205240175,7.919370943015163,229,-0.5263242794450063,0,13.158106986125157,Normal,Lower than peer average
+Rajmahal OCP,ECL,Jharkhand,GODDA,Rajmahal,Rajmahal,OC,12.052,Opencast,4.168157205240175,7.919370943015163,229,0.9955137663697047,0,24.88784415924262,Normal,Higher than peer average
+Rajnagar RO,SECL,Madhya Pradesh,SHAHDOL,Central India,Hasdeo,UG,0.13,Underground,0.2080848484848485,0.3309294635266063,165,-0.23595616918700438,0,5.898904229675109,Normal,Lower than peer average
+Rajpura,ECL,Jharkhand,DHANBAD,Mugma/Salanpur,Mugma,OC,0.076,Opencast,4.168157205240175,7.919370943015163,229,-0.516727557616105,0,12.918188940402626,Normal,Lower than peer average
+Rajrappa Project,CCL,Jharkhand,RAMGARH,Rajrappa,Rajrappa,OC,1.303,Opencast,4.168157205240175,7.919370943015163,229,-0.36179100914160695,0,9.044775228540173,Normal,Lower than peer average
+Rajur UG,WCL,Maharashtra,YAVATMAL,Wardha Valley,Wani North,UG,0.055,Underground,0.2080848484848485,0.3309294635266063,165,-0.4625905679520757,0,11.564764198801893,Normal,Lower than peer average
+Ramagundam OC-I Extn. Ph-II,SCCL,Telangana,PEDDAPALLI,Godavari Valley,Ramagundam-III,OC,5.911,Opencast,4.168157205240175,7.919370943015163,229,0.2200733880633539,0,5.501834701583848,Normal,Higher than peer average
+Ramagundam-OC 3 & OC III,SCCL,Telangana,PEDDAPALLI,Godavari Valley,Ramagundam-II,OC,9.5,Opencast,4.168157205240175,7.919370943015163,229,0.6732659491676518,0,16.831648729191294,Normal,Higher than peer average
+Ramakrishnapur OC,SCCL,Telangana,MANCHERIAL,Godavari Valley,Mandamari,OC,1.872,Opencast,4.168157205240175,7.919370943015163,229,-0.2899418680804909,0,7.2485467020122725,Normal,Lower than peer average
+Ramnagar Colliery,IISCO,West Bengal,PASCHIM BARDHAMAN,Raniganj,Ramnagore,OC,0.075,Opencast,4.168157205240175,7.919370943015163,229,-0.5168538302717484,0,12.92134575679371,Normal,Lower than peer average
+Ramnagar Colliery,IISCO,West Bengal,PASCHIM BARDHAMAN,Raniganj,Ramnagore,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Rampur Batura,SECL,Madhya Pradesh,SHAHDOL,Central India,Sohagpur,OC,1.216,Opencast,4.168157205240175,7.919370943015163,229,-0.372776730182586,0,9.319418254564651,Normal,Lower than peer average
+Raniatari,SECL,Chhattisgarh,KOREA,Central India,Chirimiri,UG,0.48,Underground,0.2080848484848485,0.3309294635266063,165,0.8216710250499948,0,20.54177562624987,Normal,Higher than peer average
+Ravindra Khani-5 Incline,SCCL,Telangana,MANCHERIAL,Godavari Valley,Srirampur,UG,0.277,Underground,0.2080848484848485,0.3309294635266063,165,0.2082472523925354,0,5.206181309813385,Normal,Higher than peer average
+Ravindra Khani-6 Incline,SCCL,Telangana,MANCHERIAL,Godavari Valley,Srirampur,UG,0.195,Underground,0.2080848484848485,0.3309294635266063,165,-0.03953969025727593,0,0.9884922564318983,Normal,Lower than peer average
+"Ravindra Khani-7,Incline",SCCL,Telangana,MANCHERIAL,Godavari Valley,Srirampur,UG,0.339,Underground,0.2080848484848485,0.3309294635266063,165,0.395598355371661,0,9.889958884291525,Normal,Higher than peer average
+"Ravindra Khani-New Tech,",SCCL,Telangana,MANCHERIAL,Godavari Valley,Srirampur,UG,0.161,Underground,0.2080848484848485,0.3309294635266063,165,-0.14228061769744157,0,3.557015442436039,Normal,Lower than peer average
+Rehar,SECL,Chhattisgarh,SURGUJA,Central India,Bisrampur,UG,0.031,Underground,0.2080848484848485,0.3309294635266063,165,-0.5351135755568984,0,13.37783938892246,Normal,Lower than peer average
+Religara,CCL,Jharkhand,HAZARIBAGH,S.K.Coalfields,Argada,OC,0.499,Opencast,4.168157205240175,7.919370943015163,229,-0.4633142242789308,0,11.58285560697327,Normal,Lower than peer average
+ROCP/S. Jharia,BCCL,Jharkhand,DHANBAD,Jharia,Bastacolla,OC,2.158,Opencast,4.168157205240175,7.919370943015163,229,-0.2538278885664677,0,6.345697214161692,Normal,Lower than peer average
+Rohini,CCL,Jharkhand,RANCHI,N.K.Coalfields,North Karanpura,OC,0.039,Opencast,4.168157205240175,7.919370943015163,229,-0.5213996458749122,0,13.034991146872803,Normal,Lower than peer average
+Samleswari OCP,MCL,Odisha,JHARSUGUDA,IB Valley,IB Valley,OC,8.06,Opencast,4.168157205240175,7.919370943015163,229,0.4914333250411016,0,12.28583312602754,Normal,Higher than peer average
+Sankarpur Colliery,ECL,West Bengal,Bardhaman,Raniganj,Bankola,UG,0.191,Underground,0.2080848484848485,0.3309294635266063,165,-0.05162685819141308,0,1.2906714547853269,Normal,Lower than peer average
+Saoner Mine - II,WCL,Maharashtra,NAGPUR,Kamptee/Silewara,Nagpur,UG,0.179,Underground,0.2080848484848485,0.3309294635266063,165,-0.08788836199382451,0,2.1972090498456125,Normal,Lower than peer average
+Saoner Mine - III,WCL,Maharashtra,NAGPUR,Kamptee/Silewara,Nagpur,UG,0.14,Underground,0.2080848484848485,0.3309294635266063,165,-0.20573824935166152,0,5.143456233791538,Normal,Lower than peer average
+Saoner Mine-I,WCL,Maharashtra,NAGPUR,Kamptee/Silewara,Nagpur,UG,0.186,Underground,0.2080848484848485,0.3309294635266063,165,-0.06673581810908451,0,1.6683954527271128,Normal,Lower than peer average
+Saraipali,SECL,Chhattisgarh,KORBA,Central India,Korba,UG,1.68,Underground,0.2080848484848485,0.3309294635266063,165,4.447821405291135,1,100.0,Highly Unusual,Higher than peer average
+Sarisatolli Coal Mine,CESC,West Bengal,PASCHIM BARDHAMAN,Raniganj,Sarisatolli,OC,1.293,Opencast,4.168157205240175,7.919370943015163,229,-0.3630537356980413,0,9.076343392451031,Normal,Lower than peer average
+Sarni Mine,WCL,Madhya Pradesh,BETUL,Pathakhera,Pathakhera,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Sarubera,CCL,Jharkhand,RAMGARH,W.Bokaro,Kuju,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Sasti Expn. OCM,WCL,Maharashtra,CHANDRAPUR,Wardha,Ballarpur,OC,1.889,Opencast,4.168157205240175,7.919370943015163,229,-0.2877952329345524,0,7.1948808233638095,Normal,Lower than peer average
+Satgram Incline,ECL,West Bengal,Bardhaman,Raniganj,Satgram,UG,0.032,Underground,0.2080848484848485,0.3309294635266063,165,-0.5320917835733642,0,13.302294589334105,Normal,Lower than peer average
+Satgram Project,ECL,West Bengal,Bardhaman,Raniganj,Satgram,UG,0.03,Underground,0.2080848484848485,0.3309294635266063,165,-0.5381353675404328,0,13.45338418851082,Normal,Lower than peer average
+Saunda (Ncdc),CCL,Jharkhand,RAMGARH,S.K.Coalfields,Barka-Sayal,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Sayal `D',CCL,Jharkhand,RAMGARH,S.K.Coalfields,Barka-Sayal,OC,1.009,Opencast,4.168157205240175,7.919370943015163,229,-0.39891516990077763,0,9.97287924751944,Normal,Lower than peer average
+SD OC Mine,CCL,Jharkhand,BOKARO,E. Bokaro,Dhori Area,OC,1.581,Opencast,4.168157205240175,7.919370943015163,229,-0.3266872108727312,0,8.16718027181828,Normal,Lower than peer average
+Sendra Bansjora,BCCL,Jharkhand,DHANBAD,Jharia,Sijua,OC,0.601,Opencast,4.168157205240175,7.919370943015163,229,-0.4504344134033002,0,11.260860335082505,Normal,Lower than peer average
+Shampur B,ECL,Jharkhand,DHANBAD,Mugma/Salanpur,Mugma,UG,0.049,Underground,0.2080848484848485,0.3309294635266063,165,-0.4807213198532813,0,12.018032996332034,Normal,Lower than peer average
+Shanthi Khani,SCCL,Telangana,MANCHERIAL,Godavari Valley,Mandamari,UG,0.09,Underground,0.2080848484848485,0.3309294635266063,165,-0.35682784852837574,0,8.920696213209393,Normal,Lower than peer average
+Sharda Highwall,SECL,Madhya Pradesh,SHAHDOL,Central India,Sohagpur,UG,0.711,Underground,0.2080848484848485,0.3309294635266063,165,1.5197049732464143,0,37.99262433116036,Normal,Higher than peer average
+Sharda UG,WCL,Madhya Pradesh,CHHINDWARA,Pench & Kanhan,Kanhan,UG,0.035,Underground,0.2080848484848485,0.3309294635266063,165,-0.5230264076227613,0,13.075660190569034,Normal,Lower than peer average
+Shivani,SECL,Chhattisgarh,SURGUJA,Central India,Bhatgaon,UG,0.233,Underground,0.2080848484848485,0.3309294635266063,165,0.07528840511702686,0,1.8822101279256716,Normal,Higher than peer average
+Shyam Sundarpur Colliery,ECL,West Bengal,Bardhaman,Raniganj,Bankola,UG,0.72,Underground,0.2080848484848485,0.3309294635266063,165,1.5469011010982228,0,38.67252752745557,Normal,Higher than peer average
+Sial Ghogri Coal Mine,RCCPL,Madhya Pradesh,CHHINDWARA,Pench- Kanhan,Sial Ghogri,UG,0.329,Underground,0.2080848484848485,0.3309294635266063,165,0.3653804355363181,0,9.134510888407952,Normal,Higher than peer average
+Siarmal OCP,MCL,Odisha,SUNDARGARH,IB Valley,Mahalaxmi,OC,7.244,Opencast,4.168157205240175,7.919370943015163,229,0.38839483803605634,0,9.709870950901408,Normal,Higher than peer average
+Siduli Colliery,ECL,West Bengal,Bardhaman,Raniganj,Kenda,Mixed,0.051,Mixed,0.6418571428571429,1.2806088009610512,14,-0.46138769498829435,0,11.534692374707358,Normal,Lower than peer average
+Sijua Colliery,TSL,Jharkhand,DHANBAD,Jharia,Sijua,UG,0.246,Underground,0.2080848484848485,0.3309294635266063,165,0.1145717009029725,0,2.8642925225743125,Normal,Higher than peer average
+Sikni OC Mine,JSMDCL,Jharkhand,LATEHAR,Auranga,Sikni,OC,0.336,Opencast,4.168157205240175,7.919370943015163,229,-0.4838966671488112,0,12.097416678720279,Normal,Lower than peer average
+Silewara Colliery,WCL,Maharashtra,NAGPUR,Kamptee/Silewara,Nagpur,UG,0.069,Underground,0.2080848484848485,0.3309294635266063,165,-0.42028548018259565,0,10.50713700456489,Normal,Lower than peer average
+Singhali Colliery,SECL,Chhattisgarh,KORBA,Central India,Korba,UG,0.13,Underground,0.2080848484848485,0.3309294635266063,165,-0.23595616918700438,0,5.898904229675109,Normal,Lower than peer average
+Singori OC,WCL,Maharashtra,NAGPUR,Kamptee/Silewara,Nagpur,OC,1.2,Opencast,4.168157205240175,7.919370943015163,229,-0.37479709267288097,0,9.369927316822025,Normal,Lower than peer average
+Sirka,CCL,Jharkhand,RAMGARH,S.K.Coalfields,Argada,OC,0.116,Opencast,4.168157205240175,7.919370943015163,229,-0.5116766513903676,0,12.79191628475919,Normal,Lower than peer average
+Sonepur Bazari Project OCM,ECL,West Bengal,Bardhaman,Raniganj,Sonepur-Bazari,OC,12.374,Opencast,4.168157205240175,7.919370943015163,229,1.0361735614868917,0,25.904339037172292,Normal,Higher than peer average
+South Samla,ECL,West Bengal,Bardhaman,Raniganj,Pandaveswar,UG,0.033,Underground,0.2080848484848485,0.3309294635266063,165,-0.5290699915898299,0,13.226749789745748,Normal,Lower than peer average
+Srirampur OC,SCCL,Telangana,MANCHERIAL,Godavari Valley,Srirampur,OC,3.173,Opencast,4.168157205240175,7.919370943015163,229,-0.12566114308837845,0,3.141528577209461,Normal,Lower than peer average
+"Srirampur-1, Incline",SCCL,Telangana,MANCHERIAL,Godavari Valley,Srirampur,UG,0.114,Underground,0.2080848484848485,0.3309294635266063,165,-0.2843048409235529,0,7.107621023088822,Normal,Lower than peer average
+Srirampur-3 & 3A Incline,SCCL,Telangana,MANCHERIAL,Godavari Valley,Srirampur,UG,0.23,Underground,0.2080848484848485,0.3309294635266063,165,0.066223029166424,0,1.6555757291606001,Normal,Higher than peer average
+Suliyari,APMDCL,Madhya Pradesh,SINGRAULI,Singrauli,Suliyari,OC,5.0,Opencast,4.168157205240175,7.919370943015163,229,0.1050389987721822,0,2.625974969304555,Normal,Higher than peer average
+Tadicherla 1 OCM,TGGENCO,Telangana,JAYASHANKAR BHUPALPALLY,Godavari Valley,Tadicherla 1,OC,2.5,Opencast,4.168157205240175,7.919370943015163,229,-0.21064264033641203,0,5.2660660084103,Normal,Lower than peer average
+Takli Jena Bellora,AIPL,Maharashtra,CHANDRAPUR,Wardha,Wardha,OC,0.085,Opencast,4.168157205240175,7.919370943015163,229,-0.515591103715314,0,12.88977759288285,Normal,Lower than peer average
+Talabira II & III,NLCIL,Odisha,SAMBALPUR,IB Valley,Neyvelli Lignite Field,OC,12.641,Opencast,4.168157205240175,7.919370943015163,229,1.0698883605436895,0,26.747209013592236,Normal,Higher than peer average
+Talaipalli Coal Mine,NTPC,Chhattisgarh,RAIGARH,Mand-Raigarh,Talaipalli,OC,7.543,Opencast,4.168157205240175,7.919370943015163,229,0.42615036207344426,0,10.653759051836106,Normal,Higher than peer average
+Tandsi,WCL,Madhya Pradesh,CHHINDWARA,Pench & Kanhan,Kanhan,UG,0.036,Underground,0.2080848484848485,0.3309294635266063,165,-0.5200046156392271,0,13.000115390980676,Normal,Lower than peer average
+Tapin North,CCL,Jharkhand,RAMGARH,W.Bokaro,Hazaribagh,OC,2.216,Opencast,4.168157205240175,7.919370943015163,229,-0.2465040745391483,0,6.162601863478708,Normal,Lower than peer average
+Tapin South,CCL,Jharkhand,HAZARIBAGH,W.Bokaro,Hazaribagh,OC,1.43,Opencast,4.168157205240175,7.919370943015163,229,-0.3457543818748904,0,8.64385954687226,Normal,Lower than peer average
+Tara(E&W),WBPDCL,West Bengal,BIRBHUM,Raniganj,Gangaramchak,OC,0.109,Opencast,4.168157205240175,7.919370943015163,229,-0.5125605599798715,0,12.814013999496787,Normal,Lower than peer average
+Tarmi,CCL,Jharkhand,BOKARO,E. Bokaro,Dhori Area,OC,0.283,Opencast,4.168157205240175,7.919370943015163,229,-0.4905891178979134,0,12.264727947447835,Normal,Lower than peer average
+Tasra Colliery,SAIL,Jharkhand,DHANBAD,Jharia,Tasra,OC,0.333,Opencast,4.168157205240175,7.919370943015163,229,-0.4842754851157415,0,12.106887127893536,Normal,Lower than peer average
+Tawa Mine,WCL,Madhya Pradesh,BETUL,Pathakhera,Pathakhera,UG,0.283,Underground,0.2080848484848485,0.3309294635266063,165,0.22637800429374094,0,5.659450107343524,Normal,Higher than peer average
+Tawa-II,WCL,Madhya Pradesh,BETUL,Pathakhera,Pathakhera,UG,0.415,Underground,0.2080848484848485,0.3309294635266063,165,0.6252545461202664,0,15.63136365300666,Normal,Higher than peer average
+Tetaria Khar,CCL,Jharkhand,LATEHAR,N.K.Coalfields,Rajhara,OC,1.032,Opencast,4.168157205240175,7.919370943015163,229,-0.3960108988209785,0,9.900272470524463,Normal,Lower than peer average
+Tetulmari,BCCL,Jharkhand,DHANBAD,Jharia,Sijua,OC,0.318,Opencast,4.168157205240175,7.919370943015163,229,-0.48616957495039304,0,12.154239373759825,Normal,Lower than peer average
+Tikak Colliery,NEC,Assam,TINSUKIA,Makum,Margherita,OC,0.2,Opencast,4.168157205240175,7.919370943015163,229,-0.5010697483163187,0,12.526743707907967,Normal,Lower than peer average
+Tilaboni Colliery,ECL,West Bengal,Bardhaman,Raniganj,Bankola,UG,0.122,Underground,0.2080848484848485,0.3309294635266063,165,-0.2601305050552787,0,6.503262626381967,Normal,Lower than peer average
+Topa Marginal Scheme,CCL,Jharkhand,RAMGARH,W.Bokaro,Kuju,OC,0.823,Opencast,4.168157205240175,7.919370943015163,229,-0.422401883850457,0,10.560047096261425,Normal,Lower than peer average
+Trans Damodar Coal Mine,DPL,West Bengal,PASCHIM BARDHAMAN,Raniganj,Kasta,OC,1.0,Opencast,4.168157205240175,7.919370943015163,229,-0.40005162380156856,0,10.001290595039213,Normal,Lower than peer average
+Ukni OC,WCL,Maharashtra,YAVATMAL,Wardha Valley,Wani North,OC,1.839,Opencast,4.168157205240175,7.919370943015163,229,-0.29410886571672434,0,7.352721642918109,Normal,Lower than peer average
+Umaria,SECL,Madhya Pradesh,UMARIA,Central India,Johilla,UG,0.117,Underground,0.2080848484848485,0.3309294635266063,165,-0.27523946497295004,0,6.880986624323751,Normal,Lower than peer average
+Umrer OC Mine,WCL,Maharashtra,NAGPUR,Umrer,Umrer,OC,3.11,Opencast,4.168157205240175,7.919370943015163,229,-0.13361632039391505,0,3.3404080098478763,Normal,Lower than peer average
+Urdhan,WCL,Madhya Pradesh,CHHINDWARA,Pench & Kanhan,Pench,OC,0.7,Opencast,4.168157205240175,7.919370943015163,229,-0.4379334204945998,0,10.948335512364995,Normal,Lower than peer average
+Urimari,CCL,Jharkhand,HAZARIBAGH,S.K.Coalfields,Barka-Sayal,UG,0.0,Underground,0.2080848484848485,0.3309294635266063,165,-0.6287891270464613,0,15.719728176161532,Normal,Lower than peer average
+Urimari,CCL,Jharkhand,HAZARIBAGH,S.K.Coalfields,Barka-Sayal,OC,0.791,Opencast,4.168157205240175,7.919370943015163,229,-0.426442608831047,0,10.661065220776175,Normal,Lower than peer average
+Utkal C Coal Mine,JSPL,Odisha,Angul,Talchar,Angul,OC,1.027,Opencast,4.168157205240175,7.919370943015163,229,-0.39664226209919573,0,9.916056552479894,Normal,Lower than peer average
+Utkal D,NALCO,Odisha,Angul,Talchar,Utkal D,OC,2.0,Opencast,4.168157205240175,7.919370943015163,229,-0.27377896815813085,0,6.844474203953271,Normal,Lower than peer average
+Vakilpalli,SCCL,Telangana,PEDDAPALLI,Godavari Valley,Ramagundam-II,UG,0.35,Underground,0.2080848484848485,0.3309294635266063,165,0.42883806719053796,0,10.720951679763449,Normal,Higher than peer average
+Vijay West,SECL,Chhattisgarh,KORBA,Central India,Chirimiri,UG,0.5,Underground,0.2080848484848485,0.3309294635266063,165,0.8821068647206805,0,22.052671618017012,Normal,Higher than peer average
+Vindhya,SECL,Madhya Pradesh,UMARIA,Central India,Johilla,UG,0.465,Underground,0.2080848484848485,0.3309294635266063,165,0.7763441452969808,0,19.40860363242452,Normal,Higher than peer average
+Vishnupuri-II,WCL,Madhya Pradesh,CHHINDWARA,Pench & Kanhan,Pench,UG,0.085,Underground,0.2080848484848485,0.3309294635266063,165,-0.37193680844604715,0,9.298420211151178,Normal,Lower than peer average
+West Bokaro OC (Quarry-E & SE),TSL,Jharkhand,HAZARIBAGH,West Bokaro,West Bokaro,OC,5.081,Opencast,4.168157205240175,7.919370943015163,229,0.1152670838793007,0,2.8816770969825174,Normal,Higher than peer average
+West Bokaro OC Quarry-AB,TSL,Jharkhand,HAZARIBAGH,West Bokaro,West Bokaro,OC,0.328,Opencast,4.168157205240175,7.919370943015163,229,-0.4849068483939587,0,12.122671209848967,Normal,Lower than peer average
+West Jhagrakhand,SECL,Chhattisgarh,KOREA,Central India,Hasdeo,UG,0.082,Underground,0.2080848484848485,0.3309294635266063,165,-0.38100218439665,0,9.52505460991625,Normal,Lower than peer average

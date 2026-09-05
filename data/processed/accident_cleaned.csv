@@ -1,0 +1,59 @@
+Sl. No.,Year,State,Number of Fatal accident,Number of Serious accident,Total Accidents
+1,2018,Chhattisgarh,11,6,17
+2,2018,Gujarat,1,1,2
+3,2018,Jharkhand,9,14,23
+4,2018,Madhya Pradesh,7,17,24
+5,2018,Maharashtra,2,11,13
+6,2018,Orissa,8,2,10
+8,2018,Tamil Nadu,1,0,1
+7,2018,Telangana,8,207,215
+9,2018,Uttar Pradesh,1,0,1
+10,2018,West Bengal,1,8,9
+11,2019,Chhattisgarh,7,10,17
+12,2019,Jharkhand,11,7,18
+13,2019,Madhya Pradesh,3,8,11
+14,2019,Maharashtra,3,12,15
+15,2019,Orissa,7,2,9
+16,2019,Rajasthan,1,0,1
+18,2019,Tamil Nadu,1,0,1
+17,2019,Telangana,8,143,151
+19,2019,Uttar Pradesh,2,0,2
+20,2019,West Bengal,8,11,19
+21,2020,Chhattisgarh,12,5,17
+22,2020,Gujarat,0,1,1
+23,2020,Jharkhand,8,11,19
+24,2020,Madhya Pradesh,4,5,9
+25,2020,Maharashtra,4,4,8
+26,2020,Orissa,5,2,7
+27,2020,Telangana,9,80,89
+28,2020,Uttar Pradesh,0,2,2
+29,2020,West Bengal,6,8,14
+30,2021,Chhattisgarh,5,10,15
+31,2021,Jharkhand,7,15,22
+32,2021,Madhya Pradesh,7,16,23
+33,2021,Maharashtra,4,5,9
+34,2021,Orissa,2,3,5
+36,2021,Tamil Nadu,0,1,1
+35,2021,Telangana,7,127,134
+37,2021,Uttar Pradesh,1,1,2
+38,2021,West Bengal,10,10,20
+39,2022,Andhra Pradesh,0,1,1
+40,2022,Chhattisgarh,4,19,23
+41,2022,Jharkhand,7,16,23
+42,2022,Madhya Pradesh,6,18,24
+43,2022,Maharashtra,0,8,8
+44,2022,Orissa,0,4,4
+45,2022,Rajasthan,0,1,1
+47,2022,Tamil Nadu,0,1,1
+46,2022,Telangana,5,101,106
+48,2022,Uttar Pradesh,0,1,1
+49,2022,West Bengal,2,9,11
+57,2023,Assam,0,0,0
+54,2023,Chhattisgarh,2,11,13
+51,2023,Jharkhand,8,3,11
+52,2023,Madhya Pradesh,2,5,7
+55,2023,Maharashtra,2,2,4
+56,2023,Odisha,6,0,6
+58,2023,Telangana,5,59,64
+53,2023,Uttar Pradesh,1,6,7
+50,2023,West Bengal,4,3,7
