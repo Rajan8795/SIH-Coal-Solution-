@@ -15,7 +15,10 @@ PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
 caaqms_path = DATA_DIR / "CAAQMS Data.csv"
 
-df = pd.read_csv(caaqms_path, encoding="latin1")
+df = pd.read_csv(
+    caaqms_path,
+    encoding="latin1"
+)
 
 print("Original shape:", df.shape)
 
@@ -63,7 +66,10 @@ pollution_columns = [
 ]
 
 for column in pollution_columns:
-    df[column] = pd.to_numeric(df[column], errors="coerce")
+    df[column] = pd.to_numeric(
+        df[column],
+        errors="coerce"
+    )
 
 
 # =========================
@@ -87,219 +93,10 @@ df["Date"] = df["Record time"].dt.date
 
 output_path = PROCESSED_DIR / "caaqms_cleaned.csv"
 
-df.to_csv(output_path, index=False)
+df.to_csv(
+    output_path,
+    index=False
+)
 
 print("\nCleaned CAAQMS shape:", df.shape)
 print("Saved to:", output_path)
-
-
-
-# =========================
-# 2. LOAD PRODUCTION DATA
-# =========================
-
-production_path = DATA_DIR / "RS_Session_266_AU_2269_2.csv"
-
-production_df = pd.read_csv(
-    production_path,
-    encoding="latin1"
-)
-
-print("\n\n" + "=" * 80)
-print("PRODUCTION DATA")
-print("=" * 80)
-
-print("Original shape:", production_df.shape)
-
-
-# =========================
-# REMOVE EXACT DUPLICATES
-# =========================
-
-print("Duplicate rows:", production_df.duplicated().sum())
-
-production_df = production_df.drop_duplicates().copy()
-
-print("Shape after removing duplicates:", production_df.shape)
-
-
-# =========================
-# REMOVE AGGREGATE ROW
-# =========================
-
-aggregate_rows = (
-    production_df["Producing Mine"]
-    .str.strip()
-    .eq("All India Total Production")
-)
-
-print("Aggregate rows:", aggregate_rows.sum())
-
-production_df = production_df[~aggregate_rows].copy()
-
-
-# =========================
-# CONVERT PRODUCTION TO NUMERIC
-# =========================
-
-production_df["Production (in MT)"] = pd.to_numeric(
-    production_df["Production (in MT)"],
-    errors="coerce"
-)
-
-
-# =========================
-# CHECK MISSING VALUES
-# =========================
-
-print("\nMissing values:")
-print(production_df.isnull().sum())
-
-
-# =========================
-# SAVE CLEANED DATA
-# =========================
-
-production_output = PROCESSED_DIR / "production_cleaned.csv"
-
-production_df.to_csv(
-    production_output,
-    index=False
-)
-
-print("\nCleaned production shape:", production_df.shape)
-print("Saved to:", production_output)
-
-
-# =========================
-# 3. LOAD ACCIDENT DATA
-# =========================
-
-accident_path = DATA_DIR / "RS_Session_262_AU_48_A.csv"
-
-accident_df = pd.read_csv(
-    accident_path,
-    encoding="latin1"
-)
-
-print("\n\n" + "=" * 80)
-print("ACCIDENT DATA")
-print("=" * 80)
-
-print("Original shape:", accident_df.shape)
-
-
-# =========================
-# REMOVE TOTAL ROWS
-# =========================
-
-total_rows = (
-    accident_df["State"]
-    .str.strip()
-    .eq("Total")
-)
-
-print("Total/aggregate rows:", total_rows.sum())
-
-accident_df = accident_df[~total_rows].copy()
-
-
-# =========================
-# CONVERT ACCIDENT COUNTS
-# =========================
-
-accident_df["Number of Fatal accident"] = pd.to_numeric(
-    accident_df["Number of Fatal accident"],
-    errors="coerce"
-)
-
-accident_df["Number of Serious accident"] = pd.to_numeric(
-    accident_df["Number of Serious accident"],
-    errors="coerce"
-)
-
-
-# =========================
-# CHECK MISSING VALUES
-# =========================
-
-print("\nMissing values:")
-print(accident_df.isnull().sum())
-
-
-# =========================
-# SAVE CLEANED DATA
-# =========================
-
-accident_output = PROCESSED_DIR / "accidents_cleaned.csv"
-
-accident_df.to_csv(
-    accident_output,
-    index=False
-)
-
-print("\nCleaned accident shape:", accident_df.shape)
-print("Saved to:", accident_output)
-
-
-# =========================
-# 4. LOAD FATALITIES DATA
-# =========================
-
-fatalities_path = DATA_DIR / "RS_Session_267_AU_1866_C.csv"
-
-fatalities_df = pd.read_csv(
-    fatalities_path,
-    encoding="latin1"
-)
-
-print("\n\n" + "=" * 80)
-print("FATALITIES DATA")
-print("=" * 80)
-
-print("Original shape:", fatalities_df.shape)
-
-
-# =========================
-# CHECK DUPLICATES
-# =========================
-
-print("Duplicate rows:", fatalities_df.duplicated().sum())
-
-
-# =========================
-# CONVERT COLUMNS TO NUMERIC
-# =========================
-
-fatalities_df["Year-wise"] = pd.to_numeric(
-    fatalities_df["Year-wise"],
-    errors="coerce"
-)
-
-fatalities_df["Fatalities"] = pd.to_numeric(
-    fatalities_df["Fatalities"],
-    errors="coerce"
-)
-
-
-# =========================
-# CHECK MISSING VALUES
-# =========================
-
-print("\nMissing values:")
-print(fatalities_df.isnull().sum())
-
-
-# =========================
-# SAVE CLEANED DATA
-# =========================
-
-fatalities_output = PROCESSED_DIR / "fatalities_cleaned.csv"
-
-fatalities_df.to_csv(
-    fatalities_output,
-    index=False
-)
-
-print("\nCleaned fatalities shape:", fatalities_df.shape)
-print("Saved to:", fatalities_output)
