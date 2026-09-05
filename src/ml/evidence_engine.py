@@ -1,4 +1,3 @@
-
 import pandas as pd
 from pathlib import Path
 
@@ -8,6 +7,7 @@ from pathlib import Path
 # =========================================================
 
 MAPPING_PATH = Path("data/processed/mine_mapping.csv")
+MASTER_PATH = Path("data/processed/mine_master.csv")
 ENV_PATH = Path("data/processed/anomaly_detection.csv")
 PRODUCTION_PATH = Path("data/processed/production_analysis.csv")
 
@@ -19,13 +19,14 @@ OUTPUT_PATH = Path("data/processed/evidence_engine.csv")
 # =========================================================
 
 mapping = pd.read_csv(MAPPING_PATH)
+master = pd.read_csv(MASTER_PATH)
 environmental = pd.read_csv(ENV_PATH)
 production = pd.read_csv(PRODUCTION_PATH)
 
 mapping.columns = mapping.columns.str.strip()
+master.columns = master.columns.str.strip()
 environmental.columns = environmental.columns.str.strip()
 production.columns = production.columns.str.strip()
-
 
 # =========================================================
 # BASIC VALIDATION
@@ -99,18 +100,14 @@ environmental_summary = (
     .reset_index()
 )
 
-environmental_summary[
-    "Environmental_Anomaly_Rate"
-] = (
+environmental_summary["Environmental_Anomaly_Rate"] = (
     environmental_summary["Environmental_Anomaly_Count"]
     /
     environmental_summary["Environmental_Observations"]
     * 100
 )
 
-environmental_summary[
-    "Environmental_Available"
-] = 1
+environmental_summary["Environmental_Available"] = 1
 
 
 print("\nEnvironmental summary created:")
@@ -128,30 +125,11 @@ print(
 # =========================================================
 # 2. CAAQMS VERIFIED MAPPING
 # =========================================================
-#
-# Source name:
-#
-# M/s Dipka Expansion Project ...
-#             ↓
-#          Dipka
-#
-# SECL GEVRA
-#      ↓
-#    Gevra
-#
-# AQMS_H_Q
-#      ↓
-#   unmatched
-#
-# Only VERIFIED mappings are used.
-#
-# =========================================================
 
 caaqms_mapping = mapping[
     (mapping["Source"] == "CAAQMS") &
     (mapping["Mapping_Status"] == "Verified")
 ].copy()
-
 
 caaqms_mapping = caaqms_mapping[
     [
@@ -179,18 +157,6 @@ environmental_evidence = environmental_summary.merge(
     how="inner"
 )
 
-
-# IMPORTANT:
-# After merge:
-#
-# environmental_summary["Mine Name"]
-# = CAAQMS source name
-#
-# Master identity:
-# Master_Mine_Name
-#
-# Therefore explicitly rename it.
-
 environmental_evidence = (
     environmental_evidence
     .rename(
@@ -201,9 +167,6 @@ environmental_evidence = (
         }
     )
 )
-
-
-# Keep only the fields we need.
 
 environmental_evidence = environmental_evidence[
     [
@@ -238,36 +201,23 @@ production_summary = production[
     ]
 ].copy()
 
-
 production_summary = production_summary.rename(
     columns={
-        "Producing Mine":
-            "Production_Source_Name",
-
-        "Production_ZScore":
-            "Operational_ZScore",
-
+        "Producing Mine": "Production_Source_Name",
+        "Production_ZScore": "Operational_ZScore",
         "Absolute_Production_ZScore":
             "Operational_Absolute_ZScore",
-
-        "Production_Anomaly":
-            "Operational_Anomaly",
-
+        "Production_Anomaly": "Operational_Anomaly",
         "Production_Anomaly_Category":
             "Operational_Anomaly_Category",
-
         "Production_Anomaly_Reason":
             "Operational_Anomaly_Reason",
-
         "Latest_Production_Change":
             "Operational_Change"
     }
 )
 
-
-production_summary[
-    "Operational_Available"
-] = (
+production_summary["Operational_Available"] = (
     production_summary["Data_Sufficient"]
     .fillna(False)
     .astype(bool)
@@ -278,52 +228,31 @@ production_summary[
 # =========================================================
 # 5. PRODUCTION MAPPING
 # =========================================================
-#
-# We DO NOT use all Matched_Review records.
-#
-# Only:
-#
-#   Verified
-#   OR
-#   high-confidence Contextual_Fuzzy
-#
-# Possible matches are excluded.
-#
-# =========================================================
 
 production_mapping = mapping[
     mapping["Source"] == "Production"
 ].copy()
 
-
 if "Match_Score" in production_mapping.columns:
-
     production_mapping["Match_Score"] = pd.to_numeric(
         production_mapping["Match_Score"],
         errors="coerce"
     )
-
 else:
-
     production_mapping["Match_Score"] = 0
 
-
 if "Score_Gap" in production_mapping.columns:
-
     production_mapping["Score_Gap"] = pd.to_numeric(
         production_mapping["Score_Gap"],
         errors="coerce"
     )
-
 else:
-
     production_mapping["Score_Gap"] = 0
 
 
 verified_production = production_mapping[
     production_mapping["Mapping_Status"] == "Verified"
 ].copy()
-
 
 contextual_production = production_mapping[
     (production_mapping["Match_Type"] == "Contextual_Fuzzy") &
@@ -340,7 +269,6 @@ reliable_production_mapping = pd.concat(
     ignore_index=True
 )
 
-
 reliable_production_mapping = (
     reliable_production_mapping[
         [
@@ -352,16 +280,12 @@ reliable_production_mapping = (
     .drop_duplicates()
 )
 
-
 reliable_production_mapping = (
     reliable_production_mapping
     .rename(
         columns={
-            "Master_Mine_Name":
-                "Mine Name",
-
-            "Match_Type":
-                "Production_Match_Type"
+            "Master_Mine_Name": "Mine Name",
+            "Match_Type": "Production_Match_Type"
         }
     )
 )
@@ -384,7 +308,6 @@ production_evidence = production_summary.merge(
     how="inner"
 )
 
-
 production_evidence = production_evidence[
     [
         "Mine Name",
@@ -405,11 +328,6 @@ production_evidence = production_evidence[
 # =========================================================
 # 7. ONE PRODUCTION RECORD PER MASTER MINE
 # =========================================================
-#
-# If multiple source records map to the same master mine,
-# keep the strongest operational signal.
-#
-# =========================================================
 
 production_evidence = (
     production_evidence
@@ -427,14 +345,41 @@ production_evidence = (
 # =========================================================
 # 8. COMBINE ENVIRONMENTAL + OPERATIONAL
 # =========================================================
+# =========================================================
+# 8. COMBINE MASTER + ENVIRONMENTAL + OPERATIONAL
+# =========================================================
 
-combined = pd.merge(
-    environmental_evidence,
-    production_evidence,
-    on="Mine Name",
-    how="outer"
+# Master mine list is the base.
+# Every unique master mine must be preserved,
+# even when no evidence is currently available.
+
+master_mines = (
+    master[["Mine Name"]]
+    .drop_duplicates()
+    .copy()
 )
 
+combined = master_mines.merge(
+    environmental_evidence,
+    on="Mine Name",
+    how="left"
+)
+
+combined = combined.merge(
+    production_evidence,
+    on="Mine Name",
+    how="left"
+)
+
+print(
+    "\nMaster unique mines:",
+    len(master_mines)
+)
+
+print(
+    "Combined master mine records:",
+    len(combined)
+)
 
 # =========================================================
 # 9. AVAILABILITY FLAGS
@@ -454,7 +399,24 @@ combined["Operational_Available"] = (
 
 
 # =========================================================
-# 10. EVIDENCE STATUS
+# 10. SAFETY LIMITATION
+# =========================================================
+#
+# Current accident dataset is state/year level.
+# Therefore it is NOT assigned to individual mines.
+#
+# Safety evidence is explicitly marked unavailable.
+# =========================================================
+
+combined["Safety_Evidence_Available"] = 0
+
+combined["Safety_Evidence_Status"] = (
+    "Mine-level safety evidence unavailable"
+)
+
+
+# =========================================================
+# 11. EVIDENCE STATUS
 # =========================================================
 
 def evidence_status(row):
@@ -481,7 +443,7 @@ combined["Evidence_Status"] = combined.apply(
 
 
 # =========================================================
-# 11. EVIDENCE COUNT
+# 12. EVIDENCE COUNT
 # =========================================================
 
 combined["Evidence_Count"] = (
@@ -492,20 +454,21 @@ combined["Evidence_Count"] = (
 
 
 # =========================================================
-# 12. EVIDENCE COVERAGE
+# 13. EVIDENCE COVERAGE
+# =========================================================
+#
+# Coverage is calculated over the two currently usable
+# mine-level evidence domains:
+#
+# Environmental
+# Operational
+#
+# Safety is unavailable and therefore is not treated
+# as missing negative evidence.
 # =========================================================
 
 combined["Evidence_Coverage"] = (
     combined["Evidence_Count"] / 2 * 100
-)
-
-
-# =========================================================
-# 13. SAFETY LIMITATION
-# =========================================================
-
-combined["Safety_Evidence_Status"] = (
-    "Mine-level safety evidence unavailable"
 )
 
 
@@ -526,7 +489,6 @@ numeric_columns = [
     "Evidence_Coverage"
 ]
 
-
 for column in numeric_columns:
 
     if column in combined.columns:
@@ -542,6 +504,7 @@ for column in numeric_columns:
 # =========================================================
 
 final_columns = [
+
     "Mine Name",
 
     # Environmental
@@ -573,10 +536,12 @@ final_columns = [
     "Evidence_Status",
 
     # Safety
+    "Safety_Evidence_Available",
     "Safety_Evidence_Status"
 ]
 
 
+# Keep only columns that actually exist
 final_columns = [
     column
     for column in final_columns
@@ -590,7 +555,35 @@ final_df = combined[
 
 
 # =========================================================
-# 16. SAVE
+# 16. FINAL VALIDATION
+# =========================================================
+
+required_output_columns = [
+    "Mine Name",
+    "Environmental_Available",
+    "Operational_Available",
+    "Safety_Evidence_Available",
+    "Evidence_Count",
+    "Evidence_Coverage",
+    "Evidence_Status",
+    "Safety_Evidence_Status"
+]
+
+missing_output_columns = [
+    col
+    for col in required_output_columns
+    if col not in final_df.columns
+]
+
+if missing_output_columns:
+    raise KeyError(
+        "Final evidence output is missing columns: "
+        f"{missing_output_columns}"
+    )
+
+
+# =========================================================
+# 17. SAVE
 # =========================================================
 
 OUTPUT_PATH.parent.mkdir(
@@ -605,7 +598,7 @@ final_df.to_csv(
 
 
 # =========================================================
-# 17. FINAL SUMMARY
+# 18. FINAL SUMMARY
 # =========================================================
 
 print("\n========================================")
@@ -642,7 +635,7 @@ print(
 
 
 # =========================================================
-# 18. IMPORTANT MINE CHECK
+# 19. IMPORTANT MINE CHECK
 # =========================================================
 
 print("\n========================================")
@@ -653,7 +646,6 @@ important_mines = [
     "Dipka",
     "Gevra"
 ]
-
 
 important = final_df[
     final_df["Mine Name"].isin(important_mines)
@@ -669,6 +661,7 @@ if len(important) > 0:
         "Operational_ZScore",
         "Environmental_Available",
         "Operational_Available",
+        "Safety_Evidence_Available",
         "Evidence_Coverage",
         "Evidence_Status"
     ]
@@ -691,4 +684,3 @@ print(
     f"Saved to: {OUTPUT_PATH}"
 )
 print("========================================")
-
