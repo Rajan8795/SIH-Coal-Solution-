@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ASSETS } from '../data/mockData';
-import { NavigationTab } from '../types';
+import { Mine, NavigationTab } from '../types';
 
 type InspectionStatus =
   | 'Scheduled'
@@ -26,6 +26,7 @@ interface Inspection {
   id: string;
   inspectionId: string;
   mine: string;
+  mineId: string;
   location: string;
   sector: string;
   gpsText: string;
@@ -38,9 +39,25 @@ interface Inspection {
   status: InspectionStatus;
   requiredChecks: InspectionCheck[];
   notes?: string;
+  workflowType?: string;
+  // ML Fields from real mine dataset
+  riskScore?: number | null;
+  riskCategory?: string;
+  confidenceScore?: number | null;
+  evidenceStatus?: string;
+  evidenceCoverage?: number | null;
+  inspectionPriority?: string;
+  recommendation?: string;
+  environmentalAnomaly?: string;
+  environmentalAnomalyScore?: number | null;
+  environmentalRiskScore?: number | null;
+  riskDrivers?: string;
+  explanation?: string;
+  mappingStatus?: string;
 }
 
 interface InspectionsViewProps {
+  mines?: Mine[];
   onNavigate?: (tab: NavigationTab) => void;
   onStartInspection?: (inspection: Inspection) => void;
 }
@@ -56,102 +73,6 @@ const STATUS_FLOW: InspectionStatus[] = [
   'Closed',
 ];
 
-const MINES = [
-  'Jharia Main Colliery',
-  'Korba Deep Mine',
-  'Raniganj Eastern Block',
-  'Singrauli North Extension',
-];
-
-const MOCK_INSPECTIONS: Inspection[] = [
-  {
-    id: 'insp-001',
-    inspectionId: 'INSP-2024-001',
-    mine: 'Jharia Main Colliery',
-    location: 'Sector 4 - Conveyor Belt B',
-    sector: 'Sector 4',
-    gpsText: 'GPS: 23.7466° N, 86.4154° E',
-    type: 'Routine Safety Audit',
-    category: 'Safety',
-    inspector: 'Officer R. Sharma (DGMS Certified)',
-    scheduledDate: 'Oct 24, 2024',
-    dueDate: 'Oct 24, 2024',
-    riskLevel: 'High',
-    status: 'Finding Identified',
-    requiredChecks: [
-      { id: 'check-1', name: 'Safety gear inspection', completed: true },
-      { id: 'check-2', name: 'Conveyor belt tension check', completed: true },
-      { id: 'check-3', name: 'Dust suppression system', completed: true },
-      { id: 'check-4', name: 'Emergency escape route', completed: false },
-    ],
-    notes: 'Excessive coal dust accumulation noted near primary drive motor. Elevated temperatures observed during inspection.',
-  },
-  {
-    id: 'insp-002',
-    inspectionId: 'INSP-2024-002',
-    mine: 'Korba Deep Mine',
-    location: 'Ventilation Shaft 2 - Intake Fan',
-    sector: 'Shaft 2',
-    gpsText: 'GPS: 22.3595° N, 82.7501° E',
-    type: 'Ventilation Compliance Check',
-    category: 'Ventilation',
-    inspector: 'Officer V. Singh (Mechanical Inspector)',
-    scheduledDate: 'Oct 25, 2024',
-    dueDate: 'Oct 28, 2024',
-    riskLevel: 'High',
-    status: 'In Progress',
-    requiredChecks: [
-      { id: 'check-1', name: 'Airflow velocity measurement', completed: true },
-      { id: 'check-2', name: 'Ventilation shaft integrity', completed: false },
-      { id: 'check-3', name: 'Auxiliary fan inspection', completed: false },
-    ],
-    notes: 'Declining airflow velocity documented in Sector 4G during last inspection.',
-  },
-  {
-    id: 'insp-003',
-    inspectionId: 'INSP-2024-003',
-    mine: 'Raniganj Eastern Block',
-    location: 'Environmental Monitoring Station A',
-    sector: 'Station A',
-    gpsText: 'GPS: 23.6190° N, 87.0805° E',
-    type: 'Environmental Emissions Audit',
-    category: 'Environmental',
-    inspector: 'Officer S. Patel (Environmental Inspector)',
-    scheduledDate: 'Oct 26, 2024',
-    dueDate: 'Oct 30, 2024',
-    riskLevel: 'Medium',
-    status: 'Scheduled',
-    requiredChecks: [
-      { id: 'check-1', name: 'Particulate matter monitoring', completed: false },
-      { id: 'check-2', name: 'Water leachate sampling', completed: false },
-      { id: 'check-3', name: 'Noise level assessment', completed: false },
-      { id: 'check-4', name: 'Emissions filter inspection', completed: false },
-    ],
-    notes: '',
-  },
-  {
-    id: 'insp-004',
-    inspectionId: 'INSP-2024-004',
-    mine: 'Singrauli North Extension',
-    location: 'Longwall Shearer Unit 3',
-    sector: 'LW-3',
-    gpsText: 'GPS: 24.1981° N, 82.6684° E',
-    type: 'Equipment Mechanical Inspection',
-    category: 'Equipment',
-    inspector: 'Officer A. Kumar (Safety Lead)',
-    scheduledDate: 'Oct 20, 2024',
-    dueDate: 'Oct 22, 2024',
-    riskLevel: 'Low',
-    status: 'Closed',
-    requiredChecks: [
-      { id: 'check-1', name: 'Shearer drum wear', completed: true },
-      { id: 'check-2', name: 'Hydraulic system pressure', completed: true },
-      { id: 'check-3', name: 'Emergency stop function', completed: true },
-    ],
-    notes: 'All systems nominal. Emissions filters replaced and certified.',
-  },
-];
-
 const getRiskColor = (riskLevel: RiskLevel) => {
   if (riskLevel === 'High') return '#ba1a1a';
   if (riskLevel === 'Medium') return '#f59e0b';
@@ -164,153 +85,161 @@ const getRiskBadge = (riskLevel: RiskLevel) => {
   return 'bg-emerald-100 text-emerald-800';
 };
 
-  const getStatusBadge = (status: InspectionStatus) => {
-    switch (status) {
-      case 'Scheduled':
-        return 'bg-gray-100 text-gray-700 border border-gray-300';
-      case 'In Progress':
-        return 'bg-blue-100 text-blue-800 border border-blue-200';
-      case 'Evidence Captured':
-        return 'bg-purple-100 text-purple-800 border border-purple-200';
-      case 'AI Analysis':
-        return 'bg-indigo-100 text-indigo-800 border border-indigo-200';
-      case 'Finding Identified':
-        return 'bg-amber-100 text-amber-800 border border-amber-200';
-      case 'Corrective Action':
-        return 'bg-orange-100 text-orange-800 border border-orange-200';
-      case 'Resolved':
-        return 'bg-emerald-100 text-emerald-800 border border-emerald-200';
-      case 'Closed':
-        return 'bg-gray-200 text-gray-600 border border-gray-300';
-      default:
-        return 'bg-gray-100 text-gray-700 border border-gray-300';
-    }
-  };
+const getStatusBadge = (status: InspectionStatus) => {
+  switch (status) {
+    case 'Scheduled':
+      return 'bg-gray-100 text-gray-700 border border-gray-300';
+    case 'In Progress':
+      return 'bg-blue-100 text-blue-800 border border-blue-200';
+    case 'Evidence Captured':
+      return 'bg-purple-100 text-purple-800 border border-purple-200';
+    case 'AI Analysis':
+      return 'bg-indigo-100 text-indigo-800 border border-indigo-200';
+    case 'Finding Identified':
+      return 'bg-amber-100 text-amber-800 border border-amber-200';
+    case 'Corrective Action':
+      return 'bg-orange-100 text-orange-800 border border-orange-200';
+    case 'Resolved':
+      return 'bg-emerald-100 text-emerald-800 border border-emerald-200';
+    case 'Closed':
+      return 'bg-gray-200 text-gray-600 border border-gray-300';
+    default:
+      return 'bg-gray-100 text-gray-700 border border-gray-300';
+  }
+};
 
 export const InspectionsView: React.FC<InspectionsViewProps> = ({
+  mines = [],
   onNavigate,
   onStartInspection,
 }) => {
-  const [inspections, setInspections] = useState<Inspection[]>(MOCK_INSPECTIONS);
+  const [inspections, setInspections] = useState<Inspection[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [mineFilter, setMineFilter] = useState('all');
-  const [categoryFilter, setCategoryFilter] = useState('all');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [selectedMineDetail, setSelectedMineDetail] = useState<Mine | null>(null);
+  const [viewTab, setViewTab] = useState<'queue' | 'workflows'>('queue');
+
+  const [riskFilter, setRiskFilter] = useState('all');
+  const [priorityFilter, setPriorityFilter] = useState('all');
   const [searchFilter, setSearchFilter] = useState('');
-  const [showNewModal, setShowNewModal] = useState(false);
-  const [newInspection, setNewInspection] = useState({
-    mine: '',
-    type: '',
-    category: '',
-    inspector: '',
-    dueDate: '',
-    notes: '',
-  });
-  const [formErrors, setFormErrors] = useState<string[]>([]);
   const [toast, setToast] = useState<string | null>(null);
+
+  // Calculate top summary card counts directly from real 408 mine ML data
+  const urgentCount = mines.filter((m) => m.inspectionPriority === 'URGENT').length;
+  const highCount = mines.filter(
+    (m) =>
+      m.inspectionPriority === 'HIGH' ||
+      m.riskCategory === 'HIGH' ||
+      m.riskCategory === 'CRITICAL'
+  ).length;
+  const mediumCount = mines.filter(
+    (m) => m.inspectionPriority === 'MEDIUM' || m.riskCategory === 'MEDIUM'
+  ).length;
+  const lowCount = mines.filter(
+    (m) =>
+      m.inspectionPriority === 'LOW' ||
+      (!m.inspectionPriority && (m.riskCategory === 'LOW' || !m.riskCategory))
+  ).length;
+
+  // Sorting logic for Priority Queue:
+  // 1. Priority order: URGENT -> HIGH -> MEDIUM -> LOW
+  // 2. Within same priority level, sort by riskScore descending
+  const getPriorityRank = (p?: string, category?: string) => {
+    if (p === 'URGENT') return 1;
+    if (p === 'HIGH' || category === 'HIGH' || category === 'CRITICAL') return 2;
+    if (p === 'MEDIUM' || category === 'MEDIUM') return 3;
+    if (p === 'LOW' || category === 'LOW') return 4;
+    return 5;
+  };
+
+  const sortedRealMines = [...mines].sort((a, b) => {
+    const rankA = getPriorityRank(a.inspectionPriority, a.riskCategory);
+    const rankB = getPriorityRank(b.inspectionPriority, b.riskCategory);
+    if (rankA !== rankB) return rankA - rankB;
+    return (b.riskScore ?? 0) - (a.riskScore ?? 0);
+  });
+
+  const filteredRealMines = sortedRealMines.filter((mine) => {
+    if (riskFilter !== 'all' && mine.riskCategory !== riskFilter) return false;
+    if (priorityFilter !== 'all' && mine.inspectionPriority !== priorityFilter)
+      return false;
+    if (searchFilter) {
+      const q = searchFilter.toLowerCase();
+      const matchesName = mine.name.toLowerCase().includes(q);
+      const matchesId = mine.id.toLowerCase().includes(q);
+      const matchesLoc = mine.location ? mine.location.toLowerCase().includes(q) : false;
+      if (!matchesName && !matchesId && !matchesLoc) return false;
+    }
+    return true;
+  });
 
   const selectedInspection = selectedId
     ? inspections.find((i) => i.id === selectedId) || null
     : null;
 
-  const filtered = inspections.filter((item) => {
-    if (mineFilter !== 'all' && !item.mine.toLowerCase().includes(mineFilter.toLowerCase()))
-      return false;
-    if (categoryFilter !== 'all' && item.category !== categoryFilter) return false;
-    if (statusFilter !== 'all' && item.status !== statusFilter) return false;
-    if (
-      searchFilter &&
-      !item.inspectionId.toLowerCase().includes(searchFilter.toLowerCase()) &&
-      !item.mine.toLowerCase().includes(searchFilter.toLowerCase()) &&
-      !item.type.toLowerCase().includes(searchFilter.toLowerCase())
-    )
-      return false;
-    return true;
-  });
-
-  const scheduledCount = inspections.filter((i) => i.status === 'Scheduled').length;
-  const inProgressCount = inspections.filter(
-    (i) => i.status === 'In Progress' || i.status === 'Evidence Captured' || i.status === 'AI Analysis'
-  ).length;
-  const findingCount = inspections.filter((i) => i.status === 'Finding Identified' || i.status === 'Corrective Action').length;
-  const closedCount = inspections.filter((i) => i.status === 'Closed' || i.status === 'Resolved').length;
-
-  const handleStartInspection = (inspection: Inspection) => {
-    setInspections((prev) =>
-      prev.map((i) => (i.id === inspection.id ? { ...i, status: 'In Progress' } : i))
-    );
-    onStartInspection?.(inspection);
-  };
-
-  const handleViewDetails = (inspection: Inspection) => {
-    setSelectedId(inspection.id);
-  };
-
-  const handleBackToList = () => {
-    setSelectedId(null);
-  };
-
-  const handleOpenNewModal = () => {
-    setNewInspection({
-      mine: '',
-      type: '',
-      category: '',
-      inspector: '',
-      dueDate: '',
-      notes: '',
-    });
-    setFormErrors([]);
-    setShowNewModal(true);
-  };
-
-  const handleCloseNewModal = () => {
-    setShowNewModal(false);
-    setFormErrors([]);
-  };
-
-  const handleCreateInspection = () => {
-    const errors: string[] = [];
-    if (!newInspection.mine) errors.push('Mine is required');
-    if (!newInspection.type.trim()) errors.push('Inspection Type is required');
-    if (!newInspection.category) errors.push('Category is required');
-    if (!newInspection.inspector.trim()) errors.push('Inspector is required');
-    if (!newInspection.dueDate) errors.push('Due Date is required');
-
-    if (errors.length > 0) {
-      setFormErrors(errors);
-      return;
-    }
-
+  const handleStartRealMineInspection = (mine: Mine) => {
+    const nextNum = inspections.length + 1;
     const year = new Date().getFullYear();
-    const nextNumber =
-      inspections.length > 0
-        ? Math.max(...inspections.map((i) => parseInt(i.inspectionId.split('-')[2] || '0', 10))) + 1
-        : 1;
-    const inspectionId = `INSP-${year}-${String(nextNumber).padStart(3, '0')}`;
+    const inspectionId = `INSP-${year}-${String(nextNum).padStart(3, '0')}`;
 
-    const newEntry: Inspection = {
+    const recText =
+      typeof mine.aiRecommendation === 'string'
+        ? mine.aiRecommendation
+        : mine.aiRecommendation?.headline || 'Review Evidence';
+
+    const prototypeInspection: Inspection = {
       id: `insp-${Date.now()}`,
       inspectionId,
-      mine: newInspection.mine,
-      location: '',
-      sector: '',
-      gpsText: '',
-      type: newInspection.type,
-      category: newInspection.category as InspectionCategory,
-      inspector: newInspection.inspector,
-      scheduledDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      dueDate: newInspection.dueDate,
-      riskLevel: 'Medium',
+      mine: mine.name,
+      mineId: mine.mineId || mine.id,
+      location: mine.location || 'Location Unspecified',
+      sector: mine.area || mine.mineId || mine.id,
+      gpsText: mine.coordinates?.gpsText || 'GPS / sub-location data unavailable',
+      type: 'Recommended Inspection',
+      category: 'Safety',
+      inspector: 'Officer V. Singh (DGMS Certified)',
+      scheduledDate: new Date().toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      }),
+      dueDate: 'Targeted Dispatch',
+      riskLevel:
+        mine.riskCategory === 'HIGH' || mine.riskCategory === 'CRITICAL'
+          ? 'High'
+          : mine.riskCategory === 'MEDIUM'
+          ? 'Medium'
+          : 'Low',
       status: 'Scheduled',
-      requiredChecks: [],
-      notes: newInspection.notes || undefined,
+      requiredChecks: [
+        { id: 'c1', name: 'Operational & Production Verification', completed: false },
+        { id: 'c2', name: 'Environmental Evidence Audit', completed: false },
+        { id: 'c3', name: 'Contractor Compliance Record Check', completed: false },
+      ],
+      workflowType: 'Prototype Workflow',
+      notes: 'Initiated from AI Inspection Priority Queue.',
+      riskScore: mine.riskScore,
+      riskCategory: mine.riskCategory,
+      confidenceScore: mine.confidenceScore,
+      evidenceStatus: mine.evidenceStatus,
+      evidenceCoverage: mine.evidenceCoverage,
+      inspectionPriority: mine.inspectionPriority,
+      recommendation: recText,
+      riskDrivers: mine.riskDrivers,
+      explanation: mine.explanation,
+      environmentalAnomaly: mine.environmentalAnomaly,
+      environmentalAnomalyScore: mine.environmentalAnomalyScore,
+      environmentalRiskScore: mine.environmentalRiskScore,
+      mappingStatus: mine.mappingStatus,
     };
 
-    setInspections((prev) => [newEntry, ...prev]);
-    setShowNewModal(false);
-    setFormErrors([]);
-    setToast(`Inspection ${inspectionId} created successfully.`);
-    setTimeout(() => setToast(null), 3000);
+    setInspections((prev) => [prototypeInspection, ...prev]);
+    setSelectedMineDetail(null);
+    setToast(`Prototype Workflow started for ${mine.name} (${mine.mineId || mine.id})`);
+
+    // Connect directly to Field Operations workflow
+    onStartInspection?.(prototypeInspection);
+
+    setTimeout(() => setToast(null), 3500);
   };
 
   const handleUpdateStatus = (id: string, status: InspectionStatus) => {
@@ -328,233 +257,138 @@ export const InspectionsView: React.FC<InspectionsViewProps> = ({
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {toast && (
-        <div className="fixed top-4 right-4 z-50 bg-emerald-600 text-white px-4 py-3 rounded-lg shadow-lg text-xs font-bold flex items-center gap-2">
-          <span className="material-symbols-outlined text-[16px]">check_circle</span>
+        <div className="fixed top-4 right-4 z-50 bg-[#0F172A] text-white px-4 py-3 rounded-xl shadow-2xl text-xs font-bold flex items-center gap-2 border border-white/20">
+          <span className="material-symbols-outlined text-emerald-400 text-[18px]">
+            check_circle
+          </span>
           {toast}
         </div>
       )}
 
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      {/* Header Bar */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#e0e3e5] pb-4">
         <div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#191c1e] tracking-tight">
-            Inspections
-          </h2>
-          <p className="text-sm text-[#45464d] mt-1">
-            Inspection planning, management, and findings across all active sites.
+          <div className="flex items-center gap-2">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#191c1e] tracking-tight">
+              AI Inspection Priority Queue
+            </h2>
+            <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+              {mines.length} Real Mines Connected
+            </span>
+          </div>
+          <p className="text-xs text-[#76777d] mt-1 font-medium">
+            Priorities generated from the current ML risk assessment. These are recommended inspection targets, not historical inspection records.
           </p>
         </div>
+
         {selectedInspection ? (
           <button
-            onClick={handleBackToList}
-            className="px-4 py-2.5 bg-white border border-[#c6c6cd] rounded-lg text-xs font-bold text-[#191c1e] hover:bg-[#f2f4f6] transition-colors shadow-xs flex items-center gap-2"
+            onClick={() => setSelectedId(null)}
+            className="px-4 py-2 bg-white border border-[#c6c6cd] rounded-lg text-xs font-bold text-[#191c1e] hover:bg-[#f2f4f6] transition-colors shadow-xs flex items-center gap-2"
           >
-            <span className="material-symbols-outlined text-[18px]">
-              arrow_back
-            </span>
-            Back to List
+            <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+            Back to Queue
           </button>
         ) : (
-          <button
-            onClick={handleOpenNewModal}
-            className="px-4 py-2.5 bg-[#0F172A] text-white rounded-lg text-xs font-bold flex items-center gap-2 hover:bg-[#1e293b] transition-colors shadow-xs"
-          >
-            <span className="material-symbols-outlined text-[18px]">add</span>
-            New Inspection
-          </button>
+          <div className="flex items-center gap-2 bg-[#f2f4f6] p-1 rounded-xl border border-[#e0e3e5]">
+            <button
+              onClick={() => setViewTab('queue')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                viewTab === 'queue'
+                  ? 'bg-[#0F172A] text-white shadow-xs'
+                  : 'text-gray-600 hover:text-black'
+              }`}
+            >
+              AI Priority Queue ({filteredRealMines.length})
+            </button>
+            <button
+              onClick={() => setViewTab('workflows')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                viewTab === 'workflows'
+                  ? 'bg-[#0F172A] text-white shadow-xs'
+                  : 'text-gray-600 hover:text-black'
+              }`}
+            >
+              Active Workflows ({inspections.length})
+            </button>
+          </div>
         )}
       </div>
 
-      {/* Stats Row */}
-      {showNewModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white rounded-xl border border-[#e0e3e5] shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-5 border-b border-[#eceef0]">
-              <h3 className="text-sm font-extrabold text-[#191c1e]">Create New Inspection</h3>
-              <button
-                onClick={handleCloseNewModal}
-                className="p-1 rounded-full hover:bg-gray-100 text-gray-500 transition-colors"
-              >
-                <span className="material-symbols-outlined text-[18px]">close</span>
-              </button>
-            </div>
-
-            <div className="p-5 space-y-4">
-              {formErrors.length > 0 && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                  <p className="text-xs font-bold text-red-700 mb-1">Please fix the following:</p>
-                  <ul className="list-disc list-inside text-xs text-red-600 space-y-0.5">
-                    {formErrors.map((err, idx) => (
-                      <li key={idx}>{err}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <div>
-                <label className="block text-xs font-bold text-[#45464d] mb-1">Mine *</label>
-                <select
-                  value={newInspection.mine}
-                  onChange={(e) => setNewInspection((prev) => ({ ...prev, mine: e.target.value }))}
-                  className="w-full px-3 py-2 bg-[#f2f4f6] text-xs font-bold text-[#191c1e] rounded-lg border border-[#e0e3e5] outline-none focus:ring-1 focus:ring-black"
-                >
-                  <option value="">Select a mine</option>
-                  {MINES.map((m) => (
-                    <option key={m} value={m}>{m}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-[#45464d] mb-1">Inspection Type *</label>
-                <input
-                  type="text"
-                  value={newInspection.type}
-                  onChange={(e) => setNewInspection((prev) => ({ ...prev, type: e.target.value }))}
-                  placeholder="e.g., Routine Safety Audit"
-                  className="w-full px-3 py-2 bg-white border border-[#e0e3e5] rounded-lg text-xs outline-none focus:ring-1 focus:ring-black"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-[#45464d] mb-1">Category *</label>
-                <select
-                  value={newInspection.category}
-                  onChange={(e) => setNewInspection((prev) => ({ ...prev, category: e.target.value }))}
-                  className="w-full px-3 py-2 bg-[#f2f4f6] text-xs font-bold text-[#191c1e] rounded-lg border border-[#e0e3e5] outline-none focus:ring-1 focus:ring-black"
-                >
-                  <option value="">Select a category</option>
-                  <option value="Safety">Safety</option>
-                  <option value="Environmental">Environmental</option>
-                  <option value="Equipment">Equipment</option>
-                  <option value="Ventilation">Ventilation</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-[#45464d] mb-1">Inspector *</label>
-                <input
-                  type="text"
-                  value={newInspection.inspector}
-                  onChange={(e) => setNewInspection((prev) => ({ ...prev, inspector: e.target.value }))}
-                  placeholder="e.g., Officer R. Sharma (DGMS Certified)"
-                  className="w-full px-3 py-2 bg-white border border-[#e0e3e5] rounded-lg text-xs outline-none focus:ring-1 focus:ring-black"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-[#45464d] mb-1">Due Date *</label>
-                <input
-                  type="date"
-                  value={newInspection.dueDate}
-                  onChange={(e) => setNewInspection((prev) => ({ ...prev, dueDate: e.target.value }))}
-                  className="w-full px-3 py-2 bg-white border border-[#e0e3e5] rounded-lg text-xs outline-none focus:ring-1 focus:ring-black"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-[#45464d] mb-1">Notes</label>
-                <textarea
-                  value={newInspection.notes}
-                  onChange={(e) => setNewInspection((prev) => ({ ...prev, notes: e.target.value }))}
-                  placeholder="Optional notes..."
-                  rows={3}
-                  className="w-full px-3 py-2 bg-white border border-[#e0e3e5] rounded-lg text-xs outline-none focus:ring-1 focus:ring-black resize-none"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-end gap-3 p-5 border-t border-[#eceef0]">
-              <button
-                onClick={handleCloseNewModal}
-                className="px-4 py-2 border border-[#c6c6cd] rounded-lg text-xs font-bold text-[#191c1e] hover:bg-[#f2f4f6] transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleCreateInspection}
-                className="px-4 py-2 bg-[#0F172A] text-white rounded-lg text-xs font-bold hover:bg-[#1e293b] transition-colors shadow-xs"
-              >
-                Create Inspection
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Stats Row */}
+      {/* Real-Mine ML Priority Summary Cards */}
       {!selectedInspection && (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 industrial-shadow">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mb-1">
-                Scheduled
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-white border border-[#e0e3e5] rounded-xl p-4 border-t-4 border-t-red-600 shadow-xs">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-red-700 mb-1">
+                URGENT PRIORITY
               </div>
-              <div className="text-3xl font-extrabold text-[#191c1e] font-mono">{scheduledCount}</div>
-              <div className="text-xs text-[#45464d] mt-1">Awaiting assignment</div>
+              <div className="text-3xl font-extrabold text-[#191c1e] font-mono">
+                {urgentCount}
+              </div>
+              <div className="text-[11px] text-gray-500 mt-1">Real mine ML targets</div>
             </div>
-            <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 industrial-shadow">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mb-1">
-                In Progress
+
+            <div className="bg-white border border-[#e0e3e5] rounded-xl p-4 border-t-4 border-t-amber-500 shadow-xs">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-amber-700 mb-1">
+                HIGH PRIORITY
               </div>
-              <div className="text-3xl font-extrabold text-[#191c1e] font-mono">{inProgressCount}</div>
-              <div className="text-xs text-[#45464d] mt-1">Field work active</div>
+              <div className="text-3xl font-extrabold text-[#191c1e] font-mono">
+                {highCount}
+              </div>
+              <div className="text-[11px] text-gray-500 mt-1">Elevated risk signals</div>
             </div>
-            <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 industrial-shadow">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mb-1">
-                Findings
+
+            <div className="bg-white border border-[#e0e3e5] rounded-xl p-4 border-t-4 border-t-blue-500 shadow-xs">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-blue-700 mb-1">
+                MEDIUM PRIORITY
               </div>
-              <div className="text-3xl font-extrabold text-[#191c1e] font-mono">{findingCount}</div>
-              <div className="text-xs text-[#45464d] mt-1">Requires action</div>
+              <div className="text-3xl font-extrabold text-[#191c1e] font-mono">
+                {mediumCount}
+              </div>
+              <div className="text-[11px] text-gray-500 mt-1">Routine evidence audit</div>
             </div>
-            <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 industrial-shadow border-t-2 border-t-emerald-600">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 mb-1">
-                Closed
+
+            <div className="bg-white border border-[#e0e3e5] rounded-xl p-4 border-t-4 border-t-emerald-600 shadow-xs">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 mb-1">
+                LOW PRIORITY
               </div>
-              <div className="text-3xl font-extrabold text-[#191c1e] font-mono">{closedCount}</div>
-              <div className="text-xs text-[#45464d] mt-1">Completed this cycle</div>
+              <div className="text-3xl font-extrabold text-[#191c1e] font-mono">
+                {lowCount}
+              </div>
+              <div className="text-[11px] text-gray-500 mt-1">Baseline monitoring</div>
             </div>
           </div>
 
-          {/* Filters */}
-          <div className="bg-white border border-[#e0e3e5] rounded-xl p-4 industrial-shadow flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-2">
+          {/* Filters Bar */}
+          <div className="bg-white border border-[#e0e3e5] rounded-xl p-3.5 shadow-xs flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-2 text-xs">
+              <span className="font-bold text-gray-500 uppercase tracking-wider text-[11px]">
+                Filter Queue:
+              </span>
+
               <select
-                value={mineFilter}
-                onChange={(e) => setMineFilter(e.target.value)}
-                className="px-3 py-2 bg-[#f2f4f6] text-xs font-bold text-[#191c1e] rounded-lg border-none outline-none cursor-pointer"
+                value={priorityFilter}
+                onChange={(e) => setPriorityFilter(e.target.value)}
+                className="px-3 py-1.5 bg-[#f2f4f6] font-bold text-[#191c1e] rounded-lg border border-[#e0e3e5] outline-none cursor-pointer"
               >
-                <option value="all">All Mines</option>
-                <option value="jharia">Jharia Main Colliery</option>
-                <option value="korba">Korba Deep Mine</option>
-                <option value="raniganj">Raniganj Eastern Block</option>
-                <option value="singrauli">Singrauli North Extension</option>
+                <option value="all">All Priorities</option>
+                <option value="URGENT">Urgent Priority</option>
+                <option value="HIGH">High Priority</option>
+                <option value="MEDIUM">Medium Priority</option>
+                <option value="LOW">Low Priority</option>
               </select>
 
               <select
-                value={categoryFilter}
-                onChange={(e) => setCategoryFilter(e.target.value)}
-                className="px-3 py-2 bg-[#f2f4f6] text-xs font-bold text-[#191c1e] rounded-lg border-none outline-none cursor-pointer"
+                value={riskFilter}
+                onChange={(e) => setRiskFilter(e.target.value)}
+                className="px-3 py-1.5 bg-[#f2f4f6] font-bold text-[#191c1e] rounded-lg border border-[#e0e3e5] outline-none cursor-pointer"
               >
-                <option value="all">All Categories</option>
-                <option value="Safety">Safety</option>
-                <option value="Environmental">Environmental</option>
-                <option value="Equipment">Equipment</option>
-                <option value="Ventilation">Ventilation</option>
-              </select>
-
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-3 py-2 bg-[#f2f4f6] text-xs font-bold text-[#191c1e] rounded-lg border-none outline-none cursor-pointer"
-              >
-                <option value="all">All Statuses</option>
-                <option value="Scheduled">Scheduled</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Finding Identified">Finding Identified</option>
-                <option value="Corrective Action">Corrective Action</option>
-                <option value="Resolved">Resolved</option>
-                <option value="Closed">Closed</option>
+                <option value="all">All Risk Categories</option>
+                <option value="HIGH">HIGH Risk</option>
+                <option value="CRITICAL">CRITICAL Risk</option>
+                <option value="MEDIUM">MEDIUM Risk</option>
+                <option value="LOW">LOW Risk</option>
               </select>
             </div>
 
@@ -566,7 +400,7 @@ export const InspectionsView: React.FC<InspectionsViewProps> = ({
                 type="text"
                 value={searchFilter}
                 onChange={(e) => setSearchFilter(e.target.value)}
-                placeholder="Search inspections..."
+                placeholder="Search real mine name, ID, location..."
                 className="w-full pl-9 pr-3 py-1.5 bg-white border border-[#e0e3e5] rounded-xl text-xs outline-none focus:ring-1 focus:ring-black"
               />
             </div>
@@ -574,123 +408,385 @@ export const InspectionsView: React.FC<InspectionsViewProps> = ({
         </>
       )}
 
+      {/* Detail Drawer / Modal for Real Mine Review */}
+      {selectedMineDetail && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-4">
+            <div className="flex justify-between items-start border-b border-gray-200 pb-3">
+              <div>
+                <h3 className="text-xl font-extrabold text-[#191c1e]">
+                  {selectedMineDetail.name}
+                </h3>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="font-mono text-xs font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                    ID: {selectedMineDetail.mineId || selectedMineDetail.id}
+                  </span>
+                  <span className="text-xs text-gray-500 font-medium">
+                    {selectedMineDetail.location}
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedMineDetail(null)}
+                className="p-1 rounded-full text-gray-400 hover:text-black"
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <span className="text-gray-500 uppercase text-[10px] font-bold block mb-1">
+                  Risk Score
+                </span>
+                <span className="text-base font-extrabold font-mono text-gray-900">
+                  {selectedMineDetail.riskScore != null
+                    ? `${selectedMineDetail.riskScore.toFixed(2)} / 100`
+                    : 'Insufficient Evidence'}
+                </span>
+              </div>
+
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <span className="text-gray-500 uppercase text-[10px] font-bold block mb-1">
+                  Risk Category
+                </span>
+                <span className="text-xs font-bold text-gray-900">
+                  {selectedMineDetail.riskCategory || 'Insufficient Evidence'}
+                </span>
+              </div>
+
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <span className="text-gray-500 uppercase text-[10px] font-bold block mb-1">
+                  Confidence Score
+                </span>
+                <span className="text-xs font-bold text-gray-900">
+                  {selectedMineDetail.confidenceScore != null
+                    ? `${selectedMineDetail.confidenceScore}% (${selectedMineDetail.confidenceCategory || 'Moderate'})`
+                    : 'Insufficient Evidence'}
+                </span>
+              </div>
+
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <span className="text-gray-500 uppercase text-[10px] font-bold block mb-1">
+                  Inspection Priority
+                </span>
+                <span className="text-xs font-bold text-gray-900">
+                  {selectedMineDetail.inspectionPriority || 'LOW'}
+                </span>
+              </div>
+
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <span className="text-gray-500 uppercase text-[10px] font-bold block mb-1">
+                  Evidence Status
+                </span>
+                <span className="text-xs font-bold text-gray-900">
+                  {selectedMineDetail.evidenceStatus || 'Insufficient Evidence'}
+                </span>
+              </div>
+
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <span className="text-gray-500 uppercase text-[10px] font-bold block mb-1">
+                  Evidence Coverage
+                </span>
+                <span className="text-xs font-bold text-gray-900">
+                  {selectedMineDetail.evidenceCoverage != null
+                    ? `${selectedMineDetail.evidenceCoverage}%`
+                    : 'Insufficient Evidence'}
+                </span>
+              </div>
+            </div>
+
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 text-xs space-y-1.5">
+              <div>
+                <span className="font-bold text-gray-700">Risk Drivers: </span>
+                <span className="text-gray-800">
+                  {selectedMineDetail.riskDrivers || 'Insufficient Evidence'}
+                </span>
+              </div>
+              <div>
+                <span className="font-bold text-gray-700">Explanation: </span>
+                <span className="text-gray-800">
+                  {selectedMineDetail.explanation &&
+                  selectedMineDetail.explanation !== 'Insufficient Evidence'
+                    ? selectedMineDetail.explanation
+                    : 'Insufficient Evidence'}
+                </span>
+              </div>
+              <div className="text-amber-700 font-mono text-[11px] italic pt-1 border-t border-gray-200">
+                GPS / sub-location data unavailable
+              </div>
+            </div>
+
+            <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-lg text-xs space-y-1">
+              <span className="font-bold text-amber-900 uppercase text-[10px] block">
+                AI Preventive Recommendation
+              </span>
+              <p className="text-amber-900 leading-relaxed font-medium">
+                {typeof selectedMineDetail.aiRecommendation === 'string'
+                  ? selectedMineDetail.aiRecommendation
+                  : selectedMineDetail.aiRecommendation?.headline ||
+                    'Review Evidence'}
+              </p>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => setSelectedMineDetail(null)}
+                className="px-4 py-2.5 border border-gray-300 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 flex-1"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => handleStartRealMineInspection(selectedMineDetail)}
+                className="px-4 py-2.5 bg-[#0F172A] text-white rounded-lg text-xs font-bold hover:bg-[#1e293b] flex-1 flex items-center justify-center gap-2 shadow-sm"
+              >
+                <span className="material-symbols-outlined text-base">camera_alt</span>
+                Start Inspection →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Content Area */}
       {!selectedInspection ? (
-        /* Inspection Table */
-        <div className="bg-white border border-[#e0e3e5] rounded-xl overflow-hidden industrial-shadow">
-          {filtered.length === 0 ? (
-            <div className="p-12 text-center text-gray-500">
-              <span className="material-symbols-outlined text-4xl mb-2 text-gray-400">
-                search_off
+        viewTab === 'queue' ? (
+          /* Real-Mine AI Inspection Priority Queue Table */
+          <div className="bg-white border border-[#e0e3e5] rounded-xl overflow-hidden shadow-xs">
+            <div className="p-3.5 bg-[#f7f9fb] border-b border-[#e0e3e5] flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-indigo-600">auto_awesome</span>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#191c1e]">
+                  Target Facilities Queue ({filteredRealMines.length} Real Mines)
+                </h3>
+              </div>
+              <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                Sorted by Priority & Risk Score
               </span>
-              <p className="font-bold text-sm text-gray-700">No inspections matching this filter</p>
-              <p className="text-xs text-gray-400">Adjust your filters to see more results.</p>
             </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr className="bg-[#f7f9fb] border-b border-[#e0e3e5] text-[#45464d]">
-                    <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Mine</th>
-                    <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Inspection ID</th>
-                    <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Type</th>
-                    <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Inspector</th>
-                    <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Due Date</th>
-                    <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Category</th>
-                    <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Risk</th>
-                    <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Status</th>
-                    <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px] text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#eceef0]">
-                  {filtered.map((item) => (
-                    <tr key={item.id} className="hover:bg-[#f7f9fb] transition-colors">
-                      <td className="py-3.5 px-4">
-                        <span className="font-bold text-[#191c1e] text-xs">{item.mine}</span>
-                        <div className="font-mono text-[10px] text-[#76777d]">
-                          {item.location}
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <span className="font-mono font-bold text-[#191c1e]">{item.inspectionId}</span>
-                      </td>
-                      <td className="py-3.5 px-4 text-[#45464d]">{item.type}</td>
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-2">
-                          {item.inspector.includes('Sharma') ? (
-                            <img
-                              src={ASSETS.officerMitchell}
-                              alt={item.inspector}
-                              className="w-6 h-6 rounded-full object-cover border border-[#c6c6cd]"
-                            />
-                          ) : item.inspector.includes('Patel') ? (
-                            <img
-                              src={ASSETS.officerReynolds}
-                              alt={item.inspector}
-                              className="w-6 h-6 rounded-full object-cover border border-[#c6c6cd]"
-                            />
-                          ) : item.inspector.includes('Singh') ? (
-                            <img
-                              src={ASSETS.officerDoe}
-                              alt={item.inspector}
-                              className="w-6 h-6 rounded-full object-cover border border-[#c6c6cd]"
-                            />
-                          ) : (
-                            <span className="w-6 h-6 rounded-full bg-[#e0e3e5] text-[9px] font-bold flex items-center justify-center text-[#191c1e]">
-                              AK
-                            </span>
-                          )}
-                          <span className="text-xs font-medium text-[#191c1e]">
-                            {item.inspector.split(' ')[1]}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4 font-mono text-[#45464d]">{item.dueDate}</td>
-                      <td className="py-3.5 px-4">
-                        <span className="text-xs font-bold text-[#45464d]">
-                          {item.category}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold ${getRiskBadge(item.riskLevel)}`}>
-                          {item.riskLevel}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold ${getStatusBadge(item.status)}`}>
-                          {item.status}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 text-right">
-                        <button
-                          onClick={() => handleViewDetails(item)}
-                          className="text-xs font-bold text-[#191c1e] hover:underline"
-                        >
-                          View Details
-                        </button>
-                      </td>
+
+            {filteredRealMines.length === 0 ? (
+              <div className="p-12 text-center text-gray-500">
+                <span className="material-symbols-outlined text-4xl mb-2 text-gray-400">
+                  search_off
+                </span>
+                <p className="font-bold text-sm text-gray-700">No real mines match filter criteria</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="bg-[#f7f9fb] border-b border-[#e0e3e5] text-[#45464d]">
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">
+                        Mine
+                      </th>
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">
+                        Mine ID
+                      </th>
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">
+                        Risk
+                      </th>
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">
+                        Category
+                      </th>
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">
+                        Confidence
+                      </th>
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">
+                        Evidence
+                      </th>
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">
+                        Priority
+                      </th>
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">
+                        Recommended Action
+                      </th>
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px] text-right">
+                        Action
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-[#eceef0]">
+                    {filteredRealMines.map((mine) => {
+                      const recText =
+                        typeof mine.aiRecommendation === 'string'
+                          ? mine.aiRecommendation
+                          : mine.aiRecommendation?.headline || 'Review Evidence';
+
+                      return (
+                        <tr
+                          key={mine.id}
+                          className="hover:bg-[#f7f9fb] transition-colors"
+                        >
+                          <td className="py-3.5 px-4">
+                            <div className="font-bold text-[#191c1e] text-xs">
+                              {mine.name}
+                            </div>
+                            <div className="text-[10px] text-gray-500">
+                              {mine.location}
+                            </div>
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                              {mine.mineId || mine.id}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-4 font-mono font-extrabold text-[#191c1e]">
+                            {mine.riskScore != null
+                              ? `${mine.riskScore.toFixed(2)}`
+                              : 'N/A'}
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <span
+                              className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold ${
+                                mine.riskCategory === 'HIGH' ||
+                                mine.riskCategory === 'CRITICAL'
+                                  ? 'bg-red-100 text-red-800'
+                                  : mine.riskCategory === 'MEDIUM'
+                                  ? 'bg-amber-100 text-amber-800'
+                                  : 'bg-emerald-100 text-emerald-800'
+                              }`}
+                            >
+                              {mine.riskCategory || 'LOW'}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-4 font-mono text-[#191c1e]">
+                            {mine.confidenceScore != null
+                              ? `${mine.confidenceScore}%`
+                              : 'Insufficient Evidence'}
+                          </td>
+                          <td className="py-3.5 px-4 text-gray-600">
+                            {mine.evidenceStatus || 'Operational Only'}
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <span
+                              className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold ${
+                                mine.inspectionPriority === 'URGENT'
+                                  ? 'bg-red-600 text-white'
+                                  : mine.inspectionPriority === 'HIGH'
+                                  ? 'bg-red-100 text-red-800'
+                                  : mine.inspectionPriority === 'MEDIUM'
+                                  ? 'bg-amber-100 text-amber-800'
+                                  : 'bg-gray-100 text-gray-800'
+                              }`}
+                            >
+                              {mine.inspectionPriority || 'LOW'}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-4 text-gray-700 max-w-xs truncate">
+                            {recText}
+                          </td>
+                          <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => setSelectedMineDetail(mine)}
+                                className="px-2.5 py-1 text-xs font-bold text-gray-700 hover:text-black border border-gray-300 rounded hover:bg-gray-100 transition-colors"
+                              >
+                                Review
+                              </button>
+                              <button
+                                onClick={() => handleStartRealMineInspection(mine)}
+                                className="px-2.5 py-1 text-xs font-bold bg-[#0F172A] text-white rounded hover:bg-[#1e293b] transition-colors"
+                              >
+                                Start Inspection
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        ) : (
+          /* Active Workflows Table */
+          <div className="bg-white border border-[#e0e3e5] rounded-xl overflow-hidden shadow-xs">
+            <div className="p-3.5 bg-[#f7f9fb] border-b border-[#e0e3e5] flex justify-between items-center">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#191c1e]">
+                Active Prototype Workflows ({inspections.length})
+              </h3>
             </div>
-          )}
-        </div>
+
+            {inspections.length === 0 ? (
+              <div className="p-12 text-center text-gray-500">
+                <span className="material-symbols-outlined text-4xl mb-2 text-gray-400">
+                  assignment_late
+                </span>
+                <p className="font-bold text-sm text-gray-700">No active prototype workflows running</p>
+                <p className="text-xs text-gray-400 mt-1 max-w-md mx-auto">
+                  Click <span className="font-bold text-gray-700">"Start Inspection"</span> on any mine in the AI Priority Queue to launch a prototype inspection workflow.
+                </p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="bg-[#f7f9fb] border-b border-[#e0e3e5] text-[#45464d]">
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Mine</th>
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Inspection ID</th>
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Type</th>
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Inspector</th>
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Status</th>
+                      <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px] text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#eceef0]">
+                    {inspections.map((item) => (
+                      <tr key={item.id} className="hover:bg-[#f7f9fb] transition-colors">
+                        <td className="py-3.5 px-4">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="font-bold text-[#191c1e] text-xs">{item.mine}</span>
+                            <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-bold border border-blue-200">
+                              {item.mineId}
+                            </span>
+                            <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 font-bold border border-indigo-200">
+                              Prototype Workflow
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-3.5 px-4 font-mono font-bold text-[#191c1e]">{item.inspectionId}</td>
+                        <td className="py-3.5 px-4 text-[#45464d]">{item.type}</td>
+                        <td className="py-3.5 px-4 text-[#191c1e]">{item.inspector}</td>
+                        <td className="py-3.5 px-4">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold ${getStatusBadge(item.status)}`}>
+                            {item.status}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4 text-right">
+                          <button
+                            onClick={() => setSelectedId(item.id)}
+                            className="text-xs font-bold text-[#191c1e] hover:underline"
+                          >
+                            View Details
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )
       ) : (
         /* Inspection Detail View */
         <div className="space-y-6">
-          {/* Detail Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button
-                onClick={handleBackToList}
+                onClick={() => setSelectedId(null)}
                 className="p-2 rounded-full hover:bg-gray-200 text-gray-700 transition-colors"
               >
                 <span className="material-symbols-outlined">arrow_back</span>
               </button>
               <div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-[#191c1e] tracking-tight">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-[#191c1e] tracking-tight flex items-center gap-3">
                   {selectedInspection.inspectionId}
+                  <span className="text-xs px-2.5 py-1 rounded bg-indigo-50 text-indigo-700 font-bold border border-indigo-200">
+                    Prototype Workflow
+                  </span>
                 </h2>
                 <p className="text-xs text-[#45464d]">Inspection Details & Field Operations</p>
               </div>
@@ -700,193 +796,56 @@ export const InspectionsView: React.FC<InspectionsViewProps> = ({
             </span>
           </div>
 
-          {/* Status Flow Timeline */}
-          <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 industrial-shadow">
-            <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mb-4">
-              Inspection Status Flow
-            </h3>
-            <div className="flex items-center justify-between">
-              {STATUS_FLOW.map((step, index) => {
-                const isCompleted = STATUS_FLOW.indexOf(step) < STATUS_FLOW.indexOf(selectedInspection.status);
-                const isCurrent = step === selectedInspection.status;
-                return (
-                  <React.Fragment key={step}>
-                    <div className="flex flex-col items-center">
-                      <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
-                          isCompleted
-                            ? 'bg-emerald-600 text-white'
-                            : isCurrent
-                            ? 'bg-black text-white ring-2 ring-blue-400'
-                            : 'bg-gray-200 text-gray-700'
-                        }`}
-                      >
-                        {isCompleted ? (
-                          <span className="material-symbols-outlined text-[14px]">check</span>
-                        ) : (
-                          index + 1
-                        )}
-                      </div>
-                      <span
-                        className={`text-[10px] font-bold uppercase mt-1 text-center ${
-                          isCurrent ? 'text-[#191c1e]' : 'text-[#45464d]'
-                        }`}
-                      >
-                        {step}
-                      </span>
-                    </div>
-                    {index < STATUS_FLOW.length - 1 && (
-                      <div
-                        className={`flex-1 h-[2px] ${
-                          isCompleted ? 'bg-emerald-600' : 'bg-gray-300'
-                        }`}
-                      />
-                    )}
-                  </React.Fragment>
-                );
-              })}
+          <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 shadow-xs space-y-4">
+            <div className="flex items-center justify-between border-b border-[#eceef0] pb-3">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-indigo-600">auto_awesome</span>
+                <h3 className="text-[11px] font-bold uppercase tracking-wider text-indigo-700">
+                  Real Mine ML Intelligence ({selectedInspection.mineId})
+                </h3>
+              </div>
+              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                Prototype Workflow
+              </span>
             </div>
-          </div>
 
-          {/* Details Card */}
-          <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 industrial-shadow">
-            <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mb-4">
-              Inspection Information
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div className="flex justify-between items-center py-2.5 border-b border-[#eceef0]">
-                <span className="text-[#45464d] flex items-center gap-2 font-medium">
-                  <span className="material-symbols-outlined text-[16px]">location_on</span>
-                  Mine
-                </span>
-                <span className="font-bold text-[#191c1e] text-right">
-                  {selectedInspection.mine}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+              <div className="bg-[#f7f9fb] p-3 rounded-lg border border-[#e0e3e5]">
+                <span className="text-[#45464d] text-[10px] font-bold uppercase block mb-1">Risk Score</span>
+                <span className="text-base font-extrabold text-[#191c1e] font-mono">
+                  {selectedInspection.riskScore != null ? `${selectedInspection.riskScore.toFixed(2)} / 100` : 'Insufficient Evidence'}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-2.5 border-b border-[#eceef0]">
-                <span className="text-[#45464d] flex items-center gap-2 font-medium">
-                  <span className="material-symbols-outlined text-[16px]">search</span>
-                  Inspection ID
-                </span>
-                <span className="font-mono font-bold text-[#191c1e] text-right">
-                  {selectedInspection.inspectionId}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-2.5 border-b border-[#eceef0]">
-                <span className="text-[#45464d] flex items-center gap-2 font-medium">
-                  <span className="material-symbols-outlined text-[16px]">category</span>
-                  Type
-                </span>
-                <span className="text-[#191c1e] text-right">{selectedInspection.type}</span>
-              </div>
-              <div className="flex justify-between items-center py-2.5 border-b border-[#eceef0]">
-                <span className="text-[#45464d] flex items-center gap-2 font-medium">
-                  <span className="material-symbols-outlined text-[16px]">category</span>
-                  Category
-                </span>
-                <span
-                  className={`font-bold text-right`}
-                  style={{ color: getRiskColor(selectedInspection.riskLevel) }}
-                >
-                  {selectedInspection.category}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-2.5 border-b border-[#eceef0]">
-                <span className="text-[#45464d] flex items-center gap-2 font-medium">
-                  <span className="material-symbols-outlined text-[16px]">person</span>
-                  Inspector
-                </span>
-                <span className="text-[#191c1e] text-right">{selectedInspection.inspector.split('(')[0].trim()}</span>
-              </div>
-              <div className="flex justify-between items-center py-2.5 border-b border-[#eceef0]">
-                <span className="text-[#45464d] flex items-center gap-2 font-medium">
-                  <span className="material-symbols-outlined text-[16px]">schedule</span>
-                  Scheduled Date
-                </span>
-                <span className="font-mono text-[#191c1e] text-right">
-                  {selectedInspection.scheduledDate}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-2.5 border-b border-[#eceef0]">
-                <span className="text-[#45464d] flex items-center gap-2 font-medium">
-                  <span className="material-symbols-outlined text-[16px]">event</span>
-                  Due Date
-                </span>
-                <span className="font-mono font-bold text-[#191c1e] text-right">
-                  {selectedInspection.dueDate}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-2.5 border-b border-[#eceef0]">
-                <span className="text-[#45464d] flex items-center gap-2 font-medium">
-                  <span className="material-symbols-outlined text-[16px]">place</span>
-                  Location
-                </span>
-                <span className="text-[#45464d] text-right font-mono text-[10px]">
-                  {selectedInspection.gpsText}
-                </span>
-              </div>
-              <div className="flex justify-between items-start py-2.5 border-b border-[#eceef0]">
-                <span className="text-[#45464d] flex items-center gap-2 font-medium">
-                  <span className="material-symbols-outlined text-[16px]">shield</span>
-                  Risk Level
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="font-bold" style={{ color: getRiskColor(selectedInspection.riskLevel) }}>
-                    {selectedInspection.riskLevel} RISK
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
 
-          {/* Required Checks */}
-          <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 industrial-shadow">
-            <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mb-4">
-              Required Checks
-            </h3>
-            <div className="space-y-2">
-              {selectedInspection.requiredChecks.map((check) => (
-                <div
-                  key={check.id}
-                  className={`flex items-center gap-3 p-2.5 rounded-lg border transition-colors ${
-                    check.completed
-                      ? 'bg-emerald-50 border-emerald-200'
-                      : 'bg-gray-50 border-gray-200'
-                  }`}
-                >
-                  <span
-                    className={`material-symbols-outlined text-[18px] ${
-                      check.completed ? 'text-emerald-600' : 'text-gray-400'
-                    }`}
-                  >
-                    {check.completed ? 'check_circle' : 'radio_button_unchecked'}
-                  </span>
-                  <span className={`flex-1 text-xs font-medium ${
-                    check.completed ? 'text-emerald-800' : 'text-[#45464d]'
-                  }`}>
-                    {check.name}
-                  </span>
-                  {check.notes && (
-                    <span className="text-[10px] text-[#76777d] italic">
-                      "{check.notes}"
-                    </span>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+              <div className="bg-[#f7f9fb] p-3 rounded-lg border border-[#e0e3e5]">
+                <span className="text-[#45464d] text-[10px] font-bold uppercase block mb-1">Risk Category</span>
+                <span className="text-xs font-bold text-[#191c1e]">
+                  {selectedInspection.riskCategory || 'Insufficient Evidence'}
+                </span>
+              </div>
 
-          {/* Observation Notes */}
-          {selectedInspection.notes && (
-            <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 industrial-shadow">
-              <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mb-3">
-                Observation Notes
-              </h3>
-              <p className="text-xs text-[#45464d] italic leading-relaxed">
-                "{selectedInspection.notes}"
-              </p>
+              <div className="bg-[#f7f9fb] p-3 rounded-lg border border-[#e0e3e5]">
+                <span className="text-[#45464d] text-[10px] font-bold uppercase block mb-1">Confidence</span>
+                <span className="text-xs font-bold text-[#191c1e]">
+                  {selectedInspection.confidenceScore != null ? `${selectedInspection.confidenceScore.toFixed(1)}%` : 'Insufficient Evidence'}
+                </span>
+              </div>
+
+              <div className="bg-[#f7f9fb] p-3 rounded-lg border border-[#e0e3e5]">
+                <span className="text-[#45464d] text-[10px] font-bold uppercase block mb-1">Inspection Priority</span>
+                <span className="text-xs font-bold text-[#191c1e]">
+                  {selectedInspection.inspectionPriority || 'Insufficient Evidence'}
+                </span>
+              </div>
             </div>
-          )}
+
+            {selectedInspection.recommendation && (
+              <div className="bg-indigo-50/60 border border-indigo-100 p-3 rounded-lg text-xs text-indigo-950">
+                <span className="font-bold text-indigo-900 block mb-0.5">AI Preventive Recommendation:</span>
+                "{selectedInspection.recommendation}"
+              </div>
+            )}
+          </div>
 
           {/* Action Area */}
           <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-[#c6c6cd]/30">
@@ -894,17 +853,15 @@ export const InspectionsView: React.FC<InspectionsViewProps> = ({
               <>
                 <button
                   onClick={() => {
-                    if (onNavigate) {
-                      handleStartInspection(selectedInspection);
-                      onNavigate('field-ops' as NavigationTab);
-                    } else {
-                      handleStartInspection(selectedInspection);
+                    if (selectedInspection) {
+                      onStartInspection?.(selectedInspection);
                     }
+                    onNavigate?.('field-ops' as NavigationTab);
                   }}
                   className="px-6 py-3 bg-[#0F172A] text-white rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-[#1e293b] transition-colors shadow-xs"
                 >
                   <span className="material-symbols-outlined text-base">camera_alt</span>
-                  Start Inspection
+                  Start Field Capture
                 </button>
                 <button
                   onClick={() =>

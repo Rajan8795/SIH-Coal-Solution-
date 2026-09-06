@@ -14,29 +14,52 @@ export interface Mine {
   id: string;
   name: string;
   code: string;
+  mineId?: string;
   location: string;
   region: string;
+  state?: string;
+  district?: string;
+  coalfield?: string;
+  area?: string;
+  ownership?: string;
+  production?: number | null;
+  despatch?: number | null;
   mineType: string;
   status: 'Active (At Risk)' | 'Operational' | 'Maintenance Required' | 'Inspection Scheduled';
-  riskScore: number; // 0-100
+  riskScore: number | null;
   primaryContractor: string;
   coordinates: {
     lat: number;
     lng: number;
     gpsText: string;
-  };
+  } | null;
   riskFactors: {
-    safetyViolations: number;
-    overdueActions: number;
-    contractorIssues: number;
-    envRenewals: number;
+    safetyViolations: number | string;
+    overdueActions: number | string;
+    contractorIssues: number | string;
+    envRenewals: number | string;
   };
   aiRecommendation: {
     headline: string;
     description: string;
     actionLabel: string;
-    probability: number;
+    probability: number | null;
   };
+  confidenceScore?: number | null;
+  confidenceCategory?: string;
+  evidenceStatus?: string;
+  evidenceCoverage?: number | null;
+  environmentalAnomaly?: string;
+  environmentalAnomalyScore?: number | null;
+  environmentalRiskScore?: number | null;
+  operationalRiskScore?: number | null;
+  safetyRiskScore?: number | null;
+  inspectionPriority?: string;
+  priorityScore?: number | null;
+  riskCategory?: string;
+  riskDrivers?: string;
+  explanation?: string;
+  mappingStatus?: string;
 }
 
 export interface ComplianceRequirement {
@@ -44,10 +67,11 @@ export interface ComplianceRequirement {
   code: string;
   requirement: string;
   mine: string;
-  category: 'Safety' | 'Environmental' | 'Equipment' | 'Ventilation';
+  category: 'Safety' | 'Environmental' | 'Equipment' | 'Ventilation' | 'Evidence' | 'Operational' | 'Safety Evidence' | 'Overall Assessment';
   dueDate: string;
-  status: 'Overdue' | 'Pending' | 'Completed';
-  riskLevel: 'High' | 'Medium' | 'Low';
+  status: 'Overdue' | 'Pending' | 'Completed' | 'Insufficient Evidence' | 'Assessment Available' | 'Prototype Workflow';
+  riskLevel: 'Critical' | 'High' | 'Medium' | 'Low' | 'Insufficient Evidence';
+  mineId?: string;
   responsibleOfficer: {
     name: string;
     avatar?: string;
@@ -62,6 +86,7 @@ export interface ComplianceRequirement {
 
 export interface AlertItem {
   id: string;
+  mineId?: string;
   title: string;
   location: string;
   mine: string;

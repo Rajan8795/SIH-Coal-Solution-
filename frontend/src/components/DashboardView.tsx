@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavigationTab } from '../types';
+import { Mine, NavigationTab } from '../types';
 import IndiaMap from './IndiaMap';
 import { ComplianceTrendChart, SafetyIncidentsChart } from './DashboardCharts';
 
@@ -7,73 +7,51 @@ interface DashboardViewProps {
   onNavigate: (tab: NavigationTab) => void;
   onDispatchInspection: (sectorName: string) => void;
   onSelectMine: (mineId: string) => void;
+  mines: Mine[];
 }
-
-const PREDICTIVE_RISK_DATA = [
-  {
-    mine: 'Korba Deep Mine',
-    state: 'Chhattisgarh',
-    predictedRisk: 'HIGH' as const,
-    riskScore: 84,
-    riskTrend: 'increasing' as const,
-    contributingFactors: ['Repeated safety violations', 'Overdue compliance actions', 'Recurring inspection findings'],
-    recommendation: 'Schedule a targeted safety inspection and resolve overdue compliance actions.'
-  },
-  {
-    mine: 'Jharia Main Colliery',
-    state: 'Jharkhand',
-    predictedRisk: 'HIGH' as const,
-    riskScore: 78,
-    riskTrend: 'increasing' as const,
-    contributingFactors: ['4 active safety violations', 'Contractor compliance issues', 'Overdue environmental renewals'],
-    recommendation: 'Deploy inspection team to Sector 4 and review contractor certifications.'
-  },
-  {
-    mine: 'Singrauli North Extension',
-    state: 'Madhya Pradesh',
-    predictedRisk: 'MEDIUM' as const,
-    riskScore: 56,
-    riskTrend: 'stable' as const,
-    contributingFactors: ['Pending environmental audit', 'Overdue equipment certification'],
-    recommendation: 'Schedule emissions audit and assign certified inspector.'
-  }
-];
-
-const PRIORITY_ACTIONS = [
-  {
-    title: 'Recurring Safety Compliance Risk',
-    severity: 'Critical',
-    severityColor: '#ba1a1a',
-    description: '4 similar safety observations were reported in recent inspections at Korba Deep Mine.',
-    action: 'Schedule Targeted Inspection',
-    actionType: 'dispatch',
-    location: 'Korba Deep Mine - Sector 4'
-  },
-  {
-    title: 'Contractor DGMS Certifications Expiring',
-    severity: 'High',
-    severityColor: '#f59e0b',
-    description: '12 contractors at Raniganj Eastern have DGMS certifications expiring within 48 hours.',
-    action: 'Create Action',
-    actionType: 'navigate',
-    navigateTo: 'contractors'
-  },
-  {
-    title: 'Ventilation Compliance Finding',
-    severity: 'Critical',
-    severityColor: '#ba1a1a',
-    description: 'Repeated ventilation-related findings documented in inspection reports at Jharia Main Colliery.',
-    action: 'Create Action',
-    actionType: 'navigate',
-    navigateTo: 'alerts'
-  }
-];
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
   onNavigate,
   onDispatchInspection,
   onSelectMine,
+  mines,
 }) => {
+  const predictiveRiskData = mines
+    .filter((mine) => mine.riskScore !== null)
+    .sort((first, second) => (second.riskScore || 0) - (first.riskScore || 0))
+    .slice(0, 3)
+    .map((mine) => ({
+      mine: mine.name,
+      state: mine.location,
+      predictedRisk: mine.riskCategory || 'INSUFFICIENT EVIDENCE',
+      riskScore: mine.riskScore as number,
+      riskTrend: mine.riskCategory === 'HIGH' || mine.riskCategory === 'CRITICAL' ? 'increasing' : 'stable',
+      contributingFactors: [mine.riskDrivers],
+      recommendation: mine.aiRecommendation.headline,
+    }));
+  const assessedMines = mines.filter((mine) => mine.riskScore !== null).length;
+  const highCriticalMines = mines.filter((mine) => mine.riskCategory === 'HIGH' || mine.riskCategory === 'CRITICAL').length;
+  const evidenceAvailable = mines.filter((mine) => mine.evidenceStatus && !mine.evidenceStatus.toLowerCase().includes('insufficient')).length;
+  const environmentalAnomalies = mines.filter((mine) => mine.environmentalAnomaly && mine.environmentalAnomaly !== 'No Anomaly').length;
+  const uniqueStatesCount = new Set(mines.map((m) => m.state || m.location).filter(Boolean)).size;
+  const priorityTargetsCount = mines.filter((m) => m.inspectionPriority === 'URGENT' || m.inspectionPriority === 'HIGH').length;
+  const evidenceCoveragePct = assessedMines > 0 ? ((evidenceAvailable / assessedMines) * 100).toFixed(1) : '0';
+  const priorityMines = mines
+    .filter((mine) => mine.inspectionPriority === 'URGENT' || mine.inspectionPriority === 'HIGH' || mine.riskCategory === 'CRITICAL' || mine.riskCategory === 'HIGH')
+    .sort((first, second) => (second.riskScore || 0) - (first.riskScore || 0))
+    .slice(0, 4);
+
+  const priorityActions = priorityMines.map((mine) => ({
+    mineId: mine.mineId || mine.id,
+    name: mine.name,
+    location: mine.location || mine.state || 'Location Unspecified',
+    riskScore: mine.riskScore,
+    riskCategory: mine.riskCategory || 'HIGH',
+    inspectionPriority: mine.inspectionPriority || 'HIGH',
+    evidenceStatus: mine.evidenceStatus || 'Operational Only',
+    riskDriver: mine.riskDrivers || 'No major driver identified',
+    recommendation: typeof mine.aiRecommendation === 'string' ? mine.aiRecommendation : mine.aiRecommendation?.headline || 'Review ML Intelligence',
+  }));
   const [viewMode, setViewMode] = useState<'standard' | 'national'>('standard');
   const [showChartModal, setShowChartModal] = useState<string | null>(null);
   const getGreeting = () => {
@@ -176,21 +154,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
 
             {/* National Map Card - India Focused */}
-            <div className="lg:col-span-5 bg-white rounded-xl border border-[#c6c6cd]/30 industrial-shadow p-4 flex flex-col min-h-[320px]">
-              <div className="flex justify-between items-center mb-2 px-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#45464d]">
-                  India Coal Mine Risk Overview
-                </span>
-                <button
-                  onClick={() => onNavigate('mines')}
-                  className="text-[#45464d] hover:text-black p-1 rounded"
-                >
-                  <span className="material-symbols-outlined text-[18px]">open_in_full</span>
-                </button>
-              </div>
-              <div className="flex-1 rounded-lg overflow-hidden border border-[#e0e3e5] min-h-[240px]">
-                <IndiaMap onSelectMine={onSelectMine} onNavigate={onNavigate} />
-              </div>
+            <div className="lg:col-span-5 flex flex-col min-h-[580px]">
+              <IndiaMap mines={mines} onSelectMine={onSelectMine} onNavigate={onNavigate} />
             </div>
           </div>
 
@@ -203,8 +168,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <span className="material-symbols-outlined">factory</span>
                 </div>
               </div>
-              <div className="font-mono text-3xl font-extrabold text-[#191c1e] tracking-tight">128</div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mt-1">Active Mines</div>
+              <div className="font-mono text-3xl font-extrabold text-[#191c1e] tracking-tight">{assessedMines}</div>
+              <div className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mt-1">Mines Assessed</div>
             </div>
 
             <div className="bg-white rounded-xl border border-[#c6c6cd]/30 industrial-shadow p-5 hover:shadow-md transition-shadow relative overflow-hidden group">
@@ -217,8 +182,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <span className="material-symbols-outlined text-[14px]">trending_up</span> +2.4%
                 </span>
               </div>
-              <div className="font-mono text-3xl font-extrabold text-[#191c1e] tracking-tight">84%</div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mt-1">Network Compliance</div>
+              <div className="font-mono text-3xl font-extrabold text-[#191c1e] tracking-tight">{evidenceAvailable}</div>
+              <div className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mt-1">Evidence Available</div>
             </div>
 
             <div className="bg-white rounded-xl border border-[#ba1a1a]/30 industrial-shadow p-5 hover:shadow-md transition-shadow relative overflow-hidden group">
@@ -228,8 +193,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <span className="material-symbols-outlined">warning</span>
                 </div>
               </div>
-              <div className="font-mono text-3xl font-extrabold text-[#ba1a1a] tracking-tight">17</div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-[#ba1a1a] mt-1">High-Risk Mines</div>
+              <div className="font-mono text-3xl font-extrabold text-[#ba1a1a] tracking-tight">{highCriticalMines}</div>
+              <div className="text-[11px] font-bold uppercase tracking-wider text-[#ba1a1a] mt-1">High / Critical</div>
             </div>
 
             <div className="bg-white rounded-xl border border-[#c6c6cd]/30 industrial-shadow p-5 hover:shadow-md transition-shadow relative overflow-hidden group">
@@ -239,8 +204,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <span className="material-symbols-outlined">pending_actions</span>
                 </div>
               </div>
-              <div className="font-mono text-3xl font-extrabold text-[#191c1e] tracking-tight">32</div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mt-1">Pending Actions</div>
+              <div className="font-mono text-3xl font-extrabold text-[#191c1e] tracking-tight">{environmentalAnomalies}</div>
+              <div className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mt-1">Environmental Anomalies</div>
             </div>
           </div>
         </div>
@@ -249,149 +214,150 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       {/* STANDARD SITE COMMAND VIEW */}
       {/* 4 Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Critical Risks */}
+        {/* High / Critical Risks */}
         <div
-          onClick={() => onNavigate('alerts')}
+          onClick={() => onNavigate('inspections')}
           className="bg-white border border-[#c6c6cd]/30 rounded-xl p-5 industrial-shadow hover:shadow-md hover:border-t-2 hover:border-t-[#ba1a1a] transition-all flex flex-col justify-between cursor-pointer group"
         >
           <div className="flex justify-between items-start mb-3">
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#45464d]">
-              Critical Risks
+              High / Critical Risks
             </span>
             <span className="material-symbols-outlined text-[#ba1a1a]">warning</span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-[#191c1e]">3</span>
-            <span className="text-xs font-semibold text-[#ba1a1a] flex items-center">
-              <span className="material-symbols-outlined text-[14px]">arrow_upward</span> 1 since yesterday
-            </span>
+            <span className="text-3xl font-extrabold text-[#ba1a1a] font-mono">{highCriticalMines}</span>
+            <span className="text-xs text-[#45464d]">Targeted for AI dispatch</span>
           </div>
         </div>
 
-        {/* Pending Actions */}
+        {/* AI Inspection Targets */}
         <div
-          onClick={() => onNavigate('compliance')}
+          onClick={() => onNavigate('inspections')}
           className="bg-white border border-[#c6c6cd]/30 rounded-xl p-5 industrial-shadow hover:shadow-md hover:border-t-2 hover:border-t-[#515f74] transition-all flex flex-col justify-between cursor-pointer"
         >
           <div className="flex justify-between items-start mb-3">
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#45464d]">
-              Pending Actions
+              AI Inspection Targets
             </span>
             <span className="material-symbols-outlined text-[#515f74]">assignment_late</span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-[#191c1e]">12</span>
-            <span className="text-xs text-[#45464d]">4 require approval</span>
+            <span className="text-3xl font-extrabold text-[#191c1e] font-mono">{priorityTargetsCount}</span>
+            <span className="text-xs text-[#45464d]">Urgent / High priority</span>
           </div>
         </div>
 
-        {/* Compliance Score */}
-        <div
-          onClick={() => onNavigate('compliance')}
-          className="bg-white border border-[#c6c6cd]/30 rounded-xl p-5 industrial-shadow hover:shadow-md hover:border-t-2 hover:border-t-black transition-all flex flex-col justify-between cursor-pointer"
-        >
-          <div className="flex justify-between items-start mb-3">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#45464d]">
-              Compliance Score
-            </span>
-            <span className="material-symbols-outlined text-black">verified</span>
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-[#191c1e]">94%</span>
-            <span className="text-xs font-semibold text-[#10B981] flex items-center">
-              <span className="material-symbols-outlined text-[14px]">arrow_upward</span> 2.1% this week
-            </span>
-          </div>
-        </div>
-
-        {/* Active Mines */}
+        {/* Evidence Coverage */}
         <div
           onClick={() => onNavigate('mines')}
           className="bg-white border border-[#c6c6cd]/30 rounded-xl p-5 industrial-shadow hover:shadow-md hover:border-t-2 hover:border-t-black transition-all flex flex-col justify-between cursor-pointer"
         >
           <div className="flex justify-between items-start mb-3">
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#45464d]">
-              Active Mines
+              Evidence Coverage
+            </span>
+            <span className="material-symbols-outlined text-black">verified</span>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span className="text-3xl font-extrabold text-[#191c1e] font-mono">{evidenceCoveragePct}%</span>
+            <span className="text-xs text-emerald-600 font-semibold flex items-center gap-0.5">
+              <span className="material-symbols-outlined text-[14px]">check_circle</span> Active signal
+            </span>
+          </div>
+        </div>
+
+        {/* Mines Assessed */}
+        <div
+          onClick={() => onNavigate('mines')}
+          className="bg-white border border-[#c6c6cd]/30 rounded-xl p-5 industrial-shadow hover:shadow-md hover:border-t-2 hover:border-t-black transition-all flex flex-col justify-between cursor-pointer"
+        >
+          <div className="flex justify-between items-start mb-3">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#45464d]">
+              Mines Assessed
             </span>
             <span className="material-symbols-outlined text-black">landscape</span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-[#191c1e]">8</span>
-            <span className="text-xs text-[#45464d]">Across 5 states</span>
+            <span className="text-3xl font-extrabold text-[#191c1e] font-mono">{assessedMines}</span>
+            <span className="text-xs text-[#45464d]">Across {uniqueStatesCount} states</span>
           </div>
         </div>
       </div>
 
+
       {/* Main Bento Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Map Widget (Span 2) - India Focused */}
-        <div className="lg:col-span-2 bg-white border border-[#c6c6cd]/30 rounded-xl overflow-hidden industrial-shadow flex flex-col h-[420px]">
-          <div className="p-4 border-b border-[#e6e8ea] flex justify-between items-center bg-white">
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-sm text-[#45464d]">pin_drop</span>
-              <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#191c1e]">
-                India Coal Mine Risk Map
-              </h3>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => onNavigate('mines')}
-                className="text-xs text-blue-600 font-bold px-2 py-1 hover:underline"
-              >
-                Full Intel →
-              </button>
-            </div>
-          </div>
-
-          <div className="flex-1 relative overflow-hidden">
-            <IndiaMap onSelectMine={onSelectMine} onNavigate={onNavigate} />
-          </div>
+        {/* Map Widget (Span 2) - India Coal Mine Risk Intelligence */}
+        <div className="lg:col-span-2 flex flex-col min-h-[580px]">
+          <IndiaMap mines={mines} onSelectMine={onSelectMine} onNavigate={onNavigate} />
         </div>
 
         {/* AI Insights Widget (Span 1) - Priority Actions */}
-        <div className="bg-white rounded-xl p-4 industrial-shadow ai-border flex flex-col h-[420px]">
-          <div className="flex justify-between items-center mb-3 pb-2 border-b border-[#e6e8ea]">
-            <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#191c1e] flex items-center gap-2">
-              <span className="material-symbols-outlined text-indigo-600">psychology</span>
+        <div className="bg-white rounded-xl p-5 border border-[#c6c6cd]/30 industrial-shadow ai-border flex flex-col min-h-[580px]">
+          <div className="flex justify-between items-center mb-3 pb-3 border-b border-[#e6e8ea]">
+            <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#191c1e] flex items-center gap-2">
+              <span className="material-symbols-outlined text-indigo-600 text-lg">psychology</span>
               Priority Actions
             </h3>
-            <span className="bg-[#dae2fd]/80 text-[#131b2e] text-[10px] px-2 py-0.5 rounded-full font-bold">
+            <span className="bg-[#dae2fd]/80 text-[#131b2e] text-[10px] px-2.5 py-0.5 rounded-full font-extrabold">
               AI GENERATED
             </span>
           </div>
 
           <div className="flex-1 overflow-y-auto pr-1 space-y-3">
-            {PRIORITY_ACTIONS.map((action, idx) => (
-              <div
-                key={idx}
-                className="p-3 bg-[#f7f9fb] border border-[#c6c6cd]/30 rounded-lg hover:bg-[#eceef0] transition-colors"
-              >
-                <div className="flex justify-between items-start mb-1">
-                  <span className="font-bold text-sm text-[#191c1e]">{action.title}</span>
-                  <span className="font-mono text-xs font-bold" style={{ color: action.severityColor }}>
-                    {action.severity.toUpperCase()}
-                  </span>
+            {priorityActions.length === 0 ? (
+              <div className="p-4 text-xs text-slate-500">No urgent ML inspection priorities available.</div>
+            ) : (
+              priorityActions.map((action) => (
+                <div
+                  key={action.mineId}
+                  className="p-3.5 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl hover:border-slate-300 transition-all space-y-2"
+                >
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-extrabold text-sm text-[#0F172A] leading-tight">
+                        {action.name}
+                      </h4>
+                      <span className="text-[10px] font-mono text-slate-500 font-bold block mt-0.5">
+                        ID: {action.mineId} • {action.location}
+                      </span>
+                    </div>
+                    <span
+                      className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${
+                        action.riskCategory === 'CRITICAL' || action.riskCategory === 'HIGH'
+                          ? 'bg-red-100 text-red-800'
+                          : 'bg-amber-100 text-amber-800'
+                      }`}
+                    >
+                      {action.riskCategory} ({action.riskScore !== null ? action.riskScore : 'N/A'})
+                    </span>
+                  </div>
+
+                  <div className="text-xs text-slate-600 space-y-1">
+                    <p className="line-clamp-2 leading-relaxed">
+                      <span className="font-bold text-slate-800">Recommendation:</span> "{action.recommendation}"
+                    </p>
+                    <div className="flex flex-wrap items-center gap-2 text-[10px] text-slate-500 font-medium">
+                      <span>Priority: <strong className="text-slate-800">{action.inspectionPriority}</strong></span>
+                      <span>•</span>
+                      <span>Evidence: <strong className="text-slate-800">{action.evidenceStatus}</strong></span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      onSelectMine(action.mineId);
+                      onNavigate('mines');
+                    }}
+                    className="w-full py-2 bg-[#0F172A] text-white rounded-lg text-xs font-bold hover:bg-[#1e293b] transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
+                  >
+                    <span>Review Mine Intelligence</span>
+                    <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                  </button>
                 </div>
-                <p className="text-xs text-[#45464d] mb-2 leading-relaxed">
-                  {action.description}
-                </p>
-                {action.actionType === 'dispatch' ? (
-                  <button
-                    onClick={() => action.location && onDispatchInspection(action.location)}
-                    className="bg-[#000000] text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-[#271901] transition-colors w-full active:scale-98"
-                  >
-                    {action.action}
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => onNavigate(action.navigateTo as NavigationTab)}
-                    className="bg-[#000000] text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-[#271901] transition-colors w-full active:scale-98"
-                  >
-                    {action.action}
-                  </button>
-                )}
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </div>
@@ -419,7 +385,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
         <div className="p-5">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {PREDICTIVE_RISK_DATA.map((risk, idx) => (
+            {predictiveRiskData.map((risk, idx) => (
               <div
                 key={idx}
                 className="border border-[#e0e3e5] rounded-xl p-4 hover:shadow-md transition-shadow"
@@ -431,7 +397,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   </div>
                   <span
                     className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                      risk.predictedRisk === 'HIGH'
+                      risk.predictedRisk === 'HIGH' || risk.predictedRisk === 'CRITICAL'
                         ? 'bg-[#ffdad6] text-[#ba1a1a]'
                         : risk.predictedRisk === 'MEDIUM'
                         ? 'bg-[#fcdeb5] text-[#574425]'
@@ -446,7 +412,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <div className="flex-1">
                     <div className="flex justify-between text-[11px] mb-1">
                       <span className="text-[#45464d]">Risk Score</span>
-                      <span className="font-mono font-bold text-[#191c1e]">{risk.riskScore}/100</span>
+                      <span className="font-mono font-bold text-[#191c1e]">{risk.riskScore.toFixed(2)}/100</span>
                     </div>
                     <div className="w-full bg-[#e6e8ea] rounded-full h-2 overflow-hidden">
                       <div
@@ -509,7 +475,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {[
             'Which mines are high risk?',
             'What could go wrong next?',
-            'Why is Korba Deep Mine high risk?',
+            'Why is Aadocm low risk?',
             'Show overdue compliance.',
             'What preventive action is recommended?'
           ].map((prompt, idx) => (

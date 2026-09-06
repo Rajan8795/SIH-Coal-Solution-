@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { AlertItem, NavigationTab } from '../types';
-import { ASSETS } from '../data/mockData';
+import { AlertItem, Mine, NavigationTab } from '../types';
 
 interface AlertsViewProps {
   alerts: AlertItem[];
+  mines: Mine[];
   onNavigate: (tab: NavigationTab) => void;
   onUpdateAlertStatus: (id: string, newStatus: AlertItem['status']) => void;
   onCreateAlert: (alert: Omit<AlertItem, 'id'>) => void;
@@ -11,6 +11,7 @@ interface AlertsViewProps {
 
 export const AlertsView: React.FC<AlertsViewProps> = ({
   alerts,
+  mines,
   onNavigate,
   onUpdateAlertStatus,
   onCreateAlert,
@@ -23,11 +24,12 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
   // New alert form
   const [newTitle, setNewTitle] = useState('');
   const [newLocation, setNewLocation] = useState('');
-  const [newMine, setNewMine] = useState('Blackwood North');
+  const [newMineId, setNewMineId] = useState('');
   const [newSeverity, setNewSeverity] = useState<'Critical' | 'High' | 'Medium'>('Critical');
-  const [newAssignee, setNewAssignee] = useState('J. Doe');
+  const [newAssignee] = useState('Unassigned');
   const [newDeadline, setNewDeadline] = useState('12:00 PM');
   const [newDesc, setNewDesc] = useState('');
+  const selectedNewMine = mines.find((mine) => mine.id === newMineId) || mines[0];
 
   const filteredAlerts = alerts.filter((item) => {
     if (activeTab !== 'All' && activeTab !== 'Critical') {
@@ -43,21 +45,21 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
 
   const handleCreateSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTitle.trim()) return;
+    if (!newTitle.trim() || !selectedNewMine) return;
 
     onCreateAlert({
       title: newTitle,
+      mineId: selectedNewMine.id,
       location: newLocation || 'Primary Shaft',
-      mine: newMine,
+      mine: selectedNewMine.name,
       time: 'Just now',
       status: 'Unacknowledged',
       severity: newSeverity,
       assignedTo: {
         name: newAssignee,
-        avatar: ASSETS.officerDoe,
       },
       deadline: newDeadline,
-      description: newDesc || 'Automated safety incident dispatched from central control room.',
+      description: newDesc || 'Prototype AI-derived alert created for workflow demonstration.',
     });
 
     setNewTitle('');
@@ -398,6 +400,19 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
                 />
               </div>
 
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">Target Mine</label>
+                <select
+                  value={selectedNewMine?.id || ''}
+                  onChange={(e) => setNewMineId(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-black"
+                >
+                  {mines.map((mine) => (
+                    <option key={mine.id} value={mine.id}>{mine.name}</option>
+                  ))}
+                </select>
+              </div>
+
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="block font-bold text-gray-700 mb-1">Severity</label>
@@ -424,17 +439,13 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
               </div>
 
               <div>
-                <label className="block font-bold text-gray-700 mb-1">Assigned Safety Officer</label>
-                <select
+                <label className="block font-bold text-gray-700 mb-1">Assigned To</label>
+                <input
+                  type="text"
+                  disabled
                   value={newAssignee}
-                  onChange={(e) => setNewAssignee(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-black"
-                >
-                  <option value="V. Singh">V. Singh (Mechanical Inspector)</option>
-                  <option value="R. Sharma">R. Sharma (DGMS Certified)</option>
-                  <option value="M. Gupta">M. Gupta (Maintenance Lead)</option>
-                  <option value="A. Kumar">A. Kumar (Safety Lead)</option>
-                </select>
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700"
+                />
               </div>
 
               <div>

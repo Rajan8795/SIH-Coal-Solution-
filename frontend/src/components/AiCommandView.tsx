@@ -9,6 +9,200 @@ interface AiCommandViewProps {
   onScheduleInspectionFromAi: (mineName: string) => void;
 }
 
+const FormattedChatMessage: React.FC<{ text: string }> = ({ text }) => {
+  const lines = text.split('\n');
+  const elements: React.ReactNode[] = [];
+  let lineIdx = 0;
+
+  while (lineIdx < lines.length) {
+    const line = lines[lineIdx];
+
+    // Markdown Table parsing
+    if (line.trim().startsWith('|') && line.includes('|')) {
+      const tableLines: string[] = [];
+      while (lineIdx < lines.length && lines[lineIdx].trim().startsWith('|')) {
+        tableLines.push(lines[lineIdx]);
+        lineIdx++;
+      }
+
+      const dataRows = tableLines.filter((row) => !row.includes('---'));
+      if (dataRows.length > 0) {
+        const headerCols = dataRows[0]
+          .split('|')
+          .map((c) => c.trim())
+          .filter((c) => c.length > 0);
+        const bodyRows = dataRows.slice(1).map((row) =>
+          row
+            .split('|')
+            .map((c) => c.trim())
+            .filter((c) => c.length > 0)
+        );
+
+        elements.push(
+          <div
+            key={`table-${lineIdx}`}
+            className="my-3 overflow-x-auto rounded-lg border border-gray-200 shadow-xs"
+          >
+            <table className="w-full text-xs text-left">
+              <thead className="bg-[#0F172A] text-white text-[11px] uppercase tracking-wider font-bold">
+                <tr>
+                  {headerCols.map((h, i) => (
+                    <th key={i} className="px-3 py-2 border-b border-gray-700">
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 bg-white font-medium text-gray-800">
+                {bodyRows.map((row, rIdx) => (
+                  <tr
+                    key={rIdx}
+                    className={rIdx % 2 === 1 ? 'bg-gray-50/60' : 'bg-white'}
+                  >
+                    {row.map((cell, cIdx) => (
+                      <td key={cIdx} className="px-3 py-2 whitespace-nowrap">
+                        {renderCellContent(cell)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      }
+      continue;
+    }
+
+    // Heading ##
+    if (line.startsWith('## ')) {
+      const headingText = line.replace('## ', '').trim();
+      elements.push(
+        <div
+          key={`h2-${lineIdx}`}
+          className="mt-4 mb-2 pb-1 border-b border-gray-200 flex items-center gap-1.5"
+        >
+          <span className="material-symbols-outlined text-[#6366F1] text-base">
+            analytics
+          </span>
+          <h2 className="text-sm font-extrabold text-[#0F172A] uppercase tracking-wider">
+            {headingText}
+          </h2>
+        </div>
+      );
+      lineIdx++;
+      continue;
+    }
+
+    // Subheading ###
+    if (line.startsWith('### ')) {
+      const subheadingText = line.replace('### ', '').trim();
+      elements.push(
+        <h3
+          key={`h3-${lineIdx}`}
+          className="text-xs font-bold text-indigo-700 uppercase tracking-wide mt-3 mb-1.5 flex items-center gap-1"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 inline-block" />
+          {subheadingText}
+        </h3>
+      );
+      lineIdx++;
+      continue;
+    }
+
+    // Bullet lines (- or 1. 2.)
+    const isBullet = line.trim().startsWith('- ') || /^\d+\.\s/.test(line.trim());
+    if (isBullet) {
+      elements.push(
+        <div
+          key={`bullet-${lineIdx}`}
+          className="flex items-start gap-2 my-1 pl-2 text-xs leading-relaxed text-gray-800"
+        >
+          <span className="material-symbols-outlined text-[14px] text-gray-400 mt-0.5 shrink-0">
+            chevron_right
+          </span>
+          <div className="flex-1">
+            {renderInlineMarkdown(line.replace(/^-\s*|^\d+\.\s*/, ''))}
+          </div>
+        </div>
+      );
+      lineIdx++;
+      continue;
+    }
+
+    // Empty line
+    if (!line.trim()) {
+      elements.push(<div key={`space-${lineIdx}`} className="h-1" />);
+      lineIdx++;
+      continue;
+    }
+
+    // Normal paragraph line
+    elements.push(
+      <p key={`p-${lineIdx}`} className="my-1 text-xs sm:text-sm text-gray-800 leading-relaxed">
+        {renderInlineMarkdown(line)}
+      </p>
+    );
+    lineIdx++;
+  }
+
+  return <div className="space-y-1">{elements}</div>;
+};
+
+function renderInlineMarkdown(text: string): React.ReactNode {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return (
+    <>
+      {parts.map((part, idx) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          const content = part.slice(2, -2);
+          return (
+            <strong key={idx} className="font-extrabold text-gray-900">
+              {content}
+            </strong>
+          );
+        }
+        return <span key={idx}>{renderStatusBadges(part)}</span>;
+      })}
+    </>
+  );
+}
+
+function renderCellContent(cell: string): React.ReactNode {
+  if (cell === 'HIGH' || cell === 'CRITICAL') {
+    return (
+      <span className="px-2 py-0.5 rounded bg-red-100 text-red-800 text-[10px] font-bold font-mono">
+        {cell}
+      </span>
+    );
+  }
+  if (cell === 'MEDIUM') {
+    return (
+      <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-bold font-mono">
+        {cell}
+      </span>
+    );
+  }
+  if (cell === 'LOW' || cell === 'Operational') {
+    return (
+      <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold font-mono">
+        {cell}
+      </span>
+    );
+  }
+  return cell;
+}
+
+function renderStatusBadges(text: string): React.ReactNode {
+  if (text.includes('HIGH RISK') || text.includes('CRITICAL RISK')) {
+    return <span className="ml-1 px-2 py-0.5 rounded bg-red-100 text-red-800 text-[11px] font-bold">{text}</span>;
+  }
+  if (text.includes('LOW RISK')) {
+    return <span className="ml-1 px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[11px] font-bold">{text}</span>;
+  }
+  return text;
+}
+
 export const AiCommandView: React.FC<AiCommandViewProps> = ({
   messages,
   onSendMessage,
@@ -21,11 +215,12 @@ export const AiCommandView: React.FC<AiCommandViewProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const quickPrompts = [
+    'What is the risk of Aadocm?',
+    'Why is Aadocm low risk?',
+    'What action should we take for Aadocm?',
     'Which mines are high risk?',
     'What could go wrong next?',
-    'Why is Korba Deep Mine high risk?',
-    'Show overdue compliance.',
-    'What preventive action is recommended?',
+    'Give me a complete assessment of Aadocm.',
   ];
 
   const scrollToBottom = () => {
@@ -118,7 +313,11 @@ export const AiCommandView: React.FC<AiCommandViewProps> = ({
                       : 'bg-white border border-[#e0e3e5] text-[#191c1e] rounded-tl-none'
                   }`}
                 >
-                  <p className="whitespace-pre-line">{msg.text}</p>
+                  {isUser ? (
+                    <p className="whitespace-pre-line">{msg.text}</p>
+                  ) : (
+                    <FormattedChatMessage text={msg.text} />
+                  )}
                 </div>
 
                 {/* Rich Data Card if present */}
@@ -184,7 +383,7 @@ export const AiCommandView: React.FC<AiCommandViewProps> = ({
                             <button
                               onClick={() =>
                                 onScheduleInspectionFromAi(
-                                  msg.richData?.mineName || 'Jharia Main Colliery'
+                                  msg.richData?.mineName || 'Aadocm'
                                 )
                               }
                               className="px-3 py-1.5 bg-[#0F172A] hover:bg-[#1e293b] text-white rounded-lg text-xs font-bold transition-colors shadow-xs"
@@ -287,27 +486,18 @@ export const AiCommandView: React.FC<AiCommandViewProps> = ({
             </div>
             <div className="space-y-3 text-xs text-gray-700">
               <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <p className="font-bold text-gray-900 mb-1">Inspection History (Last 90 Days)</p>
+                <p className="font-bold text-gray-900 mb-1">408 Real Mine Dataset Intelligence</p>
                 <ul className="space-y-1 text-gray-600">
-                  <li>• 3 recurring ventilation findings at Korba Deep Mine</li>
-                  <li>• 2 overdue compliance actions at Jharia Main Colliery</li>
-                  <li>• 1 pending environmental audit at Singrauli North</li>
+                  <li>• Dynamic ML risk classification across all 408 verified facilities</li>
+                  <li>• Automated evidence coverage tracking & anomaly detection</li>
+                  <li>• Priority-based inspection dispatch workflows</li>
                 </ul>
               </div>
               <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <p className="font-bold text-gray-900 mb-1">Contractor Compliance Status</p>
+                <p className="font-bold text-gray-900 mb-1">Contractor & Site Governance</p>
                 <ul className="space-y-1 text-gray-600">
-                  <li>• Bharat Coal Mining Services: 8 expiring certifications</li>
-                  <li>• Eastern Mining Contractors: 12 expiring certifications</li>
-                  <li>• Central Mine Ventilation Services: Compliant</li>
-                </ul>
-              </div>
-              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <p className="font-bold text-gray-900 mb-1">Environmental Data</p>
-                <ul className="space-y-1 text-gray-600">
-                  <li>• Groundwater sampling: Current at all sites</li>
-                  <li>• Emissions audit: Pending at Singrauli North</li>
-                  <li>• Dust suppression: Calibration due at Jharia Main</li>
+                  <li>• Multi-district coverage (Jharkhand, Chhattisgarh, MP, West Bengal, Telangana, etc.)</li>
+                  <li>• Continuous operational & safety evidence validation</li>
                 </ul>
               </div>
             </div>

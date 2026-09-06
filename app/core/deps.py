@@ -1,13 +1,15 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from app.models.permission import Role
 
 from app.database import get_db
 from app.core.security import decode_token
 from app.models.user import User, UserRole
+from app.models.token_blacklist import TokenBlacklist
+from app.models.permission import Role
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
     credentials_error = HTTPException(
@@ -15,6 +17,10 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
+    if db.query(TokenBlacklist).filter(TokenBlacklist.token == token).first():
+        raise credentials_error
+
     payload = decode_token(token)
     if not payload or payload.get("type") != "access":
         raise credentials_error
@@ -30,7 +36,6 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 
 
 def require_role(*allowed_roles: UserRole):
-    """Usage: Depends(require_role(UserRole.ADMIN, UserRole.INSPECTOR))"""
     def role_checker(current_user: User = Depends(get_current_user)) -> User:
         if current_user.role not in allowed_roles:
             raise HTTPException(
@@ -39,6 +44,7 @@ def require_role(*allowed_roles: UserRole):
             )
         return current_user
     return role_checker
+
 
 def require_permission(permission_code: str):
     def checker(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):

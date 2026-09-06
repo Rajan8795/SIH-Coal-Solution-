@@ -1,4 +1,4 @@
-import { Mine, ComplianceRequirement, AlertItem, FieldInspection, Contractor, ChatMessage } from '../types';
+import { Mine, AlertItem, FieldInspection, Contractor, ChatMessage } from '../types';
 
 export const ASSETS = {
   logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAC-aVigNwcIqLF-kuQGHMW4EcqC2DYiRZS7qySGYAgtINXbHVJ5MP0YZaQ0eaaWJv2mxXkM1C4GR0yLUGQZCkY-Z-b_TVSch1XdeIyp4q4UQ05WUmons4njM8HRWfphAJrpLRLtvOqUfBOZ80vj2Ehm5E74bQiQ-hlsbZnMUqSuskOQVqz7M0bTARTsX3S5ihmIWwhgHD7nYGkEdkBfdKXQtkE3pq-Z8W1yID_YF5tVzjN1ugd4SgI',
@@ -159,98 +159,6 @@ export const INITIAL_MINES: Mine[] = [
   }
 ];
 
-export const INITIAL_COMPLIANCE: ComplianceRequirement[] = [
-  {
-    id: 'req-1',
-    code: 'DGMS-2024-084',
-    requirement: 'Ventilation Shaft Integrity Check',
-    mine: 'Korba Deep Mine',
-    category: 'Safety',
-    dueDate: '2024-10-24',
-    status: 'Overdue',
-    riskLevel: 'High',
-    responsibleOfficer: {
-      name: 'R. Sharma',
-      avatar: ASSETS.officerMitchell
-    }
-  },
-  {
-    id: 'req-2',
-    code: 'DGMS-2024-112',
-    requirement: 'Heavy Machinery Emissions Audit',
-    mine: 'Singrauli North Extension',
-    category: 'Environmental',
-    dueDate: '2024-11-05',
-    status: 'Pending',
-    riskLevel: 'Medium',
-    responsibleOfficer: {
-      name: 'A. Kumar',
-      initials: 'AK'
-    }
-  },
-  {
-    id: 'req-3',
-    code: 'DGMS-2024-145',
-    requirement: 'Structural Support Recertification',
-    mine: 'Godavari Valley Block III',
-    category: 'Equipment',
-    dueDate: '2024-11-12',
-    status: 'Pending',
-    riskLevel: 'Medium',
-    responsibleOfficer: {
-      name: 'S. Patel',
-      avatar: ASSETS.officerReynolds
-    },
-    aiInsight: {
-      type: 'RISK PATTERN DETECTED',
-      text: "Historical inspection data suggests elevated probability of delay for 'Structural Support Recertification' at Godavari Valley Block III due to contractor availability.",
-      delayProbability: 78
-    }
-  },
-  {
-    id: 'req-4',
-    code: 'DGMS-2024-042',
-    requirement: 'Quarterly Explosives Inventory',
-    mine: 'Korba Deep Mine',
-    category: 'Safety',
-    dueDate: '2024-10-15',
-    status: 'Completed',
-    riskLevel: 'Low',
-    responsibleOfficer: {
-      name: 'T. Reddy',
-      initials: 'TR'
-    }
-  },
-  {
-    id: 'req-5',
-    code: 'DGMS-2024-199',
-    requirement: 'Dust Suppression System Calibration',
-    mine: 'Jharia Main Colliery',
-    category: 'Equipment',
-    dueDate: '2024-11-20',
-    status: 'Pending',
-    riskLevel: 'High',
-    responsibleOfficer: {
-      name: 'V. Singh',
-      avatar: ASSETS.officerDoe
-    }
-  },
-  {
-    id: 'req-6',
-    code: 'DGMS-2024-205',
-    requirement: 'Groundwater Leachate & Effluent Sampling',
-    mine: 'Raniganj Eastern Block',
-    category: 'Environmental',
-    dueDate: '2024-11-28',
-    status: 'Pending',
-    riskLevel: 'Low',
-    responsibleOfficer: {
-      name: 'S. Patel',
-      avatar: ASSETS.officerReynolds
-    }
-  }
-];
-
 export const INITIAL_ALERTS: AlertItem[] = [
   {
     id: 'alert-1',
@@ -333,22 +241,22 @@ export const INITIAL_ALERTS: AlertItem[] = [
 
 export const INITIAL_FIELD_INSPECTION: FieldInspection = {
   id: 'insp-1024',
-  location: 'Sector 4 - Conveyor Belt B',
-  sector: 'Sector 4',
-  gpsText: 'GPS: 23.7466° N, 86.4154° E',
+  location: 'Aadocm (AADOCM-0)',
+  sector: 'AADOCM-0',
+  gpsText: 'GPS / sub-location data unavailable',
   time: '10:42 AM',
   date: 'Oct 24',
   imageUrl: ASSETS.conveyorMedia,
-  notes: 'Excessive coal dust accumulation noted near primary drive motor. Elevated temperatures observed during inspection.',
+  notes: 'Field observation documentation.',
   status: 'Active',
   analysis: {
-    title: 'Fire Safety Violation',
-    severity: 'HIGH SEVERITY',
-    description: 'Combustible dust build-up near active heat source exceeds permissible thresholds as per DGMS guidelines.',
-    confidenceScore: 94,
-    standardRef: 'Ref: CMR 2017 Regulation 173 - Accumulation of combustible materials.',
-    category: 'Safety',
-    recommendedAction: 'Initiate immediate dust suppression and housekeeping protocols in Sector 4. Isolate conveyor drive motor until cleaned. Schedule follow-up inspection within 48 hours per DGMS CMR 2017 Regulation 173.',
+    title: 'AI Assessment: Aadocm',
+    severity: 'LOW SEVERITY',
+    description: 'Review recent production trends and investigate unusual operational deviations. No immediate high-risk indicator detected; continue routine monitoring.',
+    confidenceScore: 60,
+    standardRef: 'Operational Evidence Assessment',
+    category: 'Operational',
+    recommendedAction: 'Review recent production trends and investigate unusual operational deviations.',
   }
 };
 
@@ -395,32 +303,4 @@ export const INITIAL_CONTRACTORS: Contractor[] = [
   }
 ];
 
-export const INITIAL_CHAT_MESSAGES: ChatMessage[] = [
-  {
-    id: 'msg-1',
-    role: 'user',
-    text: 'Show me a risk breakdown for Jharia Main Colliery focusing on recent compliance issues.',
-    timestamp: '10:45 AM'
-  },
-  {
-    id: 'msg-2',
-    role: 'assistant',
-    text: 'Analyzing data for **Jharia Main Colliery** over the last 30 days. I found elevated risk indicators primarily linked to recurring safety violations and overdue compliance actions. Here is the breakdown:',
-    timestamp: '10:45 AM',
-    richData: {
-      mineName: 'Jharia Main Colliery',
-      riskScore: 78,
-      factorBreakdown: [
-        { label: 'Safety Violations', value: 85, color: '#ba1a1a' },
-        { label: 'Overdue Compliance', value: 68, color: '#f59e0b' },
-        { label: 'Contractor Training', value: 34, color: '#3b82f6' }
-      ],
-      recommendation: {
-        title: 'AI Recommendation',
-        text: 'Immediate inspection recommended for Sector 4 ventilation compliance. Schedule targeted inspection to address recurring findings.',
-        actionText: 'Schedule Inspection',
-        logsUrl: '#compliance-logs'
-      }
-    }
-  }
-];
+export const INITIAL_CHAT_MESSAGES: ChatMessage[] = [];

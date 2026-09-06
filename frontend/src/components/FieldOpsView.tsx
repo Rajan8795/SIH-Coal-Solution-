@@ -1,24 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FieldInspection, NavigationTab } from '../types';
+import { FieldInspection, Mine, NavigationTab } from '../types';
 import { ASSETS } from '../data/mockData';
 
 interface FieldOpsViewProps {
+  mines?: Mine[];
   inspection: FieldInspection;
   onNavigate: (tab: NavigationTab) => void;
   onCreateCorrectiveAction: (inspection: FieldInspection) => void;
 }
 
-const LOCATION_OPTIONS = [
-  { name: 'Sector 4 - Conveyor Belt B', gps: '23.7466° N, 86.4154° E', status: 'Verified' },
-  { name: 'Main Shaft 2G - Intake Fan', gps: '23.7480° N, 86.4170° E', status: 'Pending Audit' },
-  { name: 'Sub-Level 3 - Explosives Magazine', gps: '23.7450° N, 86.4140° E', status: 'Compliant' },
-];
-
 export const FieldOpsView: React.FC<FieldOpsViewProps> = ({
+  mines = [],
   inspection,
   onNavigate,
   onCreateCorrectiveAction,
 }) => {
+  const realMines = mines && mines.length > 0 ? mines : [];
+
   const [activeStep, setActiveStep] = useState<1 | 2 | 3>(() => {
     try {
       const saved = localStorage.getItem('fieldOpsStep');
@@ -31,11 +29,20 @@ export const FieldOpsView: React.FC<FieldOpsViewProps> = ({
 
   const [selectedLocation, setSelectedLocation] = useState<string>(() => {
     try {
-      return localStorage.getItem('fieldOpsLocation') || '';
-    } catch {
-      return '';
-    }
+      const saved = localStorage.getItem('fieldOpsLocation');
+      if (
+        saved &&
+        !saved.includes('Sector 4') &&
+        !saved.includes('Main Shaft') &&
+        !saved.includes('Sub-Level')
+      ) {
+        return saved;
+      }
+    } catch {}
+    return '';
   });
+
+  const [searchQuery, setSearchQuery] = useState('');
 
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [observationText, setObservationText] = useState<string>(() => {
@@ -186,19 +193,52 @@ export const FieldOpsView: React.FC<FieldOpsViewProps> = ({
     }
   };
 
+  const filteredMines = realMines.filter((m) => {
+    if (!searchQuery.trim()) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      m.name.toLowerCase().includes(q) ||
+      m.id.toLowerCase().includes(q) ||
+      (m.mineId && m.mineId.toLowerCase().includes(q)) ||
+      (m.location && m.location.toLowerCase().includes(q))
+    );
+  });
+
+  const activeMine =
+    realMines.find(
+      (m) =>
+        m.id === selectedLocation ||
+        m.mineId === selectedLocation ||
+        m.name === selectedLocation
+    ) || realMines[0];
+
+  useEffect(() => {
+    if (
+      activeMine &&
+      (!selectedLocation ||
+        selectedLocation.includes('Sector 4') ||
+        selectedLocation.includes('Main Shaft') ||
+        selectedLocation.includes('Sub-Level'))
+    ) {
+      setSelectedLocation(activeMine.mineId || activeMine.id || activeMine.name);
+    }
+  }, [activeMine, selectedLocation]);
+
   const handleCreateAction = () => {
     setActionCreated(true);
+    const locName = activeMine
+      ? `${activeMine.name} (${activeMine.mineId || activeMine.id})`
+      : selectedLocation || inspection.location;
     onCreateCorrectiveAction({
       ...inspection,
       notes: observationText || inspection.notes,
-      location: selectedLocation || inspection.location,
+      location: locName,
     });
   };
 
   const displayNotes = observationText || inspection.notes;
   const displayImage = capturedImage || inspection.imageUrl;
-  const selectedLocObj = LOCATION_OPTIONS.find((l) => l.name === selectedLocation);
-  const displayGps = selectedLocObj?.gps || inspection.gpsText;
+  const displayGps = activeMine?.coordinates?.gpsText || 'GPS / sub-location data unavailable';
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-200 pb-12">
@@ -309,49 +349,80 @@ export const FieldOpsView: React.FC<FieldOpsViewProps> = ({
       {/* STEP 1 VIEW (Location Selection) */}
       {activeStep === 1 && (
         <div className="bg-white rounded-xl border border-[#e0e3e5] p-5 shadow-xs space-y-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
-            Confirm Facility Inspection Target
-          </h3>
-          <div className="space-y-2">
-            {LOCATION_OPTIONS.map((loc) => (
-              <div
-                key={loc.name}
-                onClick={() => handleSelectLocation(loc.name)}
-                className={`p-4 rounded-xl border flex justify-between items-center cursor-pointer transition-all ${
-                  selectedLocation === loc.name
-                    ? 'border-black bg-gray-50 ring-1 ring-black'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-gray-700">location_on</span>
-                  <div>
-                    <p className="text-sm font-bold text-gray-900">{loc.name}</p>
-                    <p className="text-xs font-mono text-gray-500">{loc.gps}</p>
-                  </div>
-                </div>
-                <span className="text-xs font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-700">
-                  {loc.status}
-                </span>
-              </div>
-            ))}
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
+              Confirm Facility Inspection Target ({realMines.length} Real Mines Available)
+            </h3>
           </div>
 
-          {selectedLocation && (
-            <div className="flex items-center gap-2 p-3 bg-[#f0fdf4] rounded-lg border border-[#bbf7d0]">
-              <span className="material-symbols-outlined text-emerald-600 text-sm">
-                check_circle
+          <div className="space-y-3">
+            <div className="relative">
+              <span className="material-symbols-outlined absolute left-3 top-2.5 text-gray-400 text-sm">
+                search
               </span>
-              <div>
-                <p className="text-xs font-bold text-emerald-800">Location Selected</p>
-                <p className="text-xs text-emerald-700">{selectedLocation}</p>
+              <input
+                type="text"
+                placeholder="Filter real mine by name, ID, or location..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 text-xs border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-black bg-white"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-gray-600 uppercase tracking-wider">
+                Select Real Mine Target:
+              </label>
+              <select
+                value={activeMine?.id || ''}
+                onChange={(e) => {
+                  const m = realMines.find((rm) => rm.id === e.target.value);
+                  if (m) {
+                    setSelectedLocation(m.mineId || m.id || m.name);
+                  }
+                }}
+                className="w-full p-2.5 text-xs border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-black bg-white font-medium text-gray-900"
+              >
+                {filteredMines.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.name} ({m.mineId || m.id}) — {m.location} [{m.riskCategory || 'Operational'}]
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {activeMine && (
+            <div className="p-4 rounded-xl border border-black bg-gray-50 ring-1 ring-black space-y-2">
+              <div className="flex justify-between items-start">
+                <div className="flex items-start gap-3">
+                  <span className="material-symbols-outlined text-gray-700 mt-0.5">location_on</span>
+                  <div>
+                    <p className="text-sm font-bold text-gray-900">{activeMine.name}</p>
+                    <p className="text-xs font-mono font-semibold text-blue-700">
+                      ID: {activeMine.mineId || activeMine.id}
+                    </p>
+                    <p className="text-xs text-gray-600 mt-0.5">{activeMine.location}</p>
+                    <p className="text-xs font-mono text-amber-700 mt-1 italic font-semibold">
+                      GPS / sub-location data unavailable
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-1">
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-700">
+                    Priority: {activeMine.inspectionPriority || 'LOW'}
+                  </span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-gray-200 text-gray-800">
+                    {activeMine.riskCategory ? `${activeMine.riskCategory} RISK` : 'Operational'}
+                  </span>
+                </div>
               </div>
             </div>
           )}
 
           <button
             onClick={handleProceedToCapture}
-            disabled={!selectedLocation}
+            disabled={!activeMine}
             className="w-full py-2.5 bg-[#0F172A] text-white rounded-lg text-xs font-bold hover:bg-[#1e293b] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Proceed to Camera Capture →
@@ -520,15 +591,20 @@ export const FieldOpsView: React.FC<FieldOpsViewProps> = ({
               </div>
               <div className="flex-1">
                 <h4 className="text-base sm:text-lg font-bold text-[#191c1e]">
-                  {selectedLocation || inspection.location}
+                  {activeMine ? activeMine.name : selectedLocation || inspection.location}
                 </h4>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="font-mono text-xs text-[#45464d]">
-                    {displayGps}
+                <div className="flex flex-wrap items-center gap-2 mt-1">
+                  {activeMine && (
+                    <span className="font-mono text-xs font-semibold text-blue-700">
+                      Mine ID: {activeMine.mineId || activeMine.id}
+                    </span>
+                  )}
+                  <span className="font-mono text-xs text-amber-700 italic font-semibold">
+                    GPS / sub-location data unavailable
                   </span>
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#d5e3fd]/60 text-[#0d1c2f] text-[10px] font-bold">
                     <span className="material-symbols-outlined text-[13px]">check_circle</span>
-                    Verified
+                    Real Mine Dataset
                   </span>
                 </div>
               </div>
@@ -548,7 +624,7 @@ export const FieldOpsView: React.FC<FieldOpsViewProps> = ({
               <div className="relative w-full h-48 bg-[#f2f4f6]">
                 <img
                   src={displayImage}
-                  alt="Inspection Conveyor Belt Observation"
+                  alt="Inspection Observation"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute bottom-2 right-2 bg-[#0F172A]/85 text-white font-mono text-[10px] px-2 py-1 rounded backdrop-blur-xs font-semibold">
@@ -568,16 +644,22 @@ export const FieldOpsView: React.FC<FieldOpsViewProps> = ({
               </div>
             </div>
 
-            {/* AI Vision Analysis Card */}
+            {/* AI Real Mine Analysis Card */}
             <div className="bg-white rounded-xl border border-[#e0e3e5] shadow-xs overflow-hidden flex flex-col border-t-2 border-t-[#6366F1] relative">
-              {/* Subtle AI gradient background */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#6366F1]/10 to-transparent rounded-bl-full pointer-events-none" />
 
-              <div className="p-3.5 border-b border-[#e0e3e5] flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#6366F1]">psychology</span>
-                <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#6366F1]">
-                  AI Vision Analysis
-                </h3>
+              <div className="p-3.5 border-b border-[#e0e3e5] flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[#6366F1]">psychology</span>
+                  <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#6366F1]">
+                    AI Real Mine Diagnostic
+                  </h3>
+                </div>
+                {activeMine && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-mono">
+                    {activeMine.mineId || activeMine.id}
+                  </span>
+                )}
               </div>
 
               {isAnalyzing ? (
@@ -585,32 +667,108 @@ export const FieldOpsView: React.FC<FieldOpsViewProps> = ({
                   <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#6366F1] border-t-transparent"></div>
                   <p className="text-sm font-semibold text-[#6366F1]">Analyzing...</p>
                   <p className="text-xs text-[#45464d] text-center">
-                    Running AI Vision diagnostic on captured evidence
+                    Running AI diagnostic on real mine evidence dataset
                   </p>
                 </div>
               ) : (
                 <div className="p-4 flex flex-col flex-1 justify-between space-y-3.5">
-                  {/* Detected Issue & Severity */}
+                  {/* Real Mine Intelligence Metrics */}
                   <div>
-                    <div className="flex justify-between items-start mb-1">
-                      <div className="flex flex-col">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
                         <h4 className="text-base font-bold text-[#191c1e]">
-                          {inspection.analysis.title}
+                          {activeMine ? activeMine.name : inspection.analysis.title}
                         </h4>
-                        {inspection.analysis.category && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#e6e8ea] text-[#45464d] text-[10px] font-bold mt-1">
-                            {inspection.analysis.category}
-                          </span>
-                        )}
+                        <p className="text-xs text-gray-500 font-mono">
+                          Overall Risk Score:{' '}
+                          {activeMine?.riskScore != null
+                            ? `${activeMine.riskScore.toFixed(2)} / 100`
+                            : 'Insufficient Evidence'}
+                        </p>
                       </div>
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#ba1a1a]/10 text-[#ba1a1a] text-[10px] font-bold">
-                        <span className="material-symbols-outlined text-[13px]">warning</span>
-                        {inspection.analysis.severity}
+                      <span
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold ${
+                          activeMine?.riskCategory === 'HIGH' ||
+                          activeMine?.riskCategory === 'CRITICAL'
+                            ? 'bg-[#ba1a1a]/10 text-[#ba1a1a]'
+                            : 'bg-emerald-50 text-emerald-700'
+                        }`}
+                      >
+                        <span className="material-symbols-outlined text-[13px]">
+                          {activeMine?.riskCategory === 'HIGH' ||
+                          activeMine?.riskCategory === 'CRITICAL'
+                            ? 'warning'
+                            : 'check_circle'}
+                        </span>
+                        {activeMine?.riskCategory
+                          ? `${activeMine.riskCategory} RISK`
+                          : 'Insufficient Evidence'}
                       </span>
                     </div>
-                    <p className="text-xs text-[#45464d] leading-relaxed mt-2">
-                      {inspection.analysis.description}
-                    </p>
+
+                    <div className="space-y-2 mt-3 text-xs bg-gray-50 p-3 rounded-lg border border-gray-200">
+                      <div>
+                        <span className="font-bold text-gray-700">Risk Drivers: </span>
+                        <span className="text-gray-800">
+                          {activeMine?.riskDrivers || 'Insufficient Evidence'}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="font-bold text-gray-700">Explanation: </span>
+                        <span className="text-gray-800">
+                          {activeMine?.explanation &&
+                          activeMine.explanation !== 'Insufficient Evidence'
+                            ? activeMine.explanation
+                            : 'Insufficient Evidence'}
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 pt-1 border-t border-gray-200 text-[11px]">
+                        <div>
+                          <span className="font-bold text-gray-600">Evidence Status: </span>
+                          <span className="text-gray-800">
+                            {activeMine?.evidenceStatus || 'Insufficient Evidence'}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="font-bold text-gray-600">Coverage: </span>
+                          <span className="text-gray-800">
+                            {activeMine?.evidenceCoverage != null
+                              ? `${activeMine.evidenceCoverage}%`
+                              : 'Insufficient Evidence'}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="font-bold text-gray-600">Inspection Priority: </span>
+                          <span className="text-gray-800">
+                            {activeMine?.inspectionPriority || 'Insufficient Evidence'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Environmental Anomaly Section */}
+                    <div className="mt-3 text-xs bg-emerald-50/50 p-3 rounded-lg border border-emerald-200/60 space-y-1">
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-emerald-900">Environmental Anomaly:</span>
+                        <span className="font-mono text-[11px] font-bold text-emerald-800">
+                          {activeMine?.environmentalAnomaly || 'Insufficient Evidence'}
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-[11px] text-emerald-800">
+                        <span>
+                          Anomaly Score:{' '}
+                          {activeMine?.environmentalAnomalyScore != null
+                            ? activeMine.environmentalAnomalyScore.toFixed(2)
+                            : 'Insufficient Evidence'}
+                        </span>
+                        <span>
+                          Risk Score:{' '}
+                          {activeMine?.environmentalRiskScore != null
+                            ? activeMine.environmentalRiskScore.toFixed(2)
+                            : 'Insufficient Evidence'}
+                        </span>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Confidence Score Bar */}
@@ -620,41 +778,62 @@ export const FieldOpsView: React.FC<FieldOpsViewProps> = ({
                         Confidence Score
                       </span>
                       <span className="font-mono text-sm font-extrabold text-black">
-                        {inspection.analysis.confidenceScore}%
+                        {activeMine?.confidenceScore != null
+                          ? `${activeMine.confidenceScore}%`
+                          : 'Insufficient Evidence'}
                       </span>
                     </div>
-                    <div className="w-full bg-[#e6e8ea] rounded-full h-2 overflow-hidden">
-                      <div
-                        className="bg-black h-2 rounded-full transition-all duration-700"
-                        style={{ width: `${inspection.analysis.confidenceScore}%` }}
-                      />
-                    </div>
+                    {activeMine?.confidenceScore != null ? (
+                      <div className="w-full bg-[#e6e8ea] rounded-full h-2 overflow-hidden">
+                        <div
+                          className="bg-black h-2 rounded-full transition-all duration-700"
+                          style={{
+                            width: `${Math.min(
+                              100,
+                              Math.max(0, activeMine.confidenceScore)
+                            )}%`,
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <p className="text-xs text-gray-500 italic">Insufficient Evidence</p>
+                    )}
                   </div>
 
-                  {/* Standard Reference */}
+                  {/* Standard / Mapping Status */}
                   <div className="flex items-center gap-2 text-[#45464d] text-xs pt-1 border-t border-gray-100">
                     <span className="material-symbols-outlined text-[16px] text-gray-500">
                       rule
                     </span>
-                    <span>{inspection.analysis.standardRef}</span>
+                    <span>
+                      Mapping Status:{' '}
+                      {activeMine?.mappingStatus || 'Insufficient Evidence'}
+                    </span>
                   </div>
 
-                  {/* Recommended Corrective Action */}
-                  {inspection.analysis.recommendedAction && (
-                    <div className="bg-[#fef9e7] p-3 rounded-lg border border-[#fef08a] flex items-start gap-2">
-                      <span className="material-symbols-outlined text-amber-600 text-sm mt-0.5">
-                        lightbulb
-                      </span>
-                      <div>
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-amber-800 mb-1">
-                          Recommended Corrective Action
-                        </p>
-                        <p className="text-xs text-amber-800 leading-relaxed">
-                          {inspection.analysis.recommendedAction}
-                        </p>
-                      </div>
+                  {/* Recommended Action */}
+                  <div className="bg-[#fef9e7] p-3 rounded-lg border border-[#fef08a] flex items-start gap-2">
+                    <span className="material-symbols-outlined text-amber-600 text-sm mt-0.5">
+                      lightbulb
+                    </span>
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-amber-800 mb-1">
+                        AI Preventive Recommendation
+                      </p>
+                      <p className="text-xs text-amber-800 leading-relaxed">
+                        {(() => {
+                          if (!activeMine?.aiRecommendation) return 'Insufficient Evidence';
+                          if (typeof activeMine.aiRecommendation === 'string')
+                            return activeMine.aiRecommendation;
+                          return (
+                            activeMine.aiRecommendation.headline ||
+                            activeMine.aiRecommendation.description ||
+                            'Insufficient Evidence'
+                          );
+                        })()}
+                      </p>
                     </div>
-                  )}
+                  </div>
                 </div>
               )}
             </div>

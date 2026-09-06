@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { ComplianceRequirement, Mine, NavigationTab } from '../types';
-import { ASSETS } from '../data/mockData';
 
 interface ComplianceViewProps {
   requirements: ComplianceRequirement[];
   mines: Mine[];
+  mineLoadError?: string | null;
   onNavigate: (tab: NavigationTab) => void;
   onAddRequirement: (req: Omit<ComplianceRequirement, 'id'>) => void;
   onUpdateStatus: (id: string, newStatus: ComplianceRequirement['status']) => void;
@@ -13,6 +13,7 @@ interface ComplianceViewProps {
 export const ComplianceView: React.FC<ComplianceViewProps> = ({
   requirements,
   mines,
+  mineLoadError,
   onNavigate,
   onAddRequirement,
   onUpdateStatus,
@@ -23,46 +24,113 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
   const [statusFilter, setStatusFilter] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedReviewItem, setSelectedReviewItem] = useState<ComplianceRequirement | null>(null);
+  const [selectedAiAnalysis, setSelectedAiAnalysis] = useState<ComplianceRequirement | null>(null);
   const [showAiAnalysisModal, setShowAiAnalysisModal] = useState(false);
   const [exportedToast, setExportedToast] = useState(false);
+  const [newMineId, setNewMineId] = useState('');
+
+  React.useEffect(() => {
+    if (!newMineId && mines.length > 0) {
+      setNewMineId(mines[0].id);
+    }
+  }, [mines, newMineId]);
+
+  const selectedMineName = mines.find((mine) => mine.id === mineFilter)?.name;
+  const selectedNewMine = mines.find((mine) => mine.id === newMineId);
+  const selectedReviewMine = selectedReviewItem
+    ? mines.find((mine) => mine.id === selectedReviewItem.mineId)
+    : undefined;
+  const evidenceRequirements: ComplianceRequirement[] = mines.map((mine) => {
+    const riskCategory = mine.riskCategory || 'INSUFFICIENT EVIDENCE';
+    const hasEvidence = Boolean(
+      mine.evidenceStatus && !mine.evidenceStatus.toLowerCase().includes('insufficient')
+    );
+    const category = mine.environmentalAnomaly && mine.environmentalAnomaly !== 'No Anomaly'
+      ? 'Environmental'
+      : mine.riskDrivers?.toLowerCase().includes('operational')
+      ? 'Operational'
+      : mine.riskDrivers?.toLowerCase().includes('safety')
+      ? 'Safety Evidence'
+      : hasEvidence
+      ? 'Overall Assessment'
+      : 'Evidence';
+    const assessmentTitle = riskCategory === 'CRITICAL' || riskCategory === 'HIGH'
+      ? `${riskCategory} attention assessment`
+      : hasEvidence
+      ? 'AI-assisted evidence assessment'
+      : 'Insufficient Evidence';
+
+    return {
+      id: mine.id,
+      mineId: mine.id,
+      code: mine.code,
+      requirement: assessmentTitle,
+      mine: mine.name,
+      category,
+      dueDate: 'N/A',
+      status: hasEvidence ? 'Assessment Available' : 'Insufficient Evidence',
+      riskLevel:
+        riskCategory === 'CRITICAL'
+          ? 'Critical'
+          : riskCategory === 'HIGH'
+          ? 'High'
+          : riskCategory === 'MEDIUM'
+          ? 'Medium'
+          : riskCategory === 'INSUFFICIENT EVIDENCE'
+          ? 'Insufficient Evidence'
+          : 'Low',
+      responsibleOfficer: {
+        name: 'Unassigned',
+      },
+      aiInsight: {
+        type: 'AI-DERIVED COMPLIANCE / EVIDENCE ASSESSMENT',
+        text: `Risk category: ${riskCategory}; score: ${mine.riskScore === null ? 'N/A' : mine.riskScore.toFixed(2)}; evidence: ${mine.evidenceStatus || 'Insufficient Evidence'}; confidence: ${mine.confidenceScore ?? 'N/A'}; coverage: ${mine.evidenceCoverage ?? 'N/A'}; priority: ${mine.inspectionPriority || 'N/A'}.`,
+      },
+    };
+  });
+  const allRequirements = [...evidenceRequirements, ...requirements];
 
   // Filtered requirements
-  const filtered = requirements.filter((item) => {
-    if (mineFilter !== 'all' && !item.mine.toLowerCase().includes(mineFilter.toLowerCase())) return false;
+  const filtered = allRequirements.filter((item) => {
+    if (mineFilter !== 'all' && (!selectedMineName || item.mine !== selectedMineName)) return false;
     if (categoryFilter !== 'all' && item.category !== categoryFilter) return false;
     if (riskFilter !== 'all' && item.riskLevel !== riskFilter) return false;
     if (statusFilter !== 'all' && item.status !== statusFilter) return false;
     return true;
   });
 
-  const totalCount = 248; // Total corporate items
-  const completedCount = 182;
-  const pendingCount = 54;
-  const overdueCount = 12;
+  const assessedMines = mines.filter((mine) => mine.riskScore !== null).length;
+  const evidenceAvailable = mines.filter((mine) =>
+    mine.evidenceStatus && !mine.evidenceStatus.toLowerCase().includes('insufficient')
+  ).length;
+  const insufficientEvidence = mines.length - evidenceAvailable;
+  const highAttention = mines.filter((mine) =>
+    mine.riskCategory === 'HIGH' || mine.riskCategory === 'CRITICAL'
+  ).length;
+  const totalCount = allRequirements.length;
 
   // New Requirement Form State
   const [newTitle, setNewTitle] = useState('');
-  const [newMine, setNewMine] = useState(mines[0]?.name || 'Jharia Main Colliery');
   const [newCategory, setNewCategory] = useState<'Safety' | 'Environmental' | 'Equipment' | 'Ventilation'>('Safety');
-  const [newDueDate, setNewDueDate] = useState('2023-11-30');
+  const [newDueDate, setNewDueDate] = useState('');
   const [newRisk, setNewRisk] = useState<'High' | 'Medium' | 'Low'>('High');
-  const [newOfficer, setNewOfficer] = useState('J. Mitchell');
+  const [newOfficer, setNewOfficer] = useState('Unassigned');
 
   const handleCreateSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTitle.trim()) return;
+    if (!newTitle.trim() || !selectedNewMine) return;
 
     onAddRequirement({
-      code: `REQ-2023-${Math.floor(100 + Math.random() * 900)}`,
+      mineId: selectedNewMine.id,
+      code: `PROTO-${selectedNewMine.id}-${Date.now()}`,
       requirement: newTitle,
-      mine: newMine,
+      mine: selectedNewMine.name,
       category: newCategory,
-      dueDate: newDueDate,
-      status: 'Pending',
+      dueDate: newDueDate || 'N/A',
+      status: 'Prototype Workflow',
       riskLevel: newRisk,
       responsibleOfficer: {
         name: newOfficer,
-        avatar: ASSETS.officerMitchell,
       },
     });
 
@@ -84,8 +152,11 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
             Compliance Center
           </h2>
           <p className="text-sm text-[#45464d] mt-1">
-            Monitor, manage, and execute regulatory requirements across all active sites.
+            AI-assisted compliance and evidence monitoring across all active sites.
           </p>
+          <span className="inline-flex mt-2 rounded-full bg-indigo-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-indigo-700">
+            AI-derived compliance/evidence assessment
+          </span>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
@@ -100,36 +171,34 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 industrial-shadow">
           <div className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mb-1">
-            Total Compliance
+            Mines Assessed
           </div>
-          <div className="text-3xl font-extrabold text-[#191c1e] font-mono">{totalCount}</div>
-          <div className="text-xs text-[#45464d] mt-1">All Active Sites</div>
+          <div className="text-3xl font-extrabold text-[#191c1e] font-mono">{assessedMines}</div>
+          <div className="text-xs text-[#45464d] mt-1">ML risk records available</div>
         </div>
 
         <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 industrial-shadow">
           <div className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mb-1">
-            Completed
+            Evidence Available
           </div>
-          <div className="text-3xl font-extrabold text-[#191c1e] font-mono">{completedCount}</div>
-          <div className="text-xs font-bold text-emerald-600 flex items-center gap-1 mt-1">
-            <span className="material-symbols-outlined text-[14px]">arrow_upward</span> +12 this week
-          </div>
+          <div className="text-3xl font-extrabold text-[#191c1e] font-mono">{evidenceAvailable}</div>
+          <div className="text-xs text-[#45464d] mt-1">Environmental / operational signals</div>
         </div>
 
         <div className="bg-white border border-[#e0e3e5] rounded-xl p-5 industrial-shadow">
           <div className="text-[11px] font-bold uppercase tracking-wider text-[#45464d] mb-1">
-            Pending
+            Insufficient Evidence
           </div>
-          <div className="text-3xl font-extrabold text-[#191c1e] font-mono">{pendingCount}</div>
-          <div className="text-xs text-[#45464d] mt-1">Awaiting Action</div>
+          <div className="text-3xl font-extrabold text-[#191c1e] font-mono">{insufficientEvidence}</div>
+          <div className="text-xs text-[#45464d] mt-1">No mine-level compliance record</div>
         </div>
 
         <div className="bg-white border border-[#ba1a1a]/30 rounded-xl p-5 industrial-shadow border-t-2 border-t-[#ba1a1a]">
           <div className="text-[11px] font-bold uppercase tracking-wider text-[#ba1a1a] mb-1">
-            Overdue
+            High / Critical Attention
           </div>
-          <div className="text-3xl font-extrabold text-[#ba1a1a] font-mono">{overdueCount}</div>
-          <div className="text-xs font-bold text-[#ba1a1a] mt-1">Requires Immediate Action</div>
+          <div className="text-3xl font-extrabold text-[#ba1a1a] font-mono">{highAttention}</div>
+          <div className="text-xs font-bold text-[#ba1a1a] mt-1">Based on ML risk category</div>
         </div>
       </div>
 
@@ -143,11 +212,17 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
             className="px-3 py-2 bg-[#f2f4f6] text-xs font-bold text-[#191c1e] rounded-lg border-none outline-none cursor-pointer"
           >
             <option value="all">All Mines</option>
-            <option value="Jharia Main Colliery">Jharia Main Colliery</option>
-            <option value="Raniganj Eastern Block">Raniganj Eastern Block</option>
-            <option value="Korba Deep Mine">Korba Deep Mine</option>
-            <option value="Singrauli North Extension">Singrauli North Extension</option>
-            <option value="Godavari Valley Block III">Godavari Valley Block III</option>
+            {mines.length > 0 ? (
+              mines.map((mine) => (
+                <option key={mine.id} value={mine.id}>
+                  {mine.name}
+                </option>
+              ))
+            ) : (
+              <option value="" disabled>
+                {mineLoadError ? 'Real mines unavailable' : 'Loading real mines...'}
+              </option>
+            )}
           </select>
 
           {/* Category Filter */}
@@ -160,6 +235,10 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
             <option value="Safety">Safety</option>
             <option value="Environmental">Environmental</option>
             <option value="Equipment">Equipment</option>
+            <option value="Operational">Operational</option>
+            <option value="Safety Evidence">Safety Evidence</option>
+            <option value="Overall Assessment">Overall Assessment</option>
+            <option value="Evidence">Evidence Assessment</option>
           </select>
 
           {/* Risk Level Filter */}
@@ -169,9 +248,11 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
             className="px-3 py-2 bg-[#f2f4f6] text-xs font-bold text-[#191c1e] rounded-lg border-none outline-none cursor-pointer"
           >
             <option value="all">Any Risk Level</option>
+            <option value="Critical">Critical</option>
             <option value="High">High</option>
             <option value="Medium">Medium</option>
             <option value="Low">Low</option>
+            <option value="Insufficient Evidence">Insufficient Evidence</option>
           </select>
 
           {/* Status Filter */}
@@ -184,6 +265,9 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
             <option value="Overdue">Overdue</option>
             <option value="Pending">Pending</option>
             <option value="Completed">Completed</option>
+            <option value="Assessment Available">Assessment Available</option>
+            <option value="Insufficient Evidence">Insufficient Evidence</option>
+            <option value="Prototype Workflow">Prototype Workflow</option>
           </select>
         </div>
 
@@ -208,7 +292,7 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
           <table className="w-full text-left border-collapse text-xs">
             <thead>
               <tr className="bg-[#f7f9fb] border-b border-[#e0e3e5] text-[#45464d]">
-                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Requirement</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Assessment</th>
                 <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Mine</th>
                 <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Category</th>
                 <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-[11px]">Due Date</th>
@@ -236,6 +320,10 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
                             ? 'bg-[#ffdad6] text-[#ba1a1a]'
                             : item.status === 'Pending'
                             ? 'bg-[#fcdeb5] text-[#574425]'
+                            : item.status === 'Insufficient Evidence'
+                            ? 'bg-gray-100 text-gray-700'
+                            : item.status === 'Prototype Workflow'
+                            ? 'bg-indigo-100 text-indigo-800'
                             : 'bg-emerald-100 text-emerald-800'
                         }`}
                       >
@@ -245,10 +333,12 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
                     <td className="py-3.5 px-4 font-bold">
                       <span
                         className={
-                          item.riskLevel === 'High'
+                          item.riskLevel === 'Critical' || item.riskLevel === 'High'
                             ? 'text-[#ba1a1a]'
                             : item.riskLevel === 'Medium'
                             ? 'text-[#f59e0b]'
+                            : item.riskLevel === 'Insufficient Evidence'
+                            ? 'text-gray-600'
                             : 'text-[#10B981]'
                         }
                       >
@@ -298,7 +388,10 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
                             </span>
                           </div>
                           <button
-                            onClick={() => setShowAiAnalysisModal(true)}
+                            onClick={() => {
+                              setSelectedAiAnalysis(item);
+                              setShowAiAnalysisModal(true);
+                            }}
                             className="text-xs text-indigo-700 font-bold hover:underline"
                           >
                             View Analysis →
@@ -354,6 +447,10 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
                 <span className="font-bold text-gray-900">{selectedReviewItem.mine}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-500">Mine ID:</span>
+                <span className="font-mono font-bold text-gray-900">{selectedReviewMine?.id || selectedReviewItem.mineId || 'Prototype record'}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-gray-100">
                 <span className="text-gray-500">Category:</span>
                 <span className="font-bold text-gray-900">{selectedReviewItem.category}</span>
               </div>
@@ -362,32 +459,67 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
                 <span className="font-mono font-bold text-gray-900">{selectedReviewItem.dueDate}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-gray-500">Responsible Officer:</span>
+                <span className="text-gray-500">Assigned To:</span>
                 <span className="font-bold text-gray-900">{selectedReviewItem.responsibleOfficer.name}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 pt-2">
+                <div className="rounded-lg bg-gray-50 p-2">
+                  <span className="text-[10px] uppercase text-gray-500">Risk Score</span>
+                  <p className="font-mono font-bold text-gray-900">
+                    {selectedReviewMine?.riskScore == null ? 'N/A' : `${selectedReviewMine.riskScore.toFixed(2)} / 100`}
+                  </p>
+                </div>
+                <div className="rounded-lg bg-gray-50 p-2">
+                  <span className="text-[10px] uppercase text-gray-500">Risk Category</span>
+                  <p className="font-bold text-gray-900">{selectedReviewMine?.riskCategory || 'N/A'}</p>
+                </div>
+                <div className="rounded-lg bg-gray-50 p-2">
+                  <span className="text-[10px] uppercase text-gray-500">Confidence</span>
+                  <p className="font-bold text-gray-900">{selectedReviewMine?.confidenceScore ?? 'N/A'}</p>
+                </div>
+                <div className="rounded-lg bg-gray-50 p-2">
+                  <span className="text-[10px] uppercase text-gray-500">Evidence Coverage</span>
+                  <p className="font-bold text-gray-900">{selectedReviewMine?.evidenceCoverage ?? 'N/A'}</p>
+                </div>
+              </div>
+              <div className="space-y-1 rounded-lg bg-indigo-50 p-3 text-indigo-950">
+                <p><strong>Evidence Status:</strong> {selectedReviewMine?.evidenceStatus || 'N/A'}</p>
+                <p><strong>Inspection Priority:</strong> {selectedReviewMine?.inspectionPriority || 'N/A'}</p>
+                <p><strong>Anomaly:</strong> {selectedReviewMine?.environmentalAnomaly || 'N/A'}</p>
+                <p><strong>AI Recommendation:</strong> {selectedReviewMine?.aiRecommendation.headline || 'N/A'}</p>
+                <p><strong>Explanation:</strong> {selectedReviewMine?.explanation || 'No compliance evidence available.'}</p>
               </div>
             </div>
 
             <div className="mt-6 flex flex-col gap-2">
-              <div className="flex gap-2">
-                <button
-                  onClick={() => {
-                    onUpdateStatus(selectedReviewItem.id, 'Completed');
-                    setSelectedReviewItem(null);
-                  }}
-                  className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors"
-                >
-                  Mark as Completed
-                </button>
-                <button
-                  onClick={() => {
-                    onUpdateStatus(selectedReviewItem.id, 'Pending');
-                    setSelectedReviewItem(null);
-                  }}
-                  className="flex-1 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition-colors"
-                >
-                  Set to Pending
-                </button>
-              </div>
+              {selectedReviewMine || selectedReviewItem.status === 'Insufficient Evidence' ? (
+                <p className="rounded-lg bg-gray-100 px-3 py-2.5 text-xs text-gray-700">
+                  {selectedReviewItem.status === 'Insufficient Evidence'
+                    ? 'No compliance evidence available for this mine.'
+                    : 'ML-derived assessment is read-only; create a prototype workflow record for follow-up.'}
+                </p>
+              ) : (
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      onUpdateStatus(selectedReviewItem.id, 'Completed');
+                      setSelectedReviewItem(null);
+                    }}
+                    className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors"
+                  >
+                    Mark as Completed
+                  </button>
+                  <button
+                    onClick={() => {
+                      onUpdateStatus(selectedReviewItem.id, 'Pending');
+                      setSelectedReviewItem(null);
+                    }}
+                    className="flex-1 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition-colors"
+                  >
+                    Set to Pending
+                  </button>
+                </div>
+              )}
               <button
                 onClick={() => setSelectedReviewItem(null)}
                 className="w-full py-2 border border-gray-300 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50"
@@ -404,7 +536,7 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-200 animate-in zoom-in-95">
             <div className="flex justify-between items-center pb-3 border-b border-gray-100 mb-4">
-              <h3 className="font-bold text-base text-gray-900">Add Compliance Requirement</h3>
+              <h3 className="font-bold text-base text-gray-900">Add Prototype Workflow Record</h3>
               <button onClick={() => setShowAddModal(false)} className="text-gray-400 hover:text-gray-600">
                 <span className="material-symbols-outlined">close</span>
               </button>
@@ -426,15 +558,21 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
               <div>
                 <label className="block font-bold text-gray-700 mb-1">Target Mine</label>
                 <select
-                  value={newMine}
-                  onChange={(e) => setNewMine(e.target.value)}
+                  value={newMineId}
+                  onChange={(e) => setNewMineId(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black outline-none"
                 >
-                  {mines.map((m) => (
-                    <option key={m.id} value={m.name}>
-                      {m.name}
+                  {mines.length > 0 ? (
+                    mines.map((mine) => (
+                      <option key={mine.id} value={mine.id}>
+                        {mine.name}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="" disabled>
+                      {mineLoadError ? 'Real mines unavailable' : 'Loading real mines...'}
                     </option>
-                  ))}
+                  )}
                 </select>
               </div>
 
@@ -449,6 +587,7 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
                     <option value="Safety">Safety</option>
                     <option value="Environmental">Environmental</option>
                     <option value="Equipment">Equipment</option>
+                    <option value="Evidence">Evidence Assessment</option>
                     <option value="Ventilation">Ventilation</option>
                   </select>
                 </div>
@@ -467,7 +606,7 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
               </div>
 
               <div>
-                <label className="block font-bold text-gray-700 mb-1">Due Date</label>
+                <label className="block font-bold text-gray-700 mb-1">Prototype Target Date (Optional)</label>
                 <input
                   type="date"
                   value={newDueDate}
@@ -477,16 +616,13 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
               </div>
 
               <div>
-                <label className="block font-bold text-gray-700 mb-1">Assigned Officer</label>
+                <label className="block font-bold text-gray-700 mb-1">Assigned To</label>
                 <select
                   value={newOfficer}
                   onChange={(e) => setNewOfficer(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black outline-none"
                 >
-                  <option value="R. Sharma">R. Sharma</option>
-                  <option value="S. Patel">S. Patel</option>
-                  <option value="A. Kumar">A. Kumar</option>
-                  <option value="T. Reddy">T. Reddy</option>
+                  <option value="Unassigned">Unassigned</option>
                 </select>
               </div>
 
@@ -502,7 +638,7 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
                   type="submit"
                   className="flex-1 py-2.5 bg-[#0F172A] text-white rounded-lg font-bold hover:bg-[#1e293b]"
                 >
-                  Save Requirement
+                  Save Prototype Record
                 </button>
               </div>
             </form>
@@ -525,18 +661,14 @@ export const ComplianceView: React.FC<ComplianceViewProps> = ({
             </div>
             <div className="space-y-3 text-xs text-gray-600">
               <p>
-                <strong>Target:</strong> Structural Support Recertification at Godavari Valley Block III.
+                <strong>Mine:</strong> {selectedAiAnalysis?.mine || 'Insufficient Evidence'}
               </p>
               <div className="p-3 bg-indigo-50 border border-indigo-100 rounded-xl space-y-1.5">
-                <p className="font-bold text-indigo-950">Key Correlating Factors:</p>
-                <ul className="list-disc list-inside space-y-1 text-indigo-900">
-                  <li>Deccan Geotech Mining Ltd has 3 active projects in the Godavari Valley region.</li>
-                  <li>Structural engineer capacity currently booked at 92%.</li>
-                  <li>Average lead time for certified ultrasonic testing rigs is 14 days.</li>
-                </ul>
+                <p className="font-bold text-indigo-950">ML Evidence Summary:</p>
+                <p className="text-indigo-900">{selectedAiAnalysis?.aiInsight?.text || 'No compliance evidence available.'}</p>
               </div>
               <p className="text-gray-500">
-                <strong>Recommended Mitigation:</strong> Contract secondary certified inspector from Bharat Coal Mining Services to prevent overdue non-compliance penalty.
+                <strong>Assessment:</strong> No mine-level compliance requirement or status is available from the current data sources.
               </p>
             </div>
             <button
