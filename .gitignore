@@ -20,3 +20,6 @@ __pycache__/
 localhost.pem
 localhost-key.pem
 *.pem
+*.db
+*.sqlite
+*.sqlite3

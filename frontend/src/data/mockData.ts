@@ -1,5 +1,13 @@
 import { Mine, AlertItem, FieldInspection, Contractor, ChatMessage } from '../types';
 
+// ============================================================================
+// DEMO / FALLBACK DATA ONLY
+// ============================================================================
+// INITIAL_MINES and INITIAL_ALERTS are NOT used by the main App.tsx data flow.
+// The dashboard loads real mine intelligence from the backend API.
+// These arrays are retained only as fallback/development references.
+// ============================================================================
+
 export const ASSETS = {
   logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAC-aVigNwcIqLF-kuQGHMW4EcqC2DYiRZS7qySGYAgtINXbHVJ5MP0YZaQ0eaaWJv2mxXkM1C4GR0yLUGQZCkY-Z-b_TVSch1XdeIyp4q4UQ05WUmons4njM8HRWfphAJrpLRLtvOqUfBOZ80vj2Ehm5E74bQiQ-hlsbZnMUqSuskOQVqz7M0bTARTsX3S5ihmIWwhgHD7nYGkEdkBfdKXQtkE3pq-Z8W1yID_YF5tVzjN1ugd4SgI',
   adminProfile: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAqHwhbqcOfcOQawYj_BpfvYLH1G8wUFKFt4VIE7fnGb8iG8o8J7LAqW1PHnO5_ovb5_XAQXH18xvrGPjC_eJjeABgHKEpHwUZ0zGG0JDN7x-dJmvUGZhQRG8g-H36MHY7Veo_KrpYzTE68DxjpD-xZopja6z9mxA9kz9qckKxhcp2Xo8FYbCAt36BReKLMzX6NkdHsO1MLeppnVqArIXRFdmNVcbGDMPdZR_rp3uQieKs20Xe97cFM',
