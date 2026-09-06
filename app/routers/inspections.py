@@ -14,7 +14,7 @@ def create_inspection(
     return {"message": f"Inspection created by {current_user.email}"}
 
 @router.get("/")
-@limiter.limit("100/minute")
+@limiter.limit("60/minute")
 def list_inspections(
     request: Request,
     current_user: User = Depends(get_current_user),
